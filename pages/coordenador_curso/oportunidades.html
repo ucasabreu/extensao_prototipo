@@ -1,0 +1,99 @@
+<div class="toolbar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+    
+    <div style="display: flex; gap: 15px;">
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="buscaInput" onkeyup="filtrarTabela()" placeholder="Buscar por título ou prof...">
+        </div>
+
+        <select class="select" id="filtroStatus" onchange="filtrarTabela()">
+            <option value="todos">Todos os Status</option>
+            <option value="pendente">Aguardando Aprovação</option>
+            <option value="publicada">Publicadas</option>
+            <option value="rejeitada">Rejeitadas</option>
+        </select>
+    </div>
+
+    <button class="btn btn-primary" onclick="abrirModalNova()">
+        + Nova Oportunidade
+    </button>
+</div>
+
+<div class="table-container">
+    <div class="table-title">Listagem de Oportunidades</div>
+    
+    <table class="global-table">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Responsável</th>
+                <th>Tipo</th>
+                <th>Vagas</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody id="tabela-corpo">
+            <tr><td colspan="6" style="text-align:center">Carregando dados...</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="modalRejeicao" class="modal-overlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h2>Rejeitar Oportunidade</h2>
+            <span class="modal-close" onclick="fecharModal('modalRejeicao')">&times;</span>
+        </div>
+        <div class="modal-body">
+            [cite_start]<p>Para rejeitar, é obrigatório informar o motivo ao solicitante.</p>
+            <div class="form-group">
+                <label class="form-label">Justificativa:</label>
+                <textarea id="txtJustificativa" class="textarea" placeholder="Ex: Carga horária inconsistente com o PPC..."></textarea>
+            </div>
+            <input type="hidden" id="idRejeicaoTemp">
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-ghost" onclick="fecharModal('modalRejeicao')">Cancelar</button>
+            <button class="btn btn-danger" onclick="confirmarRejeicao()">Confirmar Rejeição</button>
+        </div>
+    </div>
+</div>
+
+<div id="modalNova" class="modal-overlay">
+    <div class="modal" style="width: 600px;">
+        <div class="modal-header">
+            <h2>Nova Oportunidade</h2>
+            <span class="modal-close" onclick="fecharModal('modalNova')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="form-label">Título da Atividade</label>
+                <input type="text" class="input-text" id="novoTitulo">
+            </div>
+            <div style="display: flex; gap: 20px;">
+                <div class="form-group" style="flex:1">
+                    <label class="form-label">Tipo</label>
+                    <select class="select" id="novoTipo">
+                        <option>Curso</option>
+                        <option>Evento</option>
+                        <option>Projeto</option>
+                        <option>Monitoria</option>
+                    </select>
+                </div>
+                <div class="form-group" style="width: 100px;">
+                    <label class="form-label">Vagas</label>
+                    <input type="number" class="input-text" id="novasVagas" value="1">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Docente Responsável</label>
+                <input type="text" class="input-text" id="novoResp" placeholder="Nome do professor">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="fecharModal('modalNova')">Cancelar</button>
+            <button class="btn btn-primary" onclick="salvarNovaOportunidade()">Criar</button>
+        </div>
+    </div>
+</div>

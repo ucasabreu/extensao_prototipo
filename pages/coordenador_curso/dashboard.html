@@ -4,27 +4,47 @@
     <meta charset="UTF-8">
     <title>Dashboard - Coordenador de Curso</title>
 
-    <!-- IMPORTANTE: CSS global -->
     <link rel="stylesheet" href="../../assets/css/common/layout.css">
-</head>
+    <link rel="stylesheet" href="../../assets/css/global/tables.css">
+    <link rel="stylesheet" href="../../assets/css/global/badges.css">
+    <link rel="stylesheet" href="../../assets/css/global/button.css">
+    <link rel="stylesheet" href="../../assets/css/global/forms.css">
+    <link rel="stylesheet" href="../../assets/css/global/modal.css">
+    <link rel="stylesheet" href="../../assets/css/global/alerts.css"> </head>
 
 <body>
 
-    <!-- Layout é carregado aqui -->
     <div id="layout-area"></div>
+    
+    <div id="toast-container"></div>
 
-    <!-- Script do perfil -->
     <script type="module">
         import { carregarLayout } from "../../assets/js/common/layout.js";
+        
+        // CORREÇÃO AQUI: Importar 'carregarViewOportunidades' em vez de 'renderizarOportunidades'
+        import { carregarViewOportunidades } from "../../assets/js/coordenador/oportunidades.js";
 
-        carregarLayout([
-            { label: "Oportunidades", content: "<h2>Oportunidades do Curso</h2>" },
-            { label: "Visão Geral", content: "<h2>Visão Geral do Curso</h2>" },
-            { label: "Validação de Proposta", content: "<h2>Validação de Propostas</h2>" },
-            { label: "Relatórios", content: "<h2>Relatórios do Curso</h2>" },
-            { label: "Gestão de Discentes", content: "<h2>Gestão de Discentes</h2>" }
-        ]);
+        // Inicialização Assíncrona
+        async function init() {
+            
+            // 1. Busca o HTML do arquivo separado
+            // O erro ocorria porque o dashboard tentava chamar uma função que mudou de nome
+            const htmlOportunidades = await carregarViewOportunidades();
+
+            // 2. Monta o menu com o HTML carregado
+            carregarLayout([
+                { 
+                    label: "Oportunidades", 
+                    content: htmlOportunidades 
+                },
+                { label: "Visão Geral", content: "<h2>Visão Geral do Curso</h2>" },
+                { label: "Validação", content: "<h2>Validação de Propostas</h2>" },
+                { label: "Relatórios", content: "<h2>Relatórios</h2>" },
+                { label: "Discentes", content: "<h2>Gestão de Discentes</h2>" }
+            ]);
+        }
+
+        init();
     </script>
-
 </body>
 </html>
