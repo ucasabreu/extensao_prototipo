@@ -1,0 +1,114 @@
+/* ====== HEADER GLOBAL ====== */
+
+.topbar {
+    background: #5d0b0b; /* bordô escuro */
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 28px;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.logo {
+    width: 60px;
+}
+
+.titulo-layout {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* ====== BLOCO DO USUÁRIO (OPÇÃO C) ====== */
+
+.user-box {
+    display: flex;
+    flex-direction: column; /* vertical */
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+}
+
+.avatar {
+    width: 48px;
+    height: 48px;
+    background: #fff;
+    color: #5d0b0b;
+    border-radius: 50%;
+    font-weight: 600;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+}
+
+.user-info span:first-child {
+    font-weight: bold;
+}
+
+.btn-perfil {
+    margin-top: 8px;
+    padding: 6px 16px;
+    background: #fff;
+    border: none;
+    border-radius: 6px;
+    color: #5d0b0b;
+    cursor: pointer;
+    font-weight: 600;
+    transition: .2s;
+}
+
+.btn-perfil:hover {
+    background: #f3dcb1;
+}
+
+/* ====== MENU EM SETA ====== */
+
+.menu-container {
+    background: #5d0b0b;
+    padding: 10px 20px;
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+}
+
+.menu-item {
+    background: #7a1010;
+    color: white;
+    padding: 10px 22px;
+    cursor: pointer;
+    clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+    transition: .2s ease-in-out;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.menu-item:hover {
+    background: #a81b1b;
+}
+
+.menu-item.active {
+    background: #f6e9c2;
+    color: #5d0b0b;
+    font-weight: 700;
+}
+
+/* ====== ÁREA DE CONTEÚDO ====== */
+
+.conteudo {
+    background: #f8efda; /* Bege claríssimo */
+    min-height: 70vh;
+    padding: 40px;
+}
