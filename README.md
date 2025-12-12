@@ -1,97 +1,128 @@
-extensao-prototipo/
-├─ index.html
-├─ README.md
+# Portal de Extensão Acadêmica – Protótipo Web
+Protótipo navegável do Sistema de Gestão de Extensão Acadêmica, desenvolvido como parte do projeto da disciplina Laboratório de Engenharia de Software.
+
+Este repositório foca na estrutura visual, navegação e componentes globais de interface, utilizando HTML, CSS e JavaScript puros, sem frameworks, com o objetivo de validar requisitos, fluxos e apresentação dos dados.
+
+## Objetivos do Projeto
+* Criar um protótipo funcional e navegável do sistema de extensão.
+* Demonstrar claramente:
+   - funcionalidades por perfil,
+   - fluxo de navegação,
+   - organização das informações,
+   - aplicação correta dos requisitos.
+* Disponibilizar um Design System próprio (componentes globais reutilizáveis).
+* Facilitar a avaliação técnica e visual do sistema pela equipe e docentes.
+
+---
+## Perfis do Sistema
+
+O sistema contempla os seguintes perfis principais:
+
+### Docente
+
+  * Submissão de propostas de oportunidades.
+  * Gestão de inscrições.
+  * Registro de frequência.
+  * Encerramento de atividades e certificação.
+  * Gestão de grupos estudantis.
+
+### Coordenador de Curso
+
+  * Visão geral do curso (indicadores e alertas).
+  * Validação de propostas.
+  * Relatórios do curso.
+  * Gestão de discentes.
+  * Comunicados.
+  * Auditoria e logs (escopo do curso).
+
+### Coordenador de geral 
+
+  * Visão institucional.
+  * Atualização/valdação de PPC
+  * Relatórios institucionais.
+  * Relatórios de exceção (órfãos).
+  * Logs e auditoria global..
+  * Comunicados institucionais.
+
+### Discente
+
+### Dicente Ofertante
+
+---
+
+## Arquitetura do Protótipo
+```bash
+EXTENSAO_PROTOTIPO/
 │
-├─ assets/
-│  ├─ css/
-│  │  ├─ base.css          # Reset, fontes, cores padrão
-│  │  ├─ layout.css        # Grid, header, sidebar, containers
-│  │  ├─ components.css    # Cards, tabelas, badges, botões, modais
-│  │  └─ pages.css         # Ajustes específicos de páginas
-│  │
-│  ├─ js/
-│  │  ├─ main.js           # Inicialização geral, navegação básica
-│  │  ├─ router.js         # (opcional) “troca” de telas simulada
-│  │  ├─ ui/
-│  │  │  ├─ tabs.js        # Lógica de abas (Meus Projetos, etc.)
-│  │  │  ├─ modals.js      # Abrir/fechar modais de justificativa, etc.
-│  │  │  ├─ tables.js      # Renderizar tabelas dinâmicas
-│  │  │  └─ filters.js     # Filtros de relatórios, buscas, etc.
-│  │  │
-│  │  ├─ docente/
-│  │  │  ├─ meusProjetos.js        # Carregar dados e interações da tela "Meus Projetos"
-│  │  │  ├─ validarPropostas.js    # Fluxo de aprovação/rejeição de propostas
-│  │  │  └─ gruposEstudantis.js    # Gestão de grupos, cargos e membros
-│  │  │
-│  │  ├─ coordenadorCurso/
-│  │  │  ├─ dashboardCurso.js      # Indicadores do coordenador de curso
-│  │  │  ├─ oportunidadesCurso.js  # Listagem e gestão de oportunidades do curso
-│  │  │  └─ relatoriosCurso.js     # Relatórios operacionais/gerenciais do curso
-│  │  │
-│  │  ├─ coordenadorGeral/
-│  │  │  ├─ dashboardGeral.js      # Painel institucional
-│  │  │  ├─ validacaoExterna.js    # Tela de validação de certificados externos
-│  │  │  ├─ administracao.js       # Cursos sem coord, destaques órfãos, etc.
-│  │  │  └─ relatoriosGerais.js    # Relatórios institucionais
-│  │  │
-│  │  └─ common/
-│  │     ├─ auth.js                # Simulação de login e troca de perfil
-│  │     └─ state.js               # “Estado fake” (usuário logado, dados carregados, etc.)
-│  │
-│  ├─ img/
-│  │  ├─ logos/
-│  │  ├─ icons/
-│  │  └─ mockups/
-│  │
-│  └─ fonts/                        # (opcional) fontes customizadas
+├── assets/
+│   ├── css/
+│   │   ├── common/        # Layouts base (header, menu, estrutura)
+│   │   └── ui/            # Componentes globais (design system)
+│   │
+│   ├── js/
+│   │   └── common/        # Scripts globais (modais, alerts, etc.)
+│   │
+│   ├── fonts/
+│   └── img/
 │
-├─ data/
-│  ├─ common/
-│  │  ├─ cursos.json                # Lista de cursos
-│  │  ├─ usuarios.json              # Perfis fake (docente, coord, discente)
-│  │  └─ grupos.json                # Tipos de grupos, etc.
-│  │
-│  ├─ docente/
-│  │  ├─ projetos.json              # “Meus Projetos” (estado, carga, etc.)
-│  │  ├─ propostas.json             # Propostas enviadas por discentes
-│  │  ├─ gruposEstudantis.json      # Grupos sob responsabilidade do docente
-│  │  └─ frequencias.json           # Frequência e carga horária por projeto
-│  │
-│  ├─ coordenadorCurso/
-│  │  ├─ oportunidades.json         # Oportunidades por curso
-│  │  ├─ relatorios.json            # Dados talvez agregados p/ gráficos
-│  │  └─ pendencias.json            # Inscrições, documentos, etc.
-│  │
-│  └─ coordenadorGeral/
-│     ├─ cursosSemCoordenador.json # RF-R22
-│     ├─ destaquesOrfaos.json      # RF-R23
-│     ├─ depoimentosOrfaos.json    # RF-R24
-│     ├─ indicadoresGerais.json    # KPIs institucionais
-│     └─ validacoesExternas.json   # Lista de certificados/solicitações externas
+├── pages/
+│   ├── common/
+│   │   ├── login.html
+│   │   ├── ui_preview.html
+│   │   └── error.html
+│   │
+│   ├── coordenador_curso/
+│   │   └── dashboard.html
+│   │
+│   ├── coordenador_geral/
+│   └── docente/
 │
-├─ pages/
-│  ├─ common/
-│  │  ├─ login.html                 # Escolha de perfil + login fake
-│  │  └─ erro.html                  # Página genérica de erro/404 (se quiser)
-│  │
-│  ├─ docente/
-│  │  ├─ dashboard-docente.html     # Visão geral: projetos, pendências, etc.
-│  │  ├─ meus-projetos.html         # Tela com abas: Inscritos, Plano, Frequência, Encerramento
-│  │  ├─ validar-propostas.html     # Lista + detalhes + modal de rejeição com justificativa
-│  │  └─ grupos-estudantis.html     # Gestão de grupos, cargos, histórico
-│  │
-│  ├─ coordenador-curso/
-│  │  ├─ dashboard-coordenador-curso.html
-│  │  ├─ oportunidades-coordenador-curso.html
-│  │  └─ relatorios-coordenador-curso.html
-│  │
-│  └─ coordenador-geral/
-│     ├─ dashboard-coordenador-geral.html
-│     ├─ validacao-externa.html           # Já alinhado com sua tela atual
-│     ├─ administrativo.html              # Cursos sem coord, destaques/depoimentos órfãos
-│     └─ relatorios-coordenador-geral.html
+├── data/                  # Dados mock (futuramente)
 │
-└─ docs/
-   ├─ requisitos/
-   │  └─ mapa-requisitos-telas.md   # (opcional) documento ligando telas ↔ RFs do PDF
-   └─ diagramas/                    # (opcional) prints, plantuml, etc.
+├── docs/                  # Documentação complementar
+│
+├── index.html              # Página inicial (login / UI Preview)
+└── README.md
+```
+---
+## Design System (Componentes Globais)
+Todos os componentes reutilizáveis do sistema estão documentados e visualizáveis na página:
+```bash
+/pages/common/ui_preview.html
+```
+### Componentes implementados:
+   * ✅ Botões globais
+   * ✅ Badges de status (outlined)
+   * ✅ Cards KPI (dashboards)
+   * ✅ Tabelas institucionais
+   * ✅ Modais universais
+   * ✅ Inputs e formulários globais
+   * ✅ Alertas inline
+   * ✅ Toast notifications
+     
+**⚠️ Regra do projeto:**
+- Todo novo componente criado DEVE ser adicionado ao ui_preview.html. Para todos visualisarem o que deve ser reusados.
+
+---
+## Navegação Inicial
+Ao abrir o projeto (index.html), o usuário verá:
+```bash
+[ 🔐 Entrar no Sistema ]
+[ 🔧 UI Preview – Componentes Globais ]
+```
+- **Entrar no Sistema** → leva para pages/common/login.html
+- **UI Preview** → leva para a página de visualização dos componentes
+Isso permite que a equipe acesse o Design System sem interferir no fluxo principal.
+
+---
+## Convenções do Projeto
+- Estilos reutilizáveis ficam em:
+```bash
+assets/css/ui/
+```
+- Scripts globais ficam em:
+```bash
+assets/js/common/
+```
+- Cada perfil tem sua própria pasta em pages/.
+- Os componentes globais não podem ser duplicados por perfil.
