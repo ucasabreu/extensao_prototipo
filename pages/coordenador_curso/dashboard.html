@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Coordenador de Curso</title>
+
+    <!-- IMPORTANTE: CSS global -->
+    <link rel="stylesheet" href="../../assets/css/common/layout.css">
+</head>
+
+<body>
+
+    <!-- Layout é carregado aqui -->
+    <div id="layout-area"></div>
+
+    <!-- Script do perfil -->
+    <script type="module">
+        import { carregarLayout } from "../../assets/js/common/layout.js";
+
+        carregarLayout([
+            { label: "Oportunidades", content: "<h2>Oportunidades do Curso</h2>" },
+            { label: "Visão Geral", content: "<h2>Visão Geral do Curso</h2>" },
+            { label: "Validação de Proposta", content: "<h2>Validação de Propostas</h2>" },
+            { label: "Relatórios", content: "<h2>Relatórios do Curso</h2>" },
+            { label: "Gestão de Discentes", content: "<h2>Gestão de Discentes</h2>" }
+        ]);
+    </script>
+
+</body>
+</html>

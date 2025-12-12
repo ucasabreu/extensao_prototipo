@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Visualização de Componentes - UI Kit</title>
+
+    <!-- Estilos Globais -->
+    <link rel="stylesheet" href="../../assets/css/common/layout.css">
+    <link rel="stylesheet" href="../../assets/css/ui/button.css">
+    <link rel="stylesheet" href="../../assets/css/ui/badges.css">
+    <link rel="stylesheet" href="../..//assets/css/ui/cards.css">
+    <link rel="stylesheet" href="../../assets/css/ui/modal.css">
+    <link rel="stylesheet" href="../../assets/css/ui/forms.css">
+    <link rel="stylesheet" href="../../assets/css/ui/alerts.css">
+
+
+    <script src="../../assets/js/common/modal.js"></script>
+    <script src="../../assets/js/common/alerts.js"></script>
+    <style>
+        body {
+            padding: 40px;
+            background: #f8efda;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            color: #5d0b0b;
+        }
+
+        h2 {
+            margin-top: 40px;
+            margin-bottom: 15px;
+            color: #7a1010;
+        }
+
+        .preview-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .preview-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .divider {
+            height: 2px;
+            width: 100%;
+            background: #ddd;
+            margin: 30px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>📦 UI KIT – Visualização de Componentes Globais</h1>
+
+    <!-- ============================= -->
+    <!-- SEÇÃO 1: BOTÕES GLOBAIS -->
+    <!-- ============================= -->
+    <div class="preview-section">
+
+        <h2>1. Botões Globais</h2>
+
+        <div class="preview-box">
+            <button class="btn btn-primary">Primário</button>
+            <button class="btn btn-secondary">Secundário</button>
+            <button class="btn btn-success">Sucesso</button>
+            <button class="btn btn-danger">Perigo</button>
+            <button class="btn btn-ghost">Ghost</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3>Botões Pequenos (Tabelas)</h3>
+
+        <div class="preview-box">
+            <button class="btn-small btn-small-success">Aceitar</button>
+            <button class="btn-small btn-small-danger">Rejeitar</button>
+            <button class="btn-small btn-small-info">Ver PDF</button>
+        </div>
+
+    </div>
+
+    <!-- ============================= -->
+    <!-- SEÇÕES FUTURAS (serão habilitadas conforme criarmos os componentes) -->
+    <!-- ============================= -->
+
+    <div class="preview-section">
+        <h2>2. Badges (Status)</h2>
+        <div class="preview-box">
+            <span class="badge badge-success">Sucesso</span>
+            <span class="badge badge-warning">Alerta</span>
+            <span class="badge badge-danger">Erro</span>
+            <span class="badge badge-info">Informação</span>
+            <span class="badge badge-neutral">Neutro</span>
+        </div>
+    </div>
+
+    <div class="preview-section">
+        <h2>3. Cards KPI</h2>
+        <div class="kpi-grid">
+
+            <div class="kpi-card">
+                <div class="kpi-title">Horas Certificadas</div>
+                <div class="kpi-value">12.450h</div>
+                <div class="kpi-sub kpi-positive">+5% vs mês anterior</div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-title">Taxa de Conclusão</div>
+                <div class="kpi-value">85%</div>
+                <div class="kpi-sub">Média das atividades (RF-R06)</div>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-title">Pendências</div>
+                <div class="kpi-value">15</div>
+                <div class="kpi-sub kpi-negative">Aguardam validação</div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="preview-section">
+        <h2>4. Tabelas Universais</h2>
+        <div class="table-container">
+
+            <div class="table-title">Tabela de Exemplo</div>
+            <div class="table-subtitle">Exemplos de células, badges e ações</div>
+
+            <table class="global-table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Status</th>
+                        <th>E-mail</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>João Silva</td>
+                        <td><span class="badge badge-success">Aprovado</span></td>
+                        <td>joao@email.com</td>
+                        <td class="actions">
+                            <button class="btn-small btn-small-info">Ver</button>
+                            <button class="btn-small btn-small-danger">Excluir</button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Maria Oliveira</td>
+                        <td><span class="badge badge-warning">Pendente</span></td>
+                        <td>maria@email.com</td>
+                        <td class="actions">
+                            <button class="btn-small btn-small-success">Aprovar</button>
+                            <button class="btn-small btn-small-danger">Rejeitar</button>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <div class="preview-section">
+        <h2>5. Inputs e Formulários</h2>
+        <div class="preview-box" style="flex-direction: column; width: 400px;">
+
+            <div class="form-group">
+                <label class="form-label">Input de Texto</label>
+                <input type="text" class="input-text" placeholder="Digite algo...">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Textarea</label>
+                <textarea class="textarea" placeholder="Digite uma descrição..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Select</label>
+                <select class="select">
+                    <option>Opção 1</option>
+                    <option>Opção 2</option>
+                    <option>Opção 3</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Campo de Busca</label>
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" placeholder="Buscar...">
+                </div>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="chkExemplo">
+                <label for="chkExemplo">Checkbox de exemplo</label>
+            </div>
+
+            <div class="radio-group">
+                <input type="radio" name="radioExemplo" id="rEx1">
+                <label for="rEx1">Radio de exemplo</label>
+            </div>
+
+            <label class="form-label">Switch</label>
+            <label class="switch">
+                <input type="checkbox">
+                <span class="slider"></span>
+            </label>
+
+        </div>
+    </div>
+
+    <div class="preview-section">
+        <h2>6. Modais Globais</h2>
+        <button class="btn btn-primary" onclick="openModal('modalPreview')">
+            Abrir Modal de Exemplo
+        </button>
+
+        <div id="modalPreview" class="modal-overlay">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2>Exemplo de Modal</h2>
+                    <span class="modal-close" onclick="closeModal('modalPreview')">&times;</span>
+                </div>
+
+                <div class="modal-body">
+                    Este é um exemplo do modal global.
+                    Ele suporta texto, formulários, botões, ícones e qualquer estrutura de conteúdo.
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeModal('modalPreview')">Cancelar</button>
+                    <button class="btn btn-primary">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="preview-section">
+        <h2>7. Toast Notifications</h2>
+        <h3>Alertas Inline</h3>
+
+        <div class="preview-box" style="flex-direction: column; width: 500px;">
+            <div class="alert alert-success">Ação realizada com sucesso!</div>
+            <div class="alert alert-warning">Atenção: valores incompletos.</div>
+            <div class="alert alert-danger">Erro ao processar a operação.</div>
+            <div class="alert alert-info">Informação importante do sistema.</div>
+        </div>
+
+        <hr class="divider">
+
+        <h3>Toasts</h3>
+
+        <div class="preview-box" style="gap: 15px;">
+            <button class="btn btn-success" onclick="showToast('success', 'Operação concluída!')">Sucesso</button>
+            <button class="btn btn-warning" onclick="showToast('warning', 'Verifique os campos!')">Aviso</button>
+            <button class="btn btn-danger" onclick="showToast('danger', 'Erro encontrado!')">Erro</button>
+            <button class="btn btn-info" onclick="showToast('info', 'Informação exibida!')">Info</button>
+        </div>
+    </div>
+
+</body>
+
+</html>
