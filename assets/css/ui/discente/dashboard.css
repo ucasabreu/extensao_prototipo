@@ -1,0 +1,197 @@
+/* ===============================
+   ESTILO DO DASHBOARD DO DISCENTE
+================================ */
+
+/* ====== BODY ====== */
+body {
+    background: #f3e3b8 url('../../img/background-pattern.png');
+    background-size: cover;
+    min-height: 100vh;
+}
+
+/* ====== TOPO ====== */
+.top-bar {
+    background: #6f0e0e;
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo {
+    width: 60px;
+    height: 60px;
+    background: url('../../img/logo.png') no-repeat center/cover;
+    border-radius: 10px;
+}
+
+.profile-area {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.profile-circle {
+    width: 45px;
+    height: 45px;
+    background: #d9d9d9;
+    color: #6f0e0e;
+    font-weight: bold;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.btn-perfil {
+    background: #a32626;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* ====== MENU ====== */
+.menu {
+    margin: 20px auto;
+    width: 95%;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.menu-item {
+    background: #f7e7c3;
+    padding: 10px 20px;
+    border: 2px solid #a32626;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #6f0e0e;
+    font-weight: bold;
+}
+
+.menu-item.active {
+    background: #a32626;
+    color: white;
+}
+
+/* ====== CONTAINER PRINCIPAL ====== */
+.container {
+    width: 95%;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+/* ====== OPORTUNIDADES ====== */
+.oportunidades {
+    background: #6f0e0e;
+    padding: 20px;
+    border-radius: 8px;
+    color: white;
+}
+
+.oportunidades h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.oportunidades-grid {
+    background: #f7e7c3;
+    border-radius: 8px;
+    padding: 15px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.card-op {
+    border: 2px solid #a32626;
+    background: #f3e3b8;
+    padding: 12px;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+
+.card-op:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+
+/* ====== PROGRESSO ====== */
+.progresso {
+    background: #6f0e0e;
+    padding: 20px;
+    border-radius: 8px;
+    color: white;
+}
+
+#progress-container {
+    background: #f7e7c3;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.progress-card {
+    border: 2px solid #a32626;
+    background: #f3e3b8;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    background: #ffe8a3;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #5da463;
+}
+
+/* ====== NOTIFICAÇÕES ====== */
+.notificacoes {
+    grid-column: span 2;
+    background: #6f0e0e;
+    padding: 20px;
+    border-radius: 8px;
+    color: white;
+}
+
+.notificacoes-box {
+    background: #f7e7c3;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+/* ====== RESPONSIVIDADE ====== */
+@media (max-width: 900px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+
+    .oportunidades-grid {
+        grid-template-columns: 1fr;
+    }
+}

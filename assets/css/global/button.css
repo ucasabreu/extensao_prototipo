@@ -1,0 +1,116 @@
+/* ===========================
+   BOTÕES GLOBAIS DE SISTEMA
+   =========================== */
+
+/* Reset básico de botão */
+.btn {
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: .2s ease-in-out;
+}
+
+
+/* ===========================
+   1. BOTÃO PRIMÁRIO
+   =========================== */
+
+.btn-primary {
+    background: #7a1010;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: #a81b1b;
+}
+
+
+/* ===========================
+   2. BOTÃO SECUNDÁRIO
+   =========================== */
+
+.btn-secondary {
+    background: #fff;
+    border: 2px solid #7a1010;
+    color: #7a1010;
+}
+
+.btn-secondary:hover {
+    background: #f6e9c2;
+}
+
+
+/* ===========================
+   3. BOTÃO SUCESSO
+   =========================== */
+
+.btn-success {
+    background: #2e8b57;
+    color: #fff;
+}
+
+.btn-success:hover {
+    background: #3ea76f;
+}
+
+
+/* ===========================
+   4. BOTÃO PERIGO (DANGER)
+   =========================== */
+
+.btn-danger {
+    background: #b01313;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background: #d11d1d;
+}
+
+
+/* ===========================
+   5. BOTÃO GHOST (sem fundo)
+   =========================== */
+
+.btn-ghost {
+    background: transparent;
+    color: #7a1010;
+}
+
+.btn-ghost:hover {
+    background: rgba(122, 16, 16, 0.1);
+}
+
+
+/* ===========================
+   6. BOTÕES PEQUENOS (tabelas)
+   =========================== */
+
+.btn-small {
+    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 6px;
+}
+
+.btn-small-success {
+    background: #2e8b57;
+    color: white;
+}
+
+.btn-small-danger {
+    background: #b01313;
+    color: white;
+}
+
+.btn-small-info {
+    background: #5d0b0b;
+    color: white;
+}
+
+.btn-small:hover {
+    opacity: 0.85;
+}
