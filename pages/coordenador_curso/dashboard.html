@@ -21,15 +21,15 @@
     <div id="toast-container"></div>
 
     <script type="module">
-        import { carregarLayout } from "../../assets/js/common/layout.js";
+        import { carregarLayout } from "../../assets/js/coordenador/layout.js";
         
         // Importa Módulo Oportunidades
-        import { carregarViewOportunidades } from "../../assets/js/coordenador/oportunidades.js";
+        import { carregarViewOportunidades, initOportunidades } from "../../assets/js/coordenador/oportunidades.js";
         
         // Importa Módulo Validação (NOVO)
-        import { carregarViewValidacao } from "../../assets/js/coordenador/validacao.js";
+        import { carregarViewValidacao, initValidacao } from "../../assets/js/coordenador/validacao.js";
 
-        import { carregarViewDiscentes } from "../../assets/js/coordenador/discentes.js";
+        import { carregarViewDiscentes, initDiscentes } from "../../assets/js/coordenador/discentes.js";
 
         import { carregarViewRelatorios, initRelatorios } from "../../assets/js/coordenador/relatorios.js";
 
@@ -37,17 +37,19 @@
 
         import { carregarViewVisaoGeral, initVisaoGeral } from "../../assets/js/coordenador/dashboard_home.js";
 
+        import { carregarViewPPC, initPPC } from "../../assets/js/coordenador/ppc.js";
         async function init() {
             
-            // Carrega as views (HTMLs)
+            // 1. Carrega o HTML de todas as views (string)
             const htmlOportunidades = await carregarViewOportunidades();
             const htmlValidacao = await carregarViewValidacao();
             const htmlDiscentes = await carregarViewDiscentes();
             const htmlRelatorios = await carregarViewRelatorios();
             const htmlComunicados = await carregarViewComunicados();
             const htmlVisaoGeral = await carregarViewVisaoGeral();
+            const htmlPPC = await carregarViewPPC();
 
-            // Monta o menu
+            // 2. Configura o Menu e AS AÇÕES DE INICIALIZAÇÃO (onRender)
            carregarLayout([
                  { 
                     label: "Visão Geral", 
@@ -61,13 +63,15 @@
                     content: htmlOportunidades,
                     // Novos campos para o Header:
                     title: "Gestão de Oportunidades",
-                    description: "Criar, editar e validar atividades de extensão do curso."
+                    description: "Criar, editar e validar atividades de extensão do curso.",
+                    onRender: () => initOportunidades()
                 },
                 { 
                     label: "Validação", 
                     content: htmlValidacao,
                     title: "Validação de Propostas",
-                    description: " Analise, aprove ou rejeite propostas de extensão submetidas por docentes do curso."
+                    description: " Analise, aprove ou rejeite propostas de extensão submetidas por docentes do curso.",
+                    onRender: () => initValidacao()
                 },
                 { 
                     label: "Relatórios", 
@@ -82,7 +86,17 @@
                     label: "Discentes", 
                     content: htmlDiscentes ,
                     title: "Gestão Acadêmica",
-                    description: "Acompanhamento de alunos e histórico de extensão."
+                    description: "Acompanhamento de alunos e histórico de extensão.",
+                    onRender: () => initDiscentes()
+                    
+                },
+
+                { 
+                    label: "Projeto Pedagogico", 
+                    content: htmlPPC ,
+                    title: "Projeto Pedagógico (PPC)",
+                    description: "Acompanhamento e definição de carga horária mínima, as regras de validação e o status dos discentes.",
+                    onRender: () => initPPC()
                     
                 },
 
@@ -96,7 +110,7 @@
 
             ]);
             
-            // Força a aba "Oportunidades" a abrir primeiro (padrão)
+            // Força a aba "Visão Geral" a abrir primeiro (padrão)
             // Se quiser testar validação direto, troque a ordem no array acima.
         }
 
