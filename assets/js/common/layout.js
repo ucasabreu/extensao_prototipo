@@ -1,65 +1,92 @@
+console.log("Carregando layout...");
+
 export async function carregarLayout(configMenu = []) {
-
-    // Carrega o layout base
+    // Pega o container principal onde o layout será injetado
     const container = document.getElementById("layout-area");
-    const resposta = await fetch("../common/layout.html");
-    container.innerHTML = await resposta.text();
-
-    // Recupera o perfil salvo (lógica existente)
-    const perfil = localStorage.getItem("perfil") || "usuario";
+    if (!container) {
+        console.error("Não encontrou #layout-area!");
+        return;
+    }
     
-    // Dados mockados de usuário (mantendo sua lógica atual)
+    // Carrega o HTML do layout
+    try {
+        const resposta = await fetch("../common/layout.html"); // path relativo ao HTML
+        if (!resposta.ok) {
+            console.error("Erro ao carregar layout:", resposta.status, resposta.statusText);
+            return;
+        }
+
+        const html = await resposta.text();
+        container.innerHTML = html;
+        console.log("Layout carregado com sucesso!");
+    } catch (err) {
+        console.error("Falha no fetch do layout:", err);
+        return;
+    }
+
+    // Recupera o perfil salvo (ou usa "usuario" como padrão)
+    const perfil = localStorage.getItem("perfil") || "usuario";
+
     const nomes = {
         docente: "Docente",
         coordenador_curso: "Coordenador do Curso",
         coordenador_geral: "Coordenador Geral"
     };
+
     const emails = {
         docente: "docente@teste.com",
         coordenador_curso: "coord.curso@teste.com",
         coordenador_geral: "coord.geral@teste.com"
     };
 
-    // Atualiza user info
+    // Atualiza info do usuário no layout
     document.getElementById("layout-nome").textContent = nomes[perfil] || "Usuário";
     document.getElementById("layout-email").textContent = emails[perfil] || "email@teste.com";
     document.getElementById("layout-avatar").textContent = (nomes[perfil] || "U").charAt(0);
 
     // ====================================================
-    // LÓGICA DO MENU E TÍTULOS DINÂMICOS
+    // Lógica do menu e troca de conteúdo
     // ====================================================
     const menu = document.getElementById("layout-menu");
+    if (!menu) {
+        console.error("Não encontrou #layout-menu!");
+        return;
+    }
     menu.innerHTML = "";
 
-    // Função auxiliar para trocar conteúdo e títulos
     const ativarItem = (item, btnElement) => {
-        // 1. Atualiza abas (visual)
+        // Marca visual do botão ativo
         document.querySelectorAll(".menu-item").forEach(el => el.classList.remove("active"));
         btnElement.classList.add("active");
 
-        // 2. Atualiza conteúdo central
-        document.getElementById("layout-conteudo").innerHTML = item.content;
+        // Troca conteúdo da aba
+        const conteudo = document.getElementById("layout-conteudo");
+        if (conteudo) {
+            conteudo.innerHTML = item.content;
+        }
 
-        // 3. ATUALIZA TÍTULO E SUBTÍTULO (HEADER)
+        // Atualiza títulos
         const tituloEl = document.getElementById("layout-titulo");
         const subEl = document.getElementById("layout-subtitulo");
-
         if (tituloEl) tituloEl.textContent = item.title || "Sistema de Extensão";
         if (subEl) subEl.textContent = item.description || "";
+
+        // Hook opcional por aba
+        if (typeof item.onActivate === "function") {
+            item.onActivate();
+        }
     };
 
-    // Gera os botões do menu
+    // Cria botões do menu
     configMenu.forEach((item, index) => {
         const btn = document.createElement("button");
         btn.classList.add("menu-item");
-        btn.textContent = item.label; // Nome da aba (curto)
+        btn.textContent = item.label;
 
-        // Evento de click
         btn.addEventListener("click", () => ativarItem(item, btn));
-
         menu.appendChild(btn);
 
-        // Ativa o primeiro item automaticamente ao carregar
+        // Ativa o primeiro item automaticamente
         if (index === 0) {
             ativarItem(item, btn);
         }

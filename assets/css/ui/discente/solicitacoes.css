@@ -1,0 +1,63 @@
+.discente-solicitacoes .solicitacoes-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 colunas iguais */
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.discente-solicitacoes .box-externa {
+    background: #7a0c0c;
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    height: 500px; /* altura fixa, scroll interno */
+}
+
+.discente-solicitacoes .box-interna {
+    background: #f3e3b8;
+    border-radius: 10px;
+    padding: 12px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* scroll se tiver muitos cards */
+}
+
+.discente-solicitacoes .solicitacoes-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.discente-solicitacoes .solicitacoes-card {
+    background: #ffffff;
+    border: 1px solid #a32626;
+    border-radius: 8px;
+    padding: 10px;
+
+    display: flex;
+    flex-direction: column;
+    /* não usar justify-content: space-between */
+    
+    min-height: 120px; /* altura mínima pra simetria */
+    box-sizing: border-box;
+}
+
+
+.discente-solicitacoes .solicitacoes-card-status {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.discente-solicitacoes .solicitacoes-card-motivo {
+    font-size: 14px;
+    color: #5d0b0b;
+}
+
+/* responsivo */
+@media (max-width: 900px) {
+    .discente-solicitacoes .solicitacoes-container {
+        grid-template-columns: 1fr; /* uma coluna em telas pequenas */
+    }
+}
