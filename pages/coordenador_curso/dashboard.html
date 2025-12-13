@@ -29,11 +29,14 @@
         // Importa Módulo Validação (NOVO)
         import { carregarViewValidacao } from "../../assets/js/coordenador/validacao.js";
 
+        import { carregarViewDiscentes } from "../../assets/js/coordenador/discentes.js";
+
         async function init() {
             
             // Carrega as views (HTMLs)
             const htmlOportunidades = await carregarViewOportunidades();
             const htmlValidacao = await carregarViewValidacao();
+            const htmlDiscentes = await carregarViewDiscentes();
 
             // Monta o menu
            carregarLayout([
@@ -54,7 +57,7 @@
                     label: "Validação", 
                     content: htmlValidacao,
                     title: "Validação de Propostas",
-                    description: "Auditoria e aprovação de novas atividades docentes."
+                    description: " Analise, aprove ou rejeite propostas de extensão submetidas por docentes do curso."
                 },
                 { 
                     label: "Relatórios", 
@@ -64,7 +67,7 @@
                 },
                 { 
                     label: "Discentes", 
-                    content: "<h2>Gestão de Discentes</h2>",
+                    content: htmlDiscentes ,
                     title: "Gestão Acadêmica",
                     description: "Acompanhamento de alunos e histórico de extensão."
                 }
