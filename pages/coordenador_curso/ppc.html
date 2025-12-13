@@ -1,0 +1,148 @@
+<div class="kpi-grid" style="margin-bottom: 25px;">
+    <div class="kpi-card" style="border-left-color: #2e8b57;">
+        <div class="kpi-title">Discentes no PPC Atual</div>
+        <div class="kpi-value" id="ppc-impacto-atual">0</div>
+        <div class="kpi-sub">Seguem a regra vigente</div>
+    </div>
+    <div class="kpi-card" style="border-left-color: #d4a017;">
+        <div class="kpi-title">PPCs Anteriores</div>
+        <div class="kpi-value" id="ppc-impacto-antigo">0</div>
+        <div class="kpi-sub">Alunos em matriz antiga</div>
+    </div>
+    <div class="kpi-card" style="border-left-color: #5d0b0b;">
+        <div class="kpi-title">Carga Horária Exigida</div>
+        <div class="kpi-value" id="ppc-meta-horas">0h</div>
+        <div class="kpi-sub">Para colação de grau</div>
+    </div>
+    <div class="kpi-card" style="border-left-color: #333;">
+        <div class="kpi-title">Concluintes</div>
+        <div class="kpi-value" id="ppc-concluintes">0</div>
+        <div class="kpi-sub">Já cumpriram a carga</div>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 2fr; gap: 25px; align-items: start;">
+
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+        
+        <div class="dash-card" style="border-top: 5px solid #2e8b57; padding: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
+                <h3 style="color: #2e8b57; margin: 0;">PPC Vigente</h3>
+                <span class="badge badge-success">Ativo</span>
+            </div>
+            <div id="container-ppc-vigente">
+                <p style="text-align: center; color: #666;">Carregando dados...</p>
+            </div>
+        </div>
+
+        <div class="dash-card" style="padding: 20px; background: #fffbf0; border: 1px solid #e3d8c7;">
+            <h4 style="margin: 0 0 10px 0; color: #5d0b0b; display: flex; align-items: center; gap: 8px;">
+                📄 Documento na Íntegra
+            </h4>
+            <p style="font-size: 12px; color: #666; margin-bottom: 15px;">
+                Acesse o arquivo oficial completo com todas as ementas e regras detalhadas.
+            </p>
+            
+            <div id="container-arquivo-vigente" style="display: flex; align-items: center; gap: 15px; padding: 10px; background: #fff; border: 1px solid #ddd; border-radius: 8px;">
+                </div>
+        </div>
+
+        <div style="margin-top: 10px;">
+            <button class="btn btn-primary" style="width: 100%;" onclick="abrirModalPPC()">
+                🔄 Cadastrar Nova Versão
+            </button>
+            <p style="font-size: 11px; color: #999; text-align: center; margin-top: 8px;">
+                Substituirá o documento atual.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="table-container">
+        <h3 class="table-title">Histórico de Versões e Alterações</h3>
+        <p class="table-subtitle">Consulte regras e documentos de matrizes anteriores.</p>
+        
+        <table class="global-table">
+            <thead>
+                <tr>
+                    <th>Versão</th>
+                    <th>Vigência</th>
+                    <th>C.H.</th>
+                    <th>Discentes</th>
+                    <th>Status</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody id="tb-historico-ppc">
+                <tr><td colspan="6" align="center">Carregando histórico...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<div id="modalNovoPPC" class="modal-overlay">
+    <div class="modal" style="width: 600px;">
+        <div class="modal-header">
+            <h2>Cadastrar Novo PPC</h2>
+            <span class="modal-close" onclick="fecharModalPPC()">&times;</span>
+        </div>
+        <div class="modal-body">
+            
+            <div class="alert alert-warning">
+                <strong>Atenção:</strong> O upload do novo documento encerrará a vigência do atual.
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Código da Versão *</label>
+                <input type="text" class="input-text" id="ppcCodigo" placeholder="Ex: COMP-2025.1">
+            </div>
+
+            <div style="display: flex; gap: 20px;">
+                <div class="form-group" style="flex: 1;">
+                    <label class="form-label">Início Vigência *</label>
+                    <input type="text" class="input-text" id="ppcInicio" placeholder="Ex: 2025.1">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label class="form-label">Previsão Fim</label>
+                    <input type="text" class="input-text" id="ppcFim" placeholder="Ex: 2029.2">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Carga Horária Extensão (Horas) *</label>
+                <input type="number" class="input-text" id="ppcHoras" placeholder="Ex: 360">
+            </div>
+
+            <div class="form-group" style="background: #f4f4f4; padding: 15px; border-radius: 8px; border: 2px dashed #ccc;">
+                <label class="form-label">Arquivo do PPC (PDF) *</label>
+                <input type="file" id="ppcArquivo" accept="application/pdf">
+                <p style="font-size: 11px; color: #666; margin-top: 5px;">Máximo 10MB. Formato .PDF obrigatório.</p>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Justificativa da Atualização</label>
+                <textarea class="textarea" id="ppcJustificativa" placeholder="Motivo da mudança de matriz..."></textarea>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="fecharModalPPC()">Cancelar</button>
+            <button class="btn btn-success" onclick="salvarNovoPPC()">💾 Salvar e Publicar</button>
+        </div>
+    </div>
+</div>
+
+<div id="modalDetalhesPPC" class="modal-overlay">
+    <div class="modal" style="width: 700px;">
+        <div class="modal-header">
+            <h2>Detalhes da Versão</h2>
+            <span class="modal-close" onclick="document.getElementById('modalDetalhesPPC').style.display='none'">&times;</span>
+        </div>
+        <div class="modal-body" id="corpoDetalhesPPC">
+            </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" onclick="document.getElementById('modalDetalhesPPC').style.display='none'">Fechar</button>
+        </div>
+    </div>
+</div>

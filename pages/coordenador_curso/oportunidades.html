@@ -1,40 +1,84 @@
-<div class="toolbar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+<div class="kpi-grid" style="margin-bottom: 30px;">
     
-    <div style="display: flex; gap: 15px;">
-        <div class="search-box">
-            <span class="search-icon">🔍</span>
-            <input type="text" id="buscaInput" onkeyup="filtrarTabela()" placeholder="Buscar por título ou prof...">
+    <div class="kpi-card">
+        <div class="kpi-title">Aguardando Aprovação</div>
+        <div class="kpi-value" id="kpi-pendentes">0</div>
+        <div class="kpi-sub kpi-negative">Requer atenção imediata</div>
+    </div>
+
+    <div class="kpi-card">
+        <div class="kpi-title">Ativas / Publicadas</div>
+        <div class="kpi-value" id="kpi-ativas">0</div>
+        <div class="kpi-sub kpi-positive">Em execução no momento</div>
+    </div>
+
+    <div class="kpi-card">
+        <div class="kpi-title">Total do Curso</div>
+        <div class="kpi-value" id="kpi-total">0</div>
+        <div class="kpi-sub">Histórico completo</div>
+    </div>
+
+</div>
+
+<div class="toolbar" style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+    
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <div class="form-group" style="margin-bottom:0">
+            <label class="form-label">Buscar</label>
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="buscaInput" onkeyup="filtrarTabela()" placeholder="Título ou Responsável...">
+            </div>
         </div>
 
-        <select class="select" id="filtroStatus" onchange="filtrarTabela()">
-            <option value="todos">Todos os Status</option>
-            <option value="pendente">Aguardando Aprovação</option>
-            <option value="publicada">Publicadas</option>
-            <option value="rejeitada">Rejeitadas</option>
-        </select>
+        <div class="form-group" style="margin-bottom:0">
+            <label class="form-label">Status</label>
+            <select class="select" id="filtroStatus" onchange="filtrarTabela()">
+                <option value="todos">Todos</option>
+                <option value="pendente">Aguardando Aprovação</option>
+                <option value="publicada">Publicadas</option>
+                <option value="rejeitada">Rejeitadas</option>
+            </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom:0">
+            <label class="form-label">Tipo</label>
+            <select class="select" id="filtroTipo" onchange="filtrarTabela()">
+                <option value="todos">Todos</option>
+                <option value="Curso">Curso</option>
+                <option value="Evento">Evento</option>
+                <option value="Projeto">Projeto</option>
+                <option value="Monitoria">Monitoria</option>
+            </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom:0">
+            <label class="form-label">&nbsp;</label>
+            <button class="btn btn-secondary" onclick="alert('Funcionalidade de Calendário em breve (OR 001)')">
+                📅 Ver Agenda
+            </button>
+        </div>
     </div>
 
     <button class="btn btn-primary" onclick="abrirModalNova()">
-        + Nova Oportunidade
+        + Criar Oportunidade Institucional
     </button>
 </div>
 
 <div class="table-container">
-    <div class="table-title">Listagem de Oportunidades</div>
-    
     <table class="global-table">
         <thead>
             <tr>
                 <th>Título</th>
                 <th>Responsável</th>
                 <th>Tipo</th>
-                <th>Vagas</th>
+                <th>C.H.</th> <th>Vagas</th>
                 <th>Status</th>
-                <th>Ações</th>
+                <th style="min-width: 110px;">Ações</th>
             </tr>
         </thead>
         <tbody id="tabela-corpo">
-            <tr><td colspan="6" style="text-align:center">Carregando dados...</td></tr>
+            <tr><td colspan="7" style="text-align:center; padding: 20px;">Carregando dados...</td></tr>
         </tbody>
     </table>
 </div>
@@ -46,10 +90,12 @@
             <span class="modal-close" onclick="fecharModal('modalRejeicao')">&times;</span>
         </div>
         <div class="modal-body">
-            [cite_start]<p>Para rejeitar, é obrigatório informar o motivo ao solicitante.</p>
+            <div class="alert alert-warning">
+                Atenção: A rejeição é irreversível e requer justificativa.
+            </div>
             <div class="form-group">
-                <label class="form-label">Justificativa:</label>
-                <textarea id="txtJustificativa" class="textarea" placeholder="Ex: Carga horária inconsistente com o PPC..."></textarea>
+                <label class="form-label">Motivo da Rejeição (Obrigatório):</label>
+                <textarea id="txtJustificativa" class="textarea" placeholder="Explique o motivo para o docente..."></textarea>
             </div>
             <input type="hidden" id="idRejeicaoTemp">
         </div>
@@ -61,39 +107,80 @@
 </div>
 
 <div id="modalNova" class="modal-overlay">
-    <div class="modal" style="width: 600px;">
+    <div class="modal" style="width: 700px;">
         <div class="modal-header">
-            <h2>Nova Oportunidade</h2>
+            <h2>Nova Oportunidade Institucional</h2>
             <span class="modal-close" onclick="fecharModal('modalNova')">&times;</span>
         </div>
         <div class="modal-body">
-            <div class="form-group">
-                <label class="form-label">Título da Atividade</label>
-                <input type="text" class="input-text" id="novoTitulo">
+            
+            <div class="alert alert-info">
+                Esta ação cria uma atividade vinculada diretamente à Coordenação.
             </div>
+
+            <div class="form-group">
+                <label class="form-label">Título da Atividade *</label>
+                <input type="text" class="input-text" id="novoTitulo" placeholder="Ex: Semana Acadêmica 2025">
+            </div>
+
             <div style="display: flex; gap: 20px;">
-                <div class="form-group" style="flex:1">
-                    <label class="form-label">Tipo</label>
+                <div class="form-group" style="flex: 1;">
+                    <label class="form-label">Tipo *</label>
                     <select class="select" id="novoTipo">
-                        <option>Curso</option>
                         <option>Evento</option>
+                        <option>Curso</option>
                         <option>Projeto</option>
-                        <option>Monitoria</option>
                     </select>
                 </div>
-                <div class="form-group" style="width: 100px;">
-                    <label class="form-label">Vagas</label>
-                    <input type="number" class="input-text" id="novasVagas" value="1">
+                <div class="form-group" style="width: 150px;">
+                    <label class="form-label">Carga Horária (h) *</label>
+                    <input type="number" class="input-text" id="novaCH" placeholder="Ex: 40">
                 </div>
             </div>
-            <div class="form-group">
-                <label class="form-label">Docente Responsável</label>
-                <input type="text" class="input-text" id="novoResp" placeholder="Nome do professor">
+
+            <div style="display: flex; gap: 20px;">
+                <div class="form-group" style="width: 120px;">
+                    <label class="form-label">Vagas *</label>
+                    <input type="number" class="input-text" id="novasVagas" value="50">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label class="form-label">Data Início *</label>
+                    <input type="date" class="input-text" id="novaDataInicio">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label class="form-label">Data Fim *</label>
+                    <input type="date" class="input-text" id="novaDataFim">
+                </div>
             </div>
+
+            <div class="form-group">
+                <label class="form-label">Descrição Detalhada *</label>
+                <textarea class="textarea" id="novaDescricao" placeholder="Descreva os objetivos e atividades..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Responsável</label>
+                <input type="text" class="input-text input-disabled" value="Coordenação do Curso" disabled>
+            </div>
+
         </div>
         <div class="modal-footer">
             <button class="btn btn-secondary" onclick="fecharModal('modalNova')">Cancelar</button>
-            <button class="btn btn-primary" onclick="salvarNovaOportunidade()">Criar</button>
+            <button class="btn btn-primary" onclick="salvarNovaOportunidade()">Publicar Atividade</button>
+        </div>
+    </div>
+</div>
+
+<div id="modalDetalhes" class="modal-overlay">
+    <div class="modal" style="width: 600px;">
+        <div class="modal-header">
+            <h2>Detalhes da Oportunidade</h2>
+            <span class="modal-close" onclick="fecharModal('modalDetalhes')">&times;</span>
+        </div>
+        <div class="modal-body" id="conteudoDetalhes">
+            </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" onclick="fecharModal('modalDetalhes')">Fechar</button>
         </div>
     </div>
 </div>

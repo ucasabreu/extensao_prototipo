@@ -6,11 +6,13 @@
 
     <link rel="stylesheet" href="../../assets/css/common/layout.css">
     <link rel="stylesheet" href="../../assets/css/global/tables.css">
+    <link rel="stylesheet" href="../../assets/css/global/cards.css"> 
     <link rel="stylesheet" href="../../assets/css/global/badges.css">
     <link rel="stylesheet" href="../../assets/css/global/button.css">
     <link rel="stylesheet" href="../../assets/css/global/forms.css">
     <link rel="stylesheet" href="../../assets/css/global/modal.css">
-    <link rel="stylesheet" href="../../assets/css/global/alerts.css"> </head>
+    <link rel="stylesheet" href="../../assets/css/global/alerts.css">
+</head>
 
 <body>
 
@@ -19,29 +21,97 @@
     <div id="toast-container"></div>
 
     <script type="module">
-        import { carregarLayout } from "../../assets/js/common/layout.js";
+        import { carregarLayout } from "../../assets/js/coordenador/layout.js";
         
-        // CORREÇÃO AQUI: Importar 'carregarViewOportunidades' em vez de 'renderizarOportunidades'
-        import { carregarViewOportunidades } from "../../assets/js/coordenador/oportunidades.js";
+        // Importa Módulo Oportunidades
+        import { carregarViewOportunidades, initOportunidades } from "../../assets/js/coordenador/oportunidades.js";
+        
+        // Importa Módulo Validação (NOVO)
+        import { carregarViewValidacao, initValidacao } from "../../assets/js/coordenador/validacao.js";
 
-        // Inicialização Assíncrona
+        import { carregarViewDiscentes, initDiscentes } from "../../assets/js/coordenador/discentes.js";
+
+        import { carregarViewRelatorios, initRelatorios } from "../../assets/js/coordenador/relatorios.js";
+
+        import { carregarViewComunicados, initComunicados } from "../../assets/js/coordenador/comunicados.js";
+
+        import { carregarViewVisaoGeral, initVisaoGeral } from "../../assets/js/coordenador/dashboard_home.js";
+
+        import { carregarViewPPC, initPPC } from "../../assets/js/coordenador/ppc.js";
         async function init() {
             
-            // 1. Busca o HTML do arquivo separado
-            // O erro ocorria porque o dashboard tentava chamar uma função que mudou de nome
+            // 1. Carrega o HTML de todas as views (string)
             const htmlOportunidades = await carregarViewOportunidades();
+            const htmlValidacao = await carregarViewValidacao();
+            const htmlDiscentes = await carregarViewDiscentes();
+            const htmlRelatorios = await carregarViewRelatorios();
+            const htmlComunicados = await carregarViewComunicados();
+            const htmlVisaoGeral = await carregarViewVisaoGeral();
+            const htmlPPC = await carregarViewPPC();
 
-            // 2. Monta o menu com o HTML carregado
-            carregarLayout([
+            // 2. Configura o Menu e AS AÇÕES DE INICIALIZAÇÃO (onRender)
+           carregarLayout([
+                 { 
+                    label: "Visão Geral", 
+                    content: htmlVisaoGeral,
+                    title: "Dashboard e KPIs",
+                    description: "Visão sistêmica e indicadores de desempenho.",
+                    onRender: () => initVisaoGeral()
+                },
                 { 
                     label: "Oportunidades", 
-                    content: htmlOportunidades 
+                    content: htmlOportunidades,
+                    // Novos campos para o Header:
+                    title: "Gestão de Oportunidades",
+                    description: "Criar, editar e validar atividades de extensão do curso.",
+                    onRender: () => initOportunidades()
                 },
-                { label: "Visão Geral", content: "<h2>Visão Geral do Curso</h2>" },
-                { label: "Validação", content: "<h2>Validação de Propostas</h2>" },
-                { label: "Relatórios", content: "<h2>Relatórios</h2>" },
-                { label: "Discentes", content: "<h2>Gestão de Discentes</h2>" }
+                { 
+                    label: "Validação", 
+                    content: htmlValidacao,
+                    title: "Validação de Propostas",
+                    description: " Analise, aprove ou rejeite propostas de extensão submetidas por docentes do curso.",
+                    onRender: () => initValidacao()
+                },
+                { 
+                    label: "Relatórios", 
+                    content: htmlRelatorios,
+                    title: "Relatórios Gerenciais",
+                    description: "Exportação de dados para UCE e PROEC.",
+                    onRender: () => {
+                        initRelatorios();
+                    }
+                },
+                { 
+                    label: "Discentes", 
+                    content: htmlDiscentes ,
+                    title: "Gestão Acadêmica",
+                    description: "Acompanhamento de alunos e histórico de extensão.",
+                    onRender: () => initDiscentes()
+                    
+                },
+
+                { 
+                    label: "Projeto Pedagogico", 
+                    content: htmlPPC ,
+                    title: "Projeto Pedagógico (PPC)",
+                    description: "Acompanhamento e definição de carga horária mínima, as regras de validação e o status dos discentes.",
+                    onRender: () => initPPC()
+                    
+                },
+
+                { 
+                    label: "Comunicado", 
+                    content: htmlComunicados,
+                    title: "Comunicados Oficiais",
+                    description: "Envie notificações oficias em massa para discentes ou docentes.",
+                    onRender: () => initComunicados()
+                }
+
             ]);
+            
+            // Força a aba "Visão Geral" a abrir primeiro (padrão)
+            // Se quiser testar validação direto, troque a ordem no array acima.
         }
 
         init();
