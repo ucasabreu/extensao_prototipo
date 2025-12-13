@@ -3,19 +3,19 @@
     <div class="kpi-card">
         <div class="kpi-title">Discentes Em Risco</div>
         <div class="kpi-value" id="kpi-risco">0</div>
-        <div class="kpi-sub kpi-negative">Abaixo da carga mínima</div>
+        <div class="kpi-sub kpi-negative">Abaixo da carga mínima (PPC)</div>
     </div>
 
     <div class="kpi-card">
-        <div class="kpi-title">Solicitações Pendentes</div>
+        <div class="kpi-title">Fila de Solicitações</div>
         <div class="kpi-value" id="kpi-solicitacoes">0</div>
-        <div class="kpi-sub kpi-warning">Aguardando análise</div>
+        <div class="kpi-sub kpi-warning">Pendentes de análise</div>
     </div>
 
     <div class="kpi-card">
         <div class="kpi-title">Total de Discentes</div>
         <div class="kpi-value" id="kpi-total-alunos">0</div>
-        <div class="kpi-sub">Vinculados ao curso</div>
+        <div class="kpi-sub">Matriculados no curso</div>
     </div>
 </div>
 
@@ -30,17 +30,23 @@
 
 <div id="view-lista-discentes">
     
-    <div class="toolbar" style="display: flex; gap: 15px; margin-bottom: 20px;">
-        <div class="search-box">
-            <span class="search-icon">🔍</span>
-            <input type="text" id="buscaDiscente" onkeyup="filtrarDiscentes()" placeholder="Nome ou Matrícula...">
+    <div class="toolbar" style="display: flex; gap: 15px; margin-bottom: 20px; align-items: flex-end;">
+        <div class="form-group" style="margin-bottom:0; flex: 1;">
+            <label class="form-label">Consultar Discente</label>
+            <div class="search-box" style="width: 40%;">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="buscaDiscente" onkeyup="filtrarDiscentes()" placeholder="Digite Nome ou Matrícula...">
+            </div>
         </div>
-        <select class="select" id="filtroSituacao" onchange="filtrarDiscentes()">
-            <option value="todos">Todas as Situações</option>
-            <option value="regular">Regular</option>
-            <option value="risco">Em Risco</option>
-            <option value="concluido">Concluído</option>
-        </select>
+        <div class="form-group" style="margin-bottom:0; width: 200px;">
+            <label class="form-label">Situação</label>
+            <select class="select" id="filtroSituacao" onchange="filtrarDiscentes()" style="width: 100%;">
+                <option value="todos">Todos</option>
+                <option value="regular">Regular</option>
+                <option value="risco">Em Risco</option>
+                <option value="concluido">Concluído</option>
+            </select>
+        </div>
     </div>
 
     <div class="table-container">
@@ -48,15 +54,14 @@
             <thead>
                 <tr>
                     <th>Matrícula</th>
-                    <th>Nome</th>
-                    <th>Progresso (%)</th>
-                    <th>Horas Concluídas</th>
-                    <th>Situação</th>
-                    <th>Ações</th>
+                    <th>Nome do Discente</th>
+                    <th>Progresso (Horas)</th>
+                    <th>Situação Acadêmica</th>
+                    <th style="text-align: center;">Ações</th>
                 </tr>
             </thead>
             <tbody id="tb-discentes">
-                <tr><td colspan="6" align="center">Carregando...</td></tr>
+                <tr><td colspan="5" align="center">Carregando base de dados...</td></tr>
             </tbody>
         </table>
     </div>
@@ -64,21 +69,21 @@
 
 <div id="view-solicitacoes" style="display: none;">
     
-    <div class="alert alert-info">
-        Atenção: Solicitações com mais de 10 dias são marcadas como "Atrasadas".
+    <div class="alert alert-info" id="alerta-prazos">
+        <strong>Atenção:</strong> Solicitações não analisadas em até 10 dias entram em status crítico (Atrasada).
     </div>
 
     <div class="table-container">
+        <div class="table-title">Fila de Validação de Horas Externas</div>
         <table class="global-table">
             <thead>
                 <tr>
                     <th>Data Envio</th>
                     <th>Discente</th>
                     <th>Atividade Externa</th>
-                    <th>C.H.</th>
-                    <th>Anexo</th>
-                    <th>Status</th>
-                    <th>Ações</th>
+                    <th>C.H. Solic.</th>
+                    <th>Status</th> <th>Anexo</th>
+                    <th>Ação</th>
                 </tr>
             </thead>
             <tbody id="tb-solicitacoes">
@@ -89,12 +94,12 @@
 </div>
 
 <div id="modalPerfilAluno" class="modal-overlay">
-    <div class="modal" style="width: 700px;">
+    <div class="modal" style="width: 800px; max-width: 95%;">
         <div class="modal-header">
-            <h2>Perfil do Discente</h2>
+            <h2>Dossiê do Discente</h2>
             <span class="modal-close" onclick="fecharModalD('modalPerfilAluno')">&times;</span>
         </div>
-        <div class="modal-body" id="corpoPerfilAluno">
+        <div class="modal-body" id="corpoPerfilAluno" style="max-height: 70vh; overflow-y: auto;">
             </div>
         <div class="modal-footer">
             <button class="btn btn-primary" onclick="fecharModalD('modalPerfilAluno')">Fechar</button>
@@ -109,15 +114,20 @@
             <span class="modal-close" onclick="fecharModalD('modalAnaliseSolic')">&times;</span>
         </div>
         <div class="modal-body">
-            <p id="descSolicitacao" style="margin-bottom: 15px; font-weight: bold;"></p>
+            <div class="alert alert-warning">
+                Verifique a carga horária e a autenticidade do documento anexo.
+            </div>
+            <p id="descSolicitacao" style="margin-bottom: 10px; font-weight: bold; font-size: 16px; color: #5d0b0b;"></p>
             
-            <div style="background: #f4f4f4; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
-                <a href="#" target="_blank" style="color: #7a1010; font-weight: bold;">📎 Ver Documento Anexo (PDF)</a>
+            <div style="background: #f4f4f4; padding: 12px; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 20px;">📄</span>
+                <a href="#" target="_blank" style="color: #7a1010; font-weight: bold; text-decoration: underline;">Visualizar Certificado/Documento (PDF)</a>
             </div>
 
             <div class="form-group">
-                <label class="form-label">Parecer (Obrigatório para Indeferimento):</label>
-                <textarea id="txtParecer" class="textarea" placeholder="Justifique sua decisão..."></textarea>
+                <label class="form-label">Parecer da Coordenação:</label>
+                <textarea id="txtParecer" class="textarea" placeholder="Descreva o motivo em caso de indeferimento..."></textarea>
+                <small style="color: #666;">* Obrigatório para rejeição.</small>
             </div>
             <input type="hidden" id="idSolicTemp">
         </div>
