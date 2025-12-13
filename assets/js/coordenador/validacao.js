@@ -1,10 +1,9 @@
 /* ====================================================================
    LÓGICA DE VALIDAÇÃO DE PROPOSTAS (COORDENADOR)
    Arquivo: assets/js/coordenador/validacao.js
-   Referência: notas de Validação.txt
    ==================================================================== */
 
-// Mock de Dados (Simulando propostas enviadas por docentes) [cite: 1]
+// Mock de Dados (Simulando propostas enviadas por docentes)
 let propostasDB = [
     { 
         id: 101, 
@@ -13,9 +12,8 @@ let propostasDB = [
         tipo: "Projeto", 
         ch: 180, 
         vagas: 20, 
-        status: "aguardando", // "Aguardando Validação" 
+        status: "aguardando", 
         dataSubmissao: "2025-12-10",
-        // Detalhes exigidos no Item 3
         descricao: "Projeto visando letramento digital básico.",
         objetivos: "Capacitar 20 idosos no uso de smartphones e serviços bancários.",
         justificativa: "Alta demanda da comunidade local por inclusão digital.",
@@ -44,7 +42,7 @@ let propostasDB = [
         tipo: "Evento", 
         ch: 40, 
         vagas: 200, 
-        status: "aprovada", // Histórico 
+        status: "aprovada", 
         dataSubmissao: "2025-11-20",
         descricao: "Evento anual do curso.",
         objetivos: "Integrar alunos e mercado.",
@@ -54,17 +52,20 @@ let propostasDB = [
     }
 ];
 
-// Função principal de carregamento da View
+// Carrega o HTML (Apenas retorna a string)
 export async function carregarViewValidacao() {
     try {
         const response = await fetch('../../pages/coordenador_curso/validacao.html');
-        const html = await response.text();
-        setTimeout(renderizarTabelaValidacao, 50);
-        return html;
+        return await response.text();
     } catch (error) {
         console.error("Erro ao carregar view:", error);
         return "<div class='alert alert-danger'>Erro ao carregar módulo de validação.</div>";
     }
+}
+
+// (NOVO) Função de Inicialização exportada
+export function initValidacao() {
+    renderizarTabelaValidacao();
 }
 
 /* =======================
@@ -75,10 +76,15 @@ function renderizarTabelaValidacao() {
     const tbody = document.getElementById("tabela-validacao-corpo");
     if (!tbody) return;
 
-    // Filtros [cite: 4]
-    const busca = document.getElementById("buscaValInput").value.toLowerCase();
-    const fStatus = document.getElementById("filtroValStatus").value;
-    const fTipo = document.getElementById("filtroValTipo").value;
+    // Filtros
+    const inputBusca = document.getElementById("buscaValInput");
+    const busca = inputBusca ? inputBusca.value.toLowerCase() : "";
+    
+    const selectStatus = document.getElementById("filtroValStatus");
+    const fStatus = selectStatus ? selectStatus.value : "aguardando"; // Padrão
+    
+    const selectTipo = document.getElementById("filtroValTipo");
+    const fTipo = selectTipo ? selectTipo.value : "todos";
 
     const filtrados = propostasDB.filter(p => {
         const matchTexto = p.titulo.toLowerCase().includes(busca) || p.docente.toLowerCase().includes(busca);
@@ -93,7 +99,6 @@ function renderizarTabelaValidacao() {
     }
 
     tbody.innerHTML = filtrados.map(p => {
-        // Badge visual
         let badgeClass = "badge-neutral";
         let label = p.status;
         
@@ -101,11 +106,8 @@ function renderizarTabelaValidacao() {
         if (p.status === "aprovada") { badgeClass = "badge-success"; label = "Aprovada"; }
         if (p.status === "rejeitada") { badgeClass = "badge-danger"; label = "Rejeitada"; }
 
-        // Botões de Ação [cite: 4, 5, 7]
-        // Visualizar (Sempre disponível)
         let botoes = `<button class="btn-small btn-small-info" onclick="verValDetalhes(${p.id})" title="Analisar Detalhes">visualizar</button>`;
 
-        // Aprovar/Rejeitar (SOMENTE se Aguardando)
         if (p.status === "aguardando") {
             botoes += `
                 <button class="btn-small btn-small-success" onclick="valAprovar(${p.id})" title="Aprovar">✅</button>
@@ -133,7 +135,6 @@ function renderizarTabelaValidacao() {
 
 window.filtrarValidacao = renderizarTabelaValidacao;
 
-// Visualizar Detalhes Completos (Requisito: Item 3)
 window.verValDetalhes = (id) => {
     const p = propostasDB.find(item => item.id === id);
     if (!p) return;
@@ -164,42 +165,41 @@ window.verValDetalhes = (id) => {
         </div>
     `;
 
-    document.getElementById("conteudoValDetalhes").innerHTML = html;
+    const conteudoModal = document.getElementById("conteudoValDetalhes");
+    const footerModal = document.getElementById("footerValDetalhes");
     
-    // Adiciona botões de ação DENTRO do modal também, para facilitar a análise
-    const footer = document.getElementById("footerValDetalhes");
-    if (p.status === "aguardando") {
-        footer.innerHTML = `
-            <button class="btn btn-danger" onclick="fecharModalVal('modalValDetalhes'); valRejeitar(${p.id})">Rejeitar</button>
-            <button class="btn btn-success" onclick="fecharModalVal('modalValDetalhes'); valAprovar(${p.id})">Aprovar</button>
-            <button class="btn btn-secondary" onclick="fecharModalVal('modalValDetalhes')">Fechar</button>
-        `;
-    } else {
-        footer.innerHTML = `<button class="btn btn-primary" onclick="fecharModalVal('modalValDetalhes')">Fechar</button>`;
+    if(conteudoModal) conteudoModal.innerHTML = html;
+    
+    if (footerModal) {
+        if (p.status === "aguardando") {
+            footerModal.innerHTML = `
+                <button class="btn btn-danger" onclick="fecharModalVal('modalValDetalhes'); valRejeitar(${p.id})">Rejeitar</button>
+                <button class="btn btn-success" onclick="fecharModalVal('modalValDetalhes'); valAprovar(${p.id})">Aprovar</button>
+                <button class="btn btn-secondary" onclick="fecharModalVal('modalValDetalhes')">Fechar</button>
+            `;
+        } else {
+            footerModal.innerHTML = `<button class="btn btn-primary" onclick="fecharModalVal('modalValDetalhes')">Fechar</button>`;
+        }
     }
 
     document.getElementById("modalValDetalhes").style.display = "flex";
 };
 
-// Aprovar [cite: 4]
 window.valAprovar = (id) => {
     if (confirm("Confirma a aprovação desta proposta?\nEla ficará disponível para publicação.")) {
         const p = propostasDB.find(item => item.id === id);
         p.status = "aprovada";
-        // Lógica de backend aqui
         renderizarTabelaValidacao();
         if(window.showToast) showToast("success", "Proposta Aprovada com Sucesso!");
     }
 };
 
-// Rejeitar - Passo 1: Abrir Modal [cite: 5]
 window.valRejeitar = (id) => {
     document.getElementById("idValRejeicaoTemp").value = id;
     document.getElementById("txtValJustificativa").value = "";
     document.getElementById("modalValRejeicao").style.display = "flex";
 };
 
-// Rejeitar - Passo 2: Confirmar [cite: 5]
 window.confirmarValRejeicao = () => {
     const id = parseInt(document.getElementById("idValRejeicaoTemp").value);
     const justificativa = document.getElementById("txtValJustificativa").value.trim();
@@ -211,15 +211,14 @@ window.confirmarValRejeicao = () => {
 
     const p = propostasDB.find(item => item.id === id);
     p.status = "rejeitada";
-    // p.parecer = justificativa; // Salvaria no banco para histórico 
 
     document.getElementById("modalValRejeicao").style.display = "none";
     renderizarTabelaValidacao();
     if(window.showToast) showToast("warning", "Proposta Rejeitada e Docente Notificado.");
 };
 
-// Utilitários
 window.fecharModalVal = (id) => document.getElementById(id).style.display = "none";
+
 function formatarData(dataStr) {
     if (!dataStr) return "-";
     const [ano, mes, dia] = dataStr.split("-");
