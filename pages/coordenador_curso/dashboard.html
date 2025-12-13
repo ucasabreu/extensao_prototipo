@@ -23,27 +23,55 @@
     <script type="module">
         import { carregarLayout } from "../../assets/js/common/layout.js";
         
-        // CORREÇÃO AQUI: Importar 'carregarViewOportunidades' em vez de 'renderizarOportunidades'
+        // Importa Módulo Oportunidades
         import { carregarViewOportunidades } from "../../assets/js/coordenador/oportunidades.js";
+        
+        // Importa Módulo Validação (NOVO)
+        import { carregarViewValidacao } from "../../assets/js/coordenador/validacao.js";
 
-        // Inicialização Assíncrona
         async function init() {
             
-            // 1. Busca o HTML do arquivo separado
-            // O erro ocorria porque o dashboard tentava chamar uma função que mudou de nome
+            // Carrega as views (HTMLs)
             const htmlOportunidades = await carregarViewOportunidades();
+            const htmlValidacao = await carregarViewValidacao();
 
-            // 2. Monta o menu com o HTML carregado
-            carregarLayout([
+            // Monta o menu
+           carregarLayout([
                 { 
                     label: "Oportunidades", 
-                    content: htmlOportunidades 
+                    content: htmlOportunidades,
+                    // Novos campos para o Header:
+                    title: "Gestão de Oportunidades",
+                    description: "Criar, editar e validar atividades de extensão do curso."
                 },
-                { label: "Visão Geral", content: "<h2>Visão Geral do Curso</h2>" },
-                { label: "Validação", content: "<h2>Validação de Propostas</h2>" },
-                { label: "Relatórios", content: "<h2>Relatórios</h2>" },
-                { label: "Discentes", content: "<h2>Gestão de Discentes</h2>" }
+                { 
+                    label: "Visão Geral", 
+                    content: "<h2>Visão Geral do Curso</h2>",
+                    title: "Dashboard e KPIs",
+                    description: "Visão sistêmica e indicadores de desempenho."
+                },
+                { 
+                    label: "Validação", 
+                    content: htmlValidacao,
+                    title: "Validação de Propostas",
+                    description: "Auditoria e aprovação de novas atividades docentes."
+                },
+                { 
+                    label: "Relatórios", 
+                    content: "<h2>Relatórios</h2>",
+                    title: "Relatórios Gerenciais",
+                    description: "Exportação de dados para UCE e PROEC."
+                },
+                { 
+                    label: "Discentes", 
+                    content: "<h2>Gestão de Discentes</h2>",
+                    title: "Gestão Acadêmica",
+                    description: "Acompanhamento de alunos e histórico de extensão."
+                }
             ]);
+            
+            // Força a aba "Oportunidades" a abrir primeiro (padrão)
+            // Se quiser testar validação direto, troque a ordem no array acima.
         }
 
         init();
