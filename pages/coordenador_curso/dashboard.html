@@ -31,27 +31,37 @@
 
         import { carregarViewDiscentes } from "../../assets/js/coordenador/discentes.js";
 
+        import { carregarViewRelatorios, initRelatorios } from "../../assets/js/coordenador/relatorios.js";
+
+        import { carregarViewComunicados, initComunicados } from "../../assets/js/coordenador/comunicados.js";
+
+        import { carregarViewVisaoGeral, initVisaoGeral } from "../../assets/js/coordenador/dashboard_home.js";
+
         async function init() {
             
             // Carrega as views (HTMLs)
             const htmlOportunidades = await carregarViewOportunidades();
             const htmlValidacao = await carregarViewValidacao();
             const htmlDiscentes = await carregarViewDiscentes();
+            const htmlRelatorios = await carregarViewRelatorios();
+            const htmlComunicados = await carregarViewComunicados();
+            const htmlVisaoGeral = await carregarViewVisaoGeral();
 
             // Monta o menu
            carregarLayout([
+                 { 
+                    label: "Visão Geral", 
+                    content: htmlVisaoGeral,
+                    title: "Dashboard e KPIs",
+                    description: "Visão sistêmica e indicadores de desempenho.",
+                    onRender: () => initVisaoGeral()
+                },
                 { 
                     label: "Oportunidades", 
                     content: htmlOportunidades,
                     // Novos campos para o Header:
                     title: "Gestão de Oportunidades",
                     description: "Criar, editar e validar atividades de extensão do curso."
-                },
-                { 
-                    label: "Visão Geral", 
-                    content: "<h2>Visão Geral do Curso</h2>",
-                    title: "Dashboard e KPIs",
-                    description: "Visão sistêmica e indicadores de desempenho."
                 },
                 { 
                     label: "Validação", 
@@ -61,9 +71,12 @@
                 },
                 { 
                     label: "Relatórios", 
-                    content: "<h2>Relatórios</h2>",
+                    content: htmlRelatorios,
                     title: "Relatórios Gerenciais",
-                    description: "Exportação de dados para UCE e PROEC."
+                    description: "Exportação de dados para UCE e PROEC.",
+                    onRender: () => {
+                        initRelatorios();
+                    }
                 },
                 { 
                     label: "Discentes", 
@@ -71,7 +84,16 @@
                     title: "Gestão Acadêmica",
                     description: "Acompanhamento de alunos e histórico de extensão."
                     
+                },
+
+                { 
+                    label: "Comunicado", 
+                    content: htmlComunicados,
+                    title: "Comunicados Oficiais",
+                    description: "Envie notificações oficias em massa para discentes ou docentes.",
+                    onRender: () => initComunicados()
                 }
+
             ]);
             
             // Força a aba "Oportunidades" a abrir primeiro (padrão)
