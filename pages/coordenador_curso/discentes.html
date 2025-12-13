@@ -1,0 +1,129 @@
+<div class="kpi-grid" style="margin-bottom: 25px;">
+    
+    <div class="kpi-card">
+        <div class="kpi-title">Discentes Em Risco</div>
+        <div class="kpi-value" id="kpi-risco">0</div>
+        <div class="kpi-sub kpi-negative">Abaixo da carga mínima</div>
+    </div>
+
+    <div class="kpi-card">
+        <div class="kpi-title">Solicitações Pendentes</div>
+        <div class="kpi-value" id="kpi-solicitacoes">0</div>
+        <div class="kpi-sub kpi-warning">Aguardando análise</div>
+    </div>
+
+    <div class="kpi-card">
+        <div class="kpi-title">Total de Discentes</div>
+        <div class="kpi-value" id="kpi-total-alunos">0</div>
+        <div class="kpi-sub">Vinculados ao curso</div>
+    </div>
+</div>
+
+<div style="margin-bottom: 20px; border-bottom: 2px solid #e3d8c7; padding-bottom: 10px;">
+    <button class="btn btn-secondary active-tab-btn" id="btnTabLista" onclick="alternarAbaDiscente('lista')">
+        📋 Base de Discentes
+    </button>
+    <button class="btn btn-ghost" id="btnTabSolicitacoes" onclick="alternarAbaDiscente('solicitacoes')">
+        📩 Solicitações de Horas (Fila)
+    </button>
+</div>
+
+<div id="view-lista-discentes">
+    
+    <div class="toolbar" style="display: flex; gap: 15px; margin-bottom: 20px;">
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="buscaDiscente" onkeyup="filtrarDiscentes()" placeholder="Nome ou Matrícula...">
+        </div>
+        <select class="select" id="filtroSituacao" onchange="filtrarDiscentes()">
+            <option value="todos">Todas as Situações</option>
+            <option value="regular">Regular</option>
+            <option value="risco">Em Risco</option>
+            <option value="concluido">Concluído</option>
+        </select>
+    </div>
+
+    <div class="table-container">
+        <table class="global-table">
+            <thead>
+                <tr>
+                    <th>Matrícula</th>
+                    <th>Nome</th>
+                    <th>Progresso (%)</th>
+                    <th>Horas Concluídas</th>
+                    <th>Situação</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="tb-discentes">
+                <tr><td colspan="6" align="center">Carregando...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="view-solicitacoes" style="display: none;">
+    
+    <div class="alert alert-info">
+        Atenção: Solicitações com mais de 10 dias são marcadas como "Atrasadas".
+    </div>
+
+    <div class="table-container">
+        <table class="global-table">
+            <thead>
+                <tr>
+                    <th>Data Envio</th>
+                    <th>Discente</th>
+                    <th>Atividade Externa</th>
+                    <th>C.H.</th>
+                    <th>Anexo</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="tb-solicitacoes">
+                <tr><td colspan="7" align="center">Nenhuma solicitação pendente.</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="modalPerfilAluno" class="modal-overlay">
+    <div class="modal" style="width: 700px;">
+        <div class="modal-header">
+            <h2>Perfil do Discente</h2>
+            <span class="modal-close" onclick="fecharModalD('modalPerfilAluno')">&times;</span>
+        </div>
+        <div class="modal-body" id="corpoPerfilAluno">
+            </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" onclick="fecharModalD('modalPerfilAluno')">Fechar</button>
+        </div>
+    </div>
+</div>
+
+<div id="modalAnaliseSolic" class="modal-overlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h2>Analisar Solicitação</h2>
+            <span class="modal-close" onclick="fecharModalD('modalAnaliseSolic')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <p id="descSolicitacao" style="margin-bottom: 15px; font-weight: bold;"></p>
+            
+            <div style="background: #f4f4f4; padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+                <a href="#" target="_blank" style="color: #7a1010; font-weight: bold;">📎 Ver Documento Anexo (PDF)</a>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Parecer (Obrigatório para Indeferimento):</label>
+                <textarea id="txtParecer" class="textarea" placeholder="Justifique sua decisão..."></textarea>
+            </div>
+            <input type="hidden" id="idSolicTemp">
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-danger" onclick="confirmarAnalise('indeferir')">Indeferir</button>
+            <button class="btn btn-success" onclick="confirmarAnalise('deferir')">Deferir</button>
+        </div>
+    </div>
+</div>
