@@ -3,7 +3,7 @@
    Arquivo: assets/js/coordenador/oportunidades.js
    ==================================================================== */
 
-// Mock de Dados Expandido (Com Datas, CH e Descrição)
+// Mock de Dados Expandido
 let oportunidadesDB = [
     { 
         id: 1, 
@@ -43,16 +43,22 @@ let oportunidadesDB = [
     }
 ];
 
+// 1. Carrega HTML (Apenas retorna o texto)
 export async function carregarViewOportunidades() {
     try {
         const response = await fetch('../../pages/coordenador_curso/oportunidades.html');
-        const html = await response.text();
-        setTimeout(atualizarTabela, 50); // Inicia renderização
-        return html;
+        return await response.text();
     } catch (error) {
-        console.error("Erro ao carregar view:", error);
-        return "<div class='alert alert-danger'>Erro ao carregar módulo.</div>";
+        console.error("Erro view oportunidades:", error);
+        return "Erro ao carregar módulo.";
     }
+}
+
+// 2. Função de Inicialização (Chamada pelo Dashboard)
+export function initOportunidades() {
+    console.log("Iniciando Oportunidades...");
+    atualizarTabela();
+    atualizarKPIs(); // Se houver KPIs na tela de oportunidades
 }
 
 /* =======================
@@ -63,12 +69,17 @@ function atualizarTabela() {
     const tbody = document.getElementById("tabela-corpo");
     if (!tbody) return;
 
-    // 1. Captura Filtros
-    const termo = document.getElementById("buscaInput").value.toLowerCase();
-    const fStatus = document.getElementById("filtroStatus").value;
-    const fTipo = document.getElementById("filtroTipo").value;
+    // Captura Filtros
+    const inputBusca = document.getElementById("buscaInput");
+    const termo = inputBusca ? inputBusca.value.toLowerCase() : "";
+    
+    const selectStatus = document.getElementById("filtroStatus");
+    const fStatus = selectStatus ? selectStatus.value : "todos";
+    
+    const selectTipo = document.getElementById("filtroTipo");
+    const fTipo = selectTipo ? selectTipo.value : "todos";
 
-    // 2. Filtra Dados
+    // Filtra Dados
     const filtrados = oportunidadesDB.filter(op => {
         const matchTexto = op.titulo.toLowerCase().includes(termo) || op.responsavel.toLowerCase().includes(termo);
         const matchStatus = fStatus === "todos" || op.status === fStatus;
@@ -76,28 +87,22 @@ function atualizarTabela() {
         return matchTexto && matchStatus && matchTipo;
     });
 
-    // 3. Atualiza KPIs (Baseado nos dados totais, não filtrados, para visão sistêmica)
-    atualizarKPIs();
+    atualizarKPIs(); // Atualiza contadores
 
-    // 4. Renderiza Linhas
     if (filtrados.length === 0) {
         tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:20px; color:#666;">Nenhuma oportunidade encontrada.</td></tr>`;
         return;
     }
 
     tbody.innerHTML = filtrados.map(op => {
-        // Badge de Status
         let badgeClass = "badge-neutral";
         let label = op.status;
         if (op.status === "publicada") { badgeClass = "badge-success"; label = "Publicada"; }
         if (op.status === "pendente") { badgeClass = "badge-warning"; label = "Aguardando"; }
         if (op.status === "rejeitada") { badgeClass = "badge-danger"; label = "Rejeitada"; }
 
-        // Botões de Ação (Lógica da NOTA 3)
-        // Sempre mostra visualizar
         let botoes = `<button class="btn-small btn-small-info" onclick="verDetalhes(${op.id})" title="Ver Detalhes">visualizar</button>`;
 
-        // Aprovar/Rejeitar APENAS se estiver pendente
         if (op.status === "pendente") {
             botoes += `
                 <button class="btn-small btn-small-success" onclick="acaoAprovar(${op.id})" title="Aprovar">✅</button>
@@ -110,7 +115,8 @@ function atualizarTabela() {
                 <td><strong>${op.titulo}</strong></td>
                 <td>${op.responsavel}</td>
                 <td>${op.tipo}</td>
-                <td>${op.ch}h</td> <td>${op.vagas}</td>
+                <td>${op.ch}h</td>
+                <td>${op.vagas}</td>
                 <td><span class="badge ${badgeClass}">${label}</span></td>
                 <td class="actions">${botoes}</td>
             </tr>
@@ -119,14 +125,13 @@ function atualizarTabela() {
 }
 
 function atualizarKPIs() {
-    // KPI Lógica Simples
-    const pendentes = oportunidadesDB.filter(op => op.status === "pendente").length;
-    const ativas = oportunidadesDB.filter(op => op.status === "publicada").length;
-    const total = oportunidadesDB.length;
+    const elPendentes = document.getElementById("kpi-pendentes");
+    const elAtivas = document.getElementById("kpi-ativas");
+    const elTotal = document.getElementById("kpi-total");
 
-    document.getElementById("kpi-pendentes").textContent = pendentes;
-    document.getElementById("kpi-ativas").textContent = ativas;
-    document.getElementById("kpi-total").textContent = total;
+    if(elPendentes) elPendentes.textContent = oportunidadesDB.filter(op => op.status === "pendente").length;
+    if(elAtivas) elAtivas.textContent = oportunidadesDB.filter(op => op.status === "publicada").length;
+    if(elTotal) elTotal.textContent = oportunidadesDB.length;
 }
 
 /* =======================
@@ -135,7 +140,6 @@ function atualizarKPIs() {
 
 window.filtrarTabela = atualizarTabela;
 
-// VISUALIZAR DETALHES (NOTA 3 e 7)
 window.verDetalhes = (id) => {
     const op = oportunidadesDB.find(o => o.id === id);
     if(!op) return;
@@ -160,17 +164,15 @@ window.verDetalhes = (id) => {
     document.getElementById("modalDetalhes").style.display = "flex";
 };
 
-// APROVAR
 window.acaoAprovar = (id) => {
     const op = oportunidadesDB.find(o => o.id === id);
     if (confirm(`Aprovar e Publicar "${op.titulo}"?`)) {
         op.status = "publicada";
         atualizarTabela();
-        showToast("success", "Oportunidade publicada com sucesso!");
+        if(window.showToast) showToast("success", "Oportunidade publicada com sucesso!");
     }
 };
 
-// REJEITAR (Fluxo com Modal)
 window.acaoRejeitar = (id) => {
     document.getElementById("idRejeicaoTemp").value = id;
     document.getElementById("txtJustificativa").value = "";
@@ -181,20 +183,20 @@ window.confirmarRejeicao = () => {
     const id = parseInt(document.getElementById("idRejeicaoTemp").value);
     const justificativa = document.getElementById("txtJustificativa").value.trim();
     
-    if (justificativa.length < 5) return alert("Justificativa é obrigatória.");
+    if (justificativa.length < 5) {
+        alert("Justificativa é obrigatória.");
+        return;
+    }
 
     const op = oportunidadesDB.find(o => o.id === id);
     op.status = "rejeitada";
-    // op.justificativa = justificativa; // Salvaria no banco
     
     document.getElementById("modalRejeicao").style.display = "none";
     atualizarTabela();
-    showToast("warning", "Oportunidade rejeitada.");
+    if(window.showToast) showToast("warning", "Oportunidade rejeitada.");
 };
 
-// NOVA OPORTUNIDADE INSTITUCIONAL
 window.salvarNovaOportunidade = () => {
-    // Captura campos
     const titulo = document.getElementById("novoTitulo").value;
     const tipo = document.getElementById("novoTipo").value;
     const ch = document.getElementById("novaCH").value;
@@ -203,19 +205,19 @@ window.salvarNovaOportunidade = () => {
     const fim = document.getElementById("novaDataFim").value;
     const desc = document.getElementById("novaDescricao").value;
 
-    // Validação Básica
-    if(!titulo || !ch || !inicio || !fim) {
-        return alert("Preencha todos os campos obrigatórios.");
+    if(!titulo || !ch) {
+        alert("Preencha os campos obrigatórios.");
+        return;
     }
 
     oportunidadesDB.unshift({
         id: Date.now(),
         titulo: titulo,
-        responsavel: "Coordenação", // Travado conforme Nota 2
+        responsavel: "Coordenação",
         tipo: tipo,
         ch: parseInt(ch),
         vagas: parseInt(vagas),
-        status: "publicada", // Institucional já nasce publicada ou em validação superior
+        status: "publicada",
         dataInicio: inicio,
         dataFim: fim,
         descricao: desc
@@ -223,12 +225,12 @@ window.salvarNovaOportunidade = () => {
 
     document.getElementById("modalNova").style.display = "none";
     atualizarTabela();
-    showToast("success", "Atividade Institucional criada!");
+    if(window.showToast) showToast("success", "Atividade Institucional criada!");
 };
 
-// UTILITÁRIOS
 window.abrirModalNova = () => document.getElementById("modalNova").style.display = "flex";
 window.fecharModal = (id) => document.getElementById(id).style.display = "none";
+
 function formatarData(dataStr) {
     if(!dataStr) return "-";
     const [ano, mes, dia] = dataStr.split("-");
