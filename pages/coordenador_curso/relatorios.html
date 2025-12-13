@@ -1,0 +1,137 @@
+<div class="kpi-grid" style="margin-bottom: 25px;">
+    
+    <div class="kpi-card">
+        <div class="kpi-title">Total de Oportunidades</div>
+        <div class="kpi-value" id="kpi-rel-oportunidades">0</div>
+        <div class="kpi-sub">Cadastradas no período</div>
+    </div>
+
+    <div class="kpi-card">
+        <div class="kpi-title">Total de Discentes</div>
+        <div class="kpi-value" id="kpi-rel-discentes">0</div>
+        <div class="kpi-sub">Vinculados ao curso</div>
+    </div>
+
+    <div class="kpi-card">
+        <div class="kpi-title">Horas Validadas</div>
+        <div class="kpi-value kpi-positive" id="kpi-rel-horas-ok">0h</div>
+        <div class="kpi-sub">Carga horária integralizada</div>
+    </div>
+
+    <div class="kpi-card">
+        <div class="kpi-title">Horas Pendentes</div>
+        <div class="kpi-value kpi-negative" id="kpi-rel-horas-pend">0h</div>
+        <div class="kpi-sub">Aguardando validação</div>
+    </div>
+
+</div>
+
+<div class="toolbar" style="background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #e3d8c7; margin-bottom: 25px; display: flex; gap: 15px; align-items: flex-end;">
+    
+    <div class="form-group" style="margin-bottom: 0; flex: 1;">
+        <label class="form-label">Período Letivo</label>
+        <select class="select" id="relFiltroPeriodo" style="width: 100%;">
+            <option value="todos">Todos os Períodos</option>
+            <option value="2025.1" selected>2025.1 (Atual)</option>
+            <option value="2024.2">2024.2</option>
+            <option value="2024.1">2024.1</option>
+        </select>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 0; flex: 1;">
+        <label class="form-label">Tipo de Atividade</label>
+        <select class="select" id="relFiltroTipo" style="width: 100%;">
+            <option value="todos">Todos</option>
+            <option value="projeto">Projetos</option>
+            <option value="curso">Cursos</option>
+            <option value="evento">Eventos</option>
+        </select>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 0; flex: 1;">
+        <label class="form-label">Status</label>
+        <select class="select" id="relFiltroStatus" style="width: 100%;">
+            <option value="todos">Todos</option>
+            <option value="ativo">Ativos/Deferidos</option>
+            <option value="pendente">Pendentes</option>
+            <option value="concluido">Concluídos</option>
+        </select>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 0;">
+        <button class="btn btn-secondary" onclick="atualizarDadosRelatorio()">
+            🔄 Atualizar Dados
+        </button>
+    </div>
+</div>
+
+<h3 style="color: #5d0b0b; margin-bottom: 15px;">Relatórios Disponíveis</h3>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+
+    <div class="kpi-card" style="width: 100%; border-left: 5px solid #7a1010; min-height: auto;">
+        <div style="margin-bottom: 15px;">
+            <div class="kpi-title" style="font-size: 16px; margin-bottom: 5px;">📄 Relatório de Oportunidades</div>
+            <div class="kpi-sub">Listagem de atividades ofertadas, tipos, vagas e status de execução.</div>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: auto;">
+            <button class="btn-small btn-small-info" style="flex: 1;" onclick="visualizarRelatorio('oportunidades')">👁 Visualizar</button>
+            <button class="btn-small btn-small-success" style="flex: 1;" onclick="exportarRelatorio('oportunidades', 'pdf')">⬇ PDF</button>
+            <button class="btn-small btn-small-secondary" style="flex: 1;" onclick="exportarRelatorio('oportunidades', 'csv')">⬇ Excel</button>
+        </div>
+    </div>
+
+    <div class="kpi-card" style="width: 100%; border-left: 5px solid #2e8b57; min-height: auto;">
+        <div style="margin-bottom: 15px;">
+            <div class="kpi-title" style="font-size: 16px; margin-bottom: 5px; color: #2e8b57;">🎓 Relatório de Discentes</div>
+            <div class="kpi-sub">Progresso individual, alunos em risco, aptos a colar grau e pendências.</div>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: auto;">
+            <button class="btn-small btn-small-info" style="flex: 1;" onclick="visualizarRelatorio('discentes')">👁 Visualizar</button>
+            <button class="btn-small btn-small-success" style="flex: 1;" onclick="exportarRelatorio('discentes', 'pdf')">⬇ PDF</button>
+            <button class="btn-small btn-small-secondary" style="flex: 1;" onclick="exportarRelatorio('discentes', 'csv')">⬇ Excel</button>
+        </div>
+    </div>
+
+    <div class="kpi-card" style="width: 100%; border-left: 5px solid #d4a017; min-height: auto;">
+        <div style="margin-bottom: 15px;">
+            <div class="kpi-title" style="font-size: 16px; margin-bottom: 5px; color: #d4a017;">⏱️ Relatório de Horas</div>
+            <div class="kpi-sub">Consolidado de horas ofertadas vs. validadas vs. rejeitadas do curso.</div>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: auto;">
+            <button class="btn-small btn-small-info" style="flex: 1;" onclick="visualizarRelatorio('horas')">👁 Visualizar</button>
+            <button class="btn-small btn-small-success" style="flex: 1;" onclick="exportarRelatorio('horas', 'pdf')">⬇ PDF</button>
+            <button class="btn-small btn-small-secondary" style="flex: 1;" onclick="exportarRelatorio('horas', 'csv')">⬇ Excel</button>
+        </div>
+    </div>
+
+    <div class="kpi-card" style="width: 100%; border-left: 5px solid #333; min-height: auto; background: #f4f4f4;">
+        <div style="margin-bottom: 15px;">
+            <div class="kpi-title" style="font-size: 16px; margin-bottom: 5px; color: #333;">🏛️ Oficial UCE / PROEC</div>
+            <div class="kpi-sub">Documento oficial de conclusão para secretaria e envio à PROEC.</div>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: auto;">
+            <button class="btn-small btn-small-info" style="flex: 1;" onclick="visualizarRelatorio('uce')">👁 Prévia</button>
+            <button class="btn-small btn-small-success" style="flex: 2;" onclick="exportarRelatorio('uce', 'pdf')">✅ Emitir Oficial</button>
+        </div>
+    </div>
+
+</div>
+
+<div id="modalRelatorioPreview" class="modal-overlay">
+    <div class="modal" style="width: 800px; max-width: 95%;">
+        <div class="modal-header">
+            <h2 id="tituloPreview">Prévia do Relatório</h2>
+            <span class="modal-close" onclick="fecharModalR('modalRelatorioPreview')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="alert alert-info">Esta é uma visualização simplificada. Exporte para ver todos os detalhes.</div>
+            <div id="conteudoPreview" style="max-height: 400px; overflow-y: auto; background: #fff; padding: 10px; border: 1px solid #ddd;">
+                </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="fecharModalR('modalRelatorioPreview')">Fechar</button>
+            <button class="btn btn-primary" onclick="alert('Iniciando download...')">Baixar Agora</button>
+        </div>
+    </div>
+</div>
