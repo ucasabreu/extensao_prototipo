@@ -112,17 +112,41 @@ export function initMinhasOportunidades() {
 
 // Simula o redirecionamento para outra seção do sistema
 window.acessarModulo = (modulo, idOportunidade) => {
-    // Em um sistema real, isso alteraria a rota (router)
-    // Aqui simulamos com um alert informativo sobre o fluxo correto
+    
+    if (modulo === 'inscricoes') {
+        // Chama a função global definida no dashboard.html
+        if (window.navegarParaInscricoes) {
+            window.navegarParaInscricoes(idOportunidade);
+        } else {
+            console.error("Erro: Função de navegação não carregada.");
+        }
+        return;
+    }
+
+    if (modulo === 'frequencia') {
+        if (window.navegarParaFrequencia) {
+            window.navegarParaFrequencia(idOportunidade);
+        } else {
+            console.error("Função navegarParaFrequencia não encontrada.");
+        }
+        return;
+    }
+
+    if (modulo === 'relatorios') {
+        if (window.navegarParaRelatorios) {
+            window.navegarParaRelatorios(idOportunidade);
+        } else {
+            console.error("Função navegarParaRelatorios não encontrada.");
+        }
+        return;
+    }
+
+    // Outros módulos continuam como mockup por enquanto
     const mensagens = {
-        'inscricoes': `🔄 Redirecionando para o módulo "Gerenciar Inscrições" (ID: ${idOportunidade})...`,
-        'frequencia': `🔄 Redirecionando para o módulo "Frequência" (ID: ${idOportunidade})...`,
         'plano': `🔄 Redirecionando para o módulo "Plano de Atividades" (ID: ${idOportunidade})...`,
-        'relatorios': `🔄 Redirecionando para o módulo "Relatórios" (ID: ${idOportunidade})...`
     };
 
-    alert(mensagens[modulo]);
-    // window.location.hash = `#/${modulo}/${idOportunidade}`; // Exemplo de rota real
+    alert(mensagens[modulo] || "Módulo em desenvolvimento.");
 };
 
 /* ====================================================
