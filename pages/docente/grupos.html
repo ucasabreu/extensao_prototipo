@@ -1,0 +1,144 @@
+<div style="margin-bottom: 20px;">
+    <h2>Meus Grupos e Ligas</h2>
+    <p style="color: #666; font-size: 14px;">
+        Gerencie a estrutura organizacional, atribua funções (liderança/monitoria) e acompanhe o histórico de membros.
+    </p>
+    <div class="alert alert-info" style="font-size: 12px; margin-top: 10px;">
+        ℹ️ <strong>Diferença de Escopo:</strong> Aqui você define a hierarquia interna (RF009). Para aprovar novos alunos, use "Gerenciar Inscrições".
+    </div>
+</div>
+
+<div class="toolbar" style="background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #e3d8c7; margin-bottom: 20px; display: flex; gap: 15px; align-items: center; justify-content: space-between;">
+    
+    <div style="display: flex; gap: 15px; flex: 1;">
+        <div class="search-box" style="flex: 1; max-width: 300px;">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="buscaGrupo" onkeyup="filtrarGrupos()" placeholder="Buscar grupo...">
+        </div>
+
+        <select class="select" id="filtroTipoGrupo" onchange="filtrarGrupos()">
+            <option value="todos">Todos os Tipos</option>
+            <option value="Liga Acadêmica">Liga Acadêmica</option>
+            <option value="Grupo de Pesquisa">Grupo de Pesquisa</option>
+            <option value="Projeto de Extensão">Projeto de Extensão</option>
+        </select>
+    </div>
+
+    <button class="btn btn-secondary" onclick="alert('Solicite a criação de novos grupos à Coordenação (RF006).')" title="A criação é competência da coordenação">
+        ➕ Solicitar Novo Grupo
+    </button>
+</div>
+
+<div class="table-container">
+    <table class="global-table">
+        <thead>
+            <tr>
+                <th>Nome do Grupo</th>
+                <th>Atividade Vinculada</th>
+                <th>Tipo</th>
+                <th>Membros</th>
+                <th>Status</th>
+                <th style="width: 150px;">Ações</th>
+            </tr>
+        </thead>
+        <tbody id="tb-grupos">
+            <tr><td colspan="6" align="center">Carregando grupos...</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="modalMembros" class="modal-overlay">
+    <div class="modal" style="width: 800px;">
+        <div class="modal-header">
+            <h2>Gerenciar Integrantes</h2>
+            <span class="modal-close" onclick="fecharModalGrupo('modalMembros')">&times;</span>
+        </div>
+        <div class="modal-body">
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 id="tituloGrupoModal" style="color: #5d0b0b; margin: 0;">Nome do Grupo</h3>
+                <button class="btn btn-small btn-small-primary" onclick="abrirModalAdicao()">+ Adicionar Integrante</button>
+            </div>
+
+            <table class="global-table">
+                <thead>
+                    <tr>
+                        <th>Discente</th>
+                        <th>Matrícula</th>
+                        <th>Cargo / Função</th> <th>Desde</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody id="tb-membros-modal">
+                    </tbody>
+            </table>
+
+            <div style="margin-top: 20px; text-align: right;">
+                <button class="btn-small btn-small-info" onclick="verHistoricoCargos()">📜 Ver Histórico de Cargos (RF010)</button>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="fecharModalGrupo('modalMembros')">Fechar</button>
+        </div>
+    </div>
+</div>
+
+<div id="modalHistoricoCargos" class="modal-overlay" style="z-index: 1001;"> <div class="modal" style="width: 600px;">
+        <div class="modal-header">
+            <h2>Histórico de Ocupação</h2>
+            <span class="modal-close" onclick="fecharModalGrupo('modalHistoricoCargos')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <p>Registro de cargos passados para rastreabilidade.</p>
+            <ul id="listaHistorico" style="list-style: none; padding: 0; max-height: 300px; overflow-y: auto;">
+                </ul>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" onclick="fecharModalGrupo('modalHistoricoCargos')">Voltar</button>
+        </div>
+    </div>
+</div>
+
+<div id="modalAdicionarMembro" class="modal-overlay" style="z-index: 1002;">
+    <div class="modal" style="width: 500px;">
+        <div class="modal-header">
+            <h2>Adicionar Novo Integrante</h2>
+            <span class="modal-close" onclick="fecharModalGrupo('modalAdicionarMembro')">&times;</span>
+        </div>
+        <div class="modal-body">
+            
+            <div class="form-group">
+                <label class="form-label">Buscar Discente</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="inputBuscaDiscente" class="input-text" placeholder="Digite a Matrícula ou Nome..." style="flex:1">
+                    <button class="btn btn-secondary" onclick="buscarDiscenteSimulado()">🔍 Buscar</button>
+                </div>
+                <small style="color: #666;">Ex: Tente buscar por "2025" ou "Bruno"</small>
+            </div>
+
+            <div id="resultadoBusca" style="display: none; background: #f8efda; padding: 15px; border-radius: 8px; border: 1px solid #e3d8c7; margin-bottom: 15px;">
+                <p style="margin: 0; font-weight: bold; color: #5d0b0b;" id="nomeDiscenteEncontrado">Nome do Aluno</p>
+                <p style="margin: 5px 0 0 0; font-size: 13px;">Matrícula: <span id="matriculaDiscenteEncontrada">...</span></p>
+                <p style="margin: 2px 0 0 0; font-size: 13px;">Curso: Engenharia de Software</p>
+                <input type="hidden" id="idDiscenteEncontrado">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Cargo / Função Inicial</label>
+                <select class="select" id="selCargoNovo" style="width: 100%;" disabled>
+                    <option value="">Selecione um cargo...</option>
+                    <option value="Membro Efetivo" selected>Membro Efetivo</option>
+                    <option value="Voluntário">Voluntário</option>
+                    <option value="Diretor">Diretor</option>
+                    <option value="Vice-Presidente">Vice-Presidente</option>
+                    <option value="Tesoureiro">Tesoureiro</option>
+                </select>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-ghost" onclick="fecharModalGrupo('modalAdicionarMembro')">Cancelar</button>
+            <button class="btn btn-primary" id="btnConfirmarAdicao" onclick="confirmarAdicaoMembro()" disabled>Confirmar Adição</button>
+        </div>
+    </div>
+</div>
