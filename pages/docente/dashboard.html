@@ -32,6 +32,9 @@
         import { carregarVisaoGeralDocente, initVisaoGeralDocente } from "../../assets/js/docente/visao_geral.js";
         import { carregarViewMinhasOportunidades, initMinhasOportunidades } from "../../assets/js/docente/oportunidades.js";
         import { carregarViewInscricoes, initInscricoes } from "../../assets/js/docente/gerenciar_inscricoes.js";
+        import { carregarViewFrequencia, initFrequencia } from "../../assets/js/docente/frequencia.js";
+        import { carregarViewGrupos, initGrupos } from "../../assets/js/docente/grupos.js";
+        import { carregarViewRelatorios, initRelatorios } from "../../assets/js/docente/relatorios.js";
 
 
         async function init() {
@@ -40,6 +43,9 @@
             const htmlVisaoGeral = await carregarVisaoGeralDocente();
             const htmlMinhasOportunidades = await carregarViewMinhasOportunidades();
             const htmlInscricoes = await carregarViewInscricoes();
+            const htmlFrequencia = await carregarViewFrequencia();
+            const htmlGrupos = await carregarViewGrupos();
+            const htmlRelatorios = await carregarViewRelatorios();
 
             // Configura o Menu do Docente
             carregarLayout([
@@ -64,22 +70,74 @@
                     description: "Gerencie inscrições do discentes nas atividades.",
                     onRender: () => initInscricoes()
                 },
-                
+
                 {
                     label: "Frequência",
-                    content: "<h2>Frequência (Em Breve)</h2>",
-                    title: "Frequência de Participantes",
-                    description: ""
+                    content: htmlFrequencia,
+                    title: "Diário de Frequência",
+                    description: "Controle de carga horária e presença.",
+                    onRender: () => initFrequencia()
                 },
 
                 {
                     label: "Meus Grupos",
-                    content: "<h2>Grupos Estudantis (Em Breve)</h2>",
-                    title: "Grupos e Ligas",
-                    description: "Gestão de ligas acadêmicas e grupos de estudo."
+                    content: htmlGrupos,
+                    title: "Gestão de Grupos e Ligas", // Título ajustado para contexto pedagógico
+                    description: "Organização de equipes, monitorias e lideranças estudantis.",
+                    onRender: () => initGrupos() // Roda JS ao entrar
+                },
+                {
+                    label: "Relatórios",
+                    content: htmlRelatorios,
+                    title: "Prestação de Contas",
+                    description: "Consolidação de resultados e exportação UCE/PROEC.",
+                    onRender: () => initRelatorios()
                 }
             ]);
         }
+
+        /* ============================================================
+           FUNÇÃO DE NAVEGAÇÃO GLOBAL (PONTE ENTRE SEÇÕES)
+           ============================================================ */
+        window.navegarParaInscricoes = (idOportunidade) => {
+            // 1. Armazena o ID em uma variável global temporária
+            window.idOportunidadePreSelecionada = idOportunidade;
+
+            // 2. Encontra a aba "Gerenciar Inscrições" e simula o clique
+            const abas = document.querySelectorAll(".menu-item");
+            const abaInscricoes = Array.from(abas).find(aba => aba.textContent.includes("Inscrições"));
+
+            if (abaInscricoes) {
+                abaInscricoes.click();
+
+                // Feedback visual (Toast) opcional
+                if (window.showToast) window.showToast("info", "Filtrando inscrições da atividade...");
+            } else {
+                console.error("Aba de inscrições não encontrada.");
+            }
+        };
+
+        /* FUNÇÃO DE NAVEGAÇÃO PARA FREQUÊNCIA */
+        window.navegarParaFrequencia = (idAtividade) => {
+            window.idOportunidadeFrequencia = idAtividade;
+
+            const abas = document.querySelectorAll(".menu-item");
+            const abaFrequencia = Array.from(abas).find(aba => aba.textContent.includes("Frequência"));
+
+            if (abaFrequencia) {
+                abaFrequencia.click();
+                if (window.showToast) window.showToast("info", "Carregando diário da atividade...");
+            }
+        };
+
+        // [NOVO] Ponte para navegação vinda de outras telas
+        window.navegarParaRelatorios = (idAtividade) => {
+            window.idOportunidadeRelatorio = idAtividade;
+            const aba = Array.from(document.querySelectorAll(".menu-item")).find(el => el.textContent.includes("Relatórios"));
+            if (aba) aba.click();
+        };
+
+
 
         init();
     </script>
