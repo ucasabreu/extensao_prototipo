@@ -1,0 +1,143 @@
+<div class="kpi-grid" style="margin-bottom: 25px;">
+    
+    <div class="kpi-card" style="border-left-color: #2e8b57;">
+        <div class="kpi-title">Em Execução</div>
+        <div class="kpi-value" id="kpi-op-execucao">0</div>
+        <div class="kpi-sub">Atividades ativas agora</div>
+    </div>
+
+    <div class="kpi-card" style="border-left-color: #d4a017;">
+        <div class="kpi-title">Em Análise</div>
+        <div class="kpi-value" id="kpi-op-analise">0</div>
+        <div class="kpi-sub">Aguardando coordenação</div>
+    </div>
+
+    <div class="kpi-card" style="border-left-color: #5d0b0b;">
+        <div class="kpi-title">Inscrições Pendentes</div>
+        <div class="kpi-value" id="kpi-op-inscricoes">0</div>
+        <div class="kpi-sub">Ver no módulo de inscrições</div>
+    </div>
+
+    <div class="kpi-card" style="border-left-color: #555;">
+        <div class="kpi-title">Total de Vagas</div>
+        <div class="kpi-value" id="kpi-op-vagas">0</div>
+        <div class="kpi-sub">Ocupadas / Total</div>
+    </div>
+
+</div>
+
+<div class="toolbar" style="background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #e3d8c7; margin-bottom: 20px; display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+    
+    <div class="search-box" style="flex: 1; min-width: 250px;">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="buscaOpDocente" onkeyup="filtrarMinhasOportunidades()" placeholder="Buscar por título...">
+    </div>
+
+    <select class="select" id="filtroStatusOp" onchange="filtrarMinhasOportunidades()" style="width: 200px;">
+        <option value="todos">Todos os Status</option>
+        <option value="Rascunho">Rascunho</option>
+        <option value="Em Análise">Em Análise</option>
+        <option value="Publicada">Publicada</option>
+        <option value="Em Execução">Em Execução</option>
+        <option value="Encerrada">Encerrada</option>
+        <option value="Rejeitada">Rejeitada</option>
+    </select>
+
+    <button class="btn btn-primary" onclick="abrirModalCriacao()">
+        ➕ Nova Proposta
+    </button>
+</div>
+
+<div class="table-container">
+    <table class="global-table">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Tipo</th>
+                <th>Período</th>
+                <th>C.H.</th>
+                <th>Vagas (Ocup./Total)</th>
+                <th>Status Acadêmico</th>
+                <th>Ações de Navegação</th> </tr>
+        </thead>
+        <tbody id="tb-minhas-oportunidades">
+            <tr><td colspan="7" align="center">Carregando painel gerencial...</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="modalJustificativa" class="modal-overlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h2>Parecer da Coordenação</h2>
+            <span class="modal-close" onclick="fecharModalOp('modalJustificativa')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <p><strong>Motivo da Devolução:</strong></p>
+            <div style="background: #fdf2f2; padding: 15px; border-radius: 8px; color: #b01313; border: 1px solid #f8d7da;">
+                <em id="textoJustificativa">...</em>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" onclick="fecharModalOp('modalJustificativa')">Entendi</button>
+            <button class="btn btn-secondary" onclick="editarApartirDaRejeicao()">Editar Proposta</button>
+        </div>
+    </div>
+</div>
+
+<div id="modalNovaProposta" class="modal-overlay">
+    <div class="modal" style="width: 650px;">
+        <div class="modal-header">
+            <h2 id="tituloModalProposta">Proposta de Extensão</h2>
+            <span class="modal-close" onclick="fecharModalOp('modalNovaProposta')">&times;</span>
+        </div>
+        <div class="modal-body">
+            
+            <div class="alert alert-info">
+                Esta ação edita apenas os dados cadastrais da proposta.
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Título da Atividade *</label>
+                <input type="text" class="input-text" id="propTitulo">
+            </div>
+
+            <div style="display: flex; gap: 20px;">
+                <div class="form-group" style="flex: 1;">
+                    <label class="form-label">Modalidade *</label>
+                    <select class="select" id="propTipo" style="width: 100%;">
+                        <option value="Curso">Curso</option>
+                        <option value="Projeto">Projeto</option>
+                        <option value="Evento">Evento</option>
+                        <option value="Monitoria">Monitoria</option>
+                    </select>
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label class="form-label">Carga Horária (h) *</label>
+                    <input type="number" class="input-text" id="propCH">
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 20px;">
+                <div class="form-group" style="flex: 1;">
+                    <label class="form-label">Data Início *</label>
+                    <input type="date" class="input-text" id="propInicio">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label class="form-label">Data Fim *</label>
+                    <input type="date" class="input-text" id="propFim">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Número de Vagas *</label>
+                <input type="number" class="input-text" id="propVagas">
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="fecharModalOp('modalNovaProposta')">Cancelar</button>
+            <button class="btn btn-primary" onclick="salvarProposta()">💾 Salvar Rascunho</button>
+        </div>
+    </div>
+</div>
