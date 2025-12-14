@@ -1,0 +1,82 @@
+<div style="margin-bottom: 20px;">
+    <h2>Diário de Frequência</h2>
+    <p style="color: #666; font-size: 14px;">
+        Registre a presença por aula. A frequência mínima de 75% é exigida para certificação, sujeita à validação institucional.
+    </p>
+    <div class="alert alert-warning" style="font-size: 12px; margin-top: 10px;">
+        ℹ️ <strong>Importante:</strong> O registro de presença não implica certificação automática. A carga horária será consolidada ao final da atividade.
+    </div>
+</div>
+
+<div class="toolbar" style="background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #e3d8c7; margin-bottom: 20px; display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap;">
+    
+    <div class="form-group" style="flex: 2; min-width: 300px; margin-bottom: 0;">
+        <label class="form-label">Atividade em Execução</label>
+        <select class="select" id="selAtividadeFreq" onchange="carregarDadosFrequencia()" style="width: 100%;">
+            </select>
+    </div>
+
+    <div class="form-group" style="flex: 1; min-width: 150px; margin-bottom: 0;">
+        <label class="form-label">Data da Aula</label>
+        <input type="date" class="input-text" id="dataFrequencia" onchange="carregarDadosFrequencia()" style="width: 100%;">
+    </div>
+
+    <div class="form-group" style="flex: 1; min-width: 100px; margin-bottom: 0;">
+        <label class="form-label">Carga do Dia (h)</label>
+        <input type="number" class="input-text" id="horasDia" value="4" min="1" max="8" style="width: 100%;">
+    </div>
+
+    <div style="display: flex; gap: 10px;">
+        <button class="btn btn-secondary" onclick="abrirHistorico()" title="Ver aulas anteriores">
+            📜 Histórico
+        </button>
+        <button class="btn btn-primary" id="btnSalvarFreq" onclick="salvarFrequencia()">
+            💾 Registrar Presença
+        </button>
+    </div>
+</div>
+
+<div id="alertaFrequencia" class="alert" style="display: none;"></div>
+
+<div class="table-container">
+    <table class="global-table">
+        <thead>
+            <tr>
+                <th style="width: 50px; text-align: center;">Presença</th>
+                <th>Discente</th>
+                <th>Matrícula</th>
+                <th>Progresso Acumulado</th>
+                <th>Status Parcial de Frequência</th> </tr>
+        </thead>
+        <tbody id="tb-frequencia">
+            <tr><td colspan="5" align="center">Selecione uma atividade para carregar.</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="modalHistorico" class="modal-overlay">
+    <div class="modal" style="width: 600px;">
+        <div class="modal-header">
+            <h2>Histórico de Registros</h2>
+            <span class="modal-close" onclick="fecharModalFreq('modalHistorico')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <p id="lblAtividadeHistorico" style="font-weight: bold; margin-bottom: 15px;"></p>
+            <table class="global-table">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Carga (h)</th>
+                        <th>Presentes</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody id="tb-historico-corpo">
+                    </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="fecharModalFreq('modalHistorico')">Fechar</button>
+        </div>
+    </div>
+</div>
