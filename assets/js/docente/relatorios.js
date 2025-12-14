@@ -101,20 +101,38 @@ function renderizarTabelaRelatorios() {
         if (r.statusRelatorio === "Devolvido") badgeClass = "badge-danger";
         if (r.statusRelatorio === "Rascunho") badgeClass = "badge-warning";
 
-        // Ações dependem do status
         let botoes = "";
         
         if (r.statusRelatorio === "Aprovado") {
             botoes = `
-                <button class="btn-small btn-small-secondary" onclick="exportarIndividualUCE(${r.id})">📥 UCE</button>
-                <button class="btn-small btn-small-info" onclick="abrirEditorRelatorio(${r.id}, true)">👁️ Ver</button>
+                <button class="btn-small btn-small-secondary" onclick="exportarIndividualUCE(${r.id})" style="width:100%">📥 UCE</button>
+                <button class="btn-small btn-small-info" onclick="abrirEditorRelatorio(${r.id}, true)" style="width:100%">Vesualizar</button>
             `;
         } else if (r.statusRelatorio === "Enviado") {
-            botoes = `<span style="font-size:11px; color:#666;">Em análise...</span>`;
+            // CORREÇÃO VISUAL AQUI:
+            // Transforma o texto simples em um Card Informativo estruturado
+            botoes = `
+                <div style="
+                    background: #eef6fc; 
+                    border: 1px dashed #2c75b9; 
+                    color: #1e5282; 
+                    padding: 8px 10px; 
+                    border-radius: 6px; 
+                    font-size: 12px; 
+                    font-weight: 600; 
+                    text-align: center; 
+                    display: flex; 
+                    align-items: center; 
+                    justify-content: center; 
+                    gap: 6px; 
+                    cursor: help;" title="Aguardando parecer da Coordenação">
+                    <span>⏳</span>
+                    <span>Em Análise...</span>
+                </div>`;
         } else {
             // Pendente, Rascunho ou Devolvido -> Pode Editar
             botoes = `
-                <button class="btn-small btn-small-primary" onclick="abrirEditorRelatorio(${r.id})">📝 Editar</button>
+                <button class="btn-small btn-small-primary" onclick="abrirEditorRelatorio(${r.id})" style="width:100%">📝 Editar</button>
             `;
         }
 
@@ -124,12 +142,13 @@ function renderizarTabelaRelatorios() {
                 <td>${r.periodo}</td>
                 <td>${r.statusExecucao}</td>
                 <td><span class="badge ${badgeClass}">${r.statusRelatorio}</span></td>
-                <td class="actions">${botoes}</td>
+                <td class="actions" style="display:flex; flex-direction:column; gap:5px; min-width: 140px;">
+                    ${botoes}
+                </td>
             </tr>
         `;
     }).join("");
 }
-
 /* ====================================================
    LÓGICA DO EDITOR (MODAL)
    ==================================================== */
