@@ -30,13 +30,19 @@ export async function carregarLayout(configMenu = []) {
     const nomes = {
         docente: "Docente",
         coordenador_curso: "Coordenador do Curso",
-        coordenador_geral: "Coordenador Geral"
+        coordenador_geral: "Coordenador Geral",
+        discente: "Discente",
+        discenteOfertante: "Discente Ofertante"
+        
     };
 
     const emails = {
         docente: "docente@teste.com",
         coordenador_curso: "coord.curso@teste.com",
-        coordenador_geral: "coord.geral@teste.com"
+        coordenador_geral: "coord.geral@teste.com",
+        discente: "discente@teste.com",
+        discenteOfertante: "discent@teste.com"
+
     };
 
     // Atualiza info do usuário no layout

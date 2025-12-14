@@ -6,7 +6,8 @@ document.querySelectorAll(".perfil-card").forEach(card => {
             discente: "../discente/dashboard.html",
             docente: "../docente/dashboard.html",
             coordenador_curso: "../coordenador_curso/dashboard.html",
-            coordenador_geral: "../coordenador_geral/dashboard.html"
+            coordenador_geral: "../coordenador_geral/dashboard.html",
+            discenteOfertante: "../discenteOfertante/dashboard.html"
         };
 
         if (rotas[perfil]) {
