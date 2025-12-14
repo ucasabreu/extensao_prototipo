@@ -131,18 +131,30 @@
 </template>
 
 <template id="tpl-academico">
-    <div class="kpi-grid" style="margin-bottom:20px;">
-        <div class="kpi-card" style="min-height:80px; padding:15px;">
-            <span class="kpi-title">CRA</span>
-            <strong style="font-size:24px;">8.5</strong>
+    <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+        <div class="kpi-card" style="padding: 15px; min-height: 80px; flex:1;">
+            <span class="kpi-title">CRA Global</span>
+            <strong style="font-size: 24px;" id="acad-cra">...</strong>
         </div>
-        <div class="kpi-card" style="min-height:80px; padding:15px;">
-            <span class="kpi-title">Semestre</span>
-            <strong style="font-size:24px;">7º</strong>
+        <div class="kpi-card" style="padding: 15px; min-height: 80px; flex:1;">
+            <span class="kpi-title">Semestre Atual</span>
+            <strong style="font-size: 24px;" id="acad-semestre">...</strong>
         </div>
     </div>
-    <p><strong>Curso:</strong> Engenharia de Software</p>
-    <p><strong>Status:</strong> Regular</p>
+
+    <h4 style="color:#5d0b0b; margin-bottom:10px;">Progresso da Extensão (PPC)</h4>
+    <div style="background: #eee; border-radius: 10px; height: 20px; width: 100%; overflow: hidden; margin-bottom: 5px;">
+        <div id="acad-progress-bar" style="background: #2e8b57; height: 100%; width: 0%; color:white; font-size:11px; text-align:center; line-height:20px;">0%</div>
+    </div>
+    <div style="display:flex; justify-content:space-between; font-size:12px; color:#666; margin-bottom:20px;">
+        <span>Concluído: <strong id="acad-horas-feitas">0h</strong></span>
+        <span>Meta: <strong id="acad-horas-total">0h</strong></span>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Curso</label>
+        <span id="acad-curso" style="font-weight:bold; color:#333;">...</span>
+    </div>
 </template>
 
 <template id="tpl-gestao">

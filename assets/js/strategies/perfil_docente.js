@@ -19,12 +19,16 @@ export const PerfilDocenteStrategy = {
             templateId: "tpl-lattes",
             fillData: (container) => {
                 container.querySelector("input").value = "http://lattes.cnpq.br/123";
+
+                // Isso ajuda o sistema a recomendar projetos ou filtros futuros
+                const inputArea = container.querySelector("#lattes-area");
+                if (inputArea) inputArea.value = "Ciência da Computação / Inteligência Artificial";
             }
         }
     ],
 
     // --- DADOS PARA AS ABAS OBRIGATÓRIAS ---
-    
+
     getVinculosData: () => ({
         papel: "Docente Efetivo (40h DE)",
         unidade: "Departamento de Informática",

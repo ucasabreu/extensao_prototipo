@@ -3,7 +3,7 @@
    ==================================================== */
 
 export const PerfilCoordenadorStrategy = {
-    
+
     // 1. Cabeçalho (Sidebar Vermelha)
     getHeaderData: () => ({
         nome: "Coord. Ana Maria",
@@ -18,13 +18,13 @@ export const PerfilCoordenadorStrategy = {
         endereco: "Rua das Flores, 10, Renascença"
     }),
 
-    // 3. ABAS EXTRAS (Aqui está a implementação que faltava!)
+    // 3. ABAS EXTRAS
     getExtraTabs: () => [
         {
             id: "gestao",
             label: "Dados do Curso",
-            templateId: "tpl-gestao", // Deve bater com o ID no HTML
-            
+            templateId: "tpl-gestao", // Certifique-se que existe um <template id="tpl-gestao"> no HTML
+
             // Função que recebe o clone do HTML e preenche os dados
             fillData: (container) => {
                 // Mock de dados do curso
@@ -33,15 +33,38 @@ export const PerfilCoordenadorStrategy = {
                     email: "coord.software@ufma.br",
                     portaria: "PORT/GR 123/2023",
                     vigencia: "2023 - 2025",
-                    totalDocentes: "24 Ativos"
+                    totalDocentes: "24 Ativos",
+                    metaHoras: "360h (10% da C.H. Total)",
+                    ppcAtivo: "PPC 2023.1 (Vigente)"
                 };
 
-                // Preenchimento dos campos usando os IDs que criamos
-                container.querySelector("#gestao-curso").value = dadosCurso.nome;
-                container.querySelector("#gestao-email").value = dadosCurso.email;
-                container.querySelector("#gestao-portaria").textContent = dadosCurso.portaria;
-                container.querySelector("#gestao-vigencia").textContent = dadosCurso.vigencia;
-                container.querySelector("#gestao-docentes").textContent = dadosCurso.totalDocentes;
+                // --- FUNÇÃO AUXILIAR DE SEGURANÇA ---
+                // Evita o erro "Cannot set properties of null" se um ID não existir
+                const preencher = (seletor, valor, atributo = 'textContent') => {
+                    const elemento = container.querySelector(seletor);
+                    if (elemento) {
+                        elemento[atributo] = valor;
+                    } else {
+                        // Aviso no console para ajudar a identificar IDs errados sem travar o sistema
+                        console.warn(`[Perfil Coordenador] Elemento não encontrado: ${seletor}`);
+                    }
+                };
+
+                // Preenchimento dos campos com segurança
+                // Se for INPUT, usamos 'value'. Se for SPAN/DIV/P, usamos 'textContent'.
+                
+                // Assumindo que Nome e Email são inputs editáveis:
+                preencher("#gestao-curso", dadosCurso.nome, 'value');
+                preencher("#gestao-email", dadosCurso.email, 'value');
+
+                // Assumindo que os demais são apenas textos de exibição:
+                preencher("#gestao-portaria", dadosCurso.portaria);
+                preencher("#gestao-vigencia", dadosCurso.vigencia);
+                preencher("#gestao-docentes", dadosCurso.totalDocentes);
+                
+                // Requisito RF 007
+                preencher("#gestao-meta-horas", dadosCurso.metaHoras);
+                preencher("#gestao-ppc-ativo", dadosCurso.ppcAtivo);
             }
         }
     ],
@@ -53,7 +76,7 @@ export const PerfilCoordenadorStrategy = {
         status: "Designada (Função Gratificada)",
         desde: "15/03/2023",
         grupos: [
-            "NDE - Núcleo Docente Estruturante (Presidente)", 
+            "NDE - Núcleo Docente Estruturante (Presidente)",
             "Conselho de Centro (Membro)"
         ]
     }),
