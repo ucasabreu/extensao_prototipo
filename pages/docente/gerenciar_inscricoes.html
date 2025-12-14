@@ -1,0 +1,75 @@
+<div style="margin-bottom: 20px;">
+    <h2>Gestão de Inscrições</h2>
+    <p style="color: #666; font-size: 14px;">Gerencie as solicitações de participação nas suas atividades.</p>
+</div>
+
+<div class="toolbar" style="background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #e3d8c7; margin-bottom: 20px; display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap;">
+    
+    <div class="form-group" style="margin-bottom: 0; flex: 2; min-width: 300px;">
+        <label class="form-label">Selecionar Atividade</label>
+        <select class="select" id="filtroOportunidade" onchange="filtrarInscricoes()" style="width: 100%;">
+            </select>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 0; flex: 1; min-width: 150px;">
+        <label class="form-label">Status</label>
+        <select class="select" id="filtroStatusInscricao" onchange="filtrarInscricoes()" style="width: 100%;">
+            <option value="todos">Todos</option>
+            <option value="pendente" selected>Pendentes</option>
+            <option value="aprovada">Aprovadas</option>
+            <option value="rejeitada">Rejeitadas</option>
+        </select>
+    </div>
+
+    <div class="search-box" style="flex: 1.5; min-width: 200px; height: 42px;">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="buscaAluno" onkeyup="filtrarInscricoes()" placeholder="Nome ou Matrícula...">
+    </div>
+</div>
+
+<div id="alertaVagas" class="alert alert-info" style="display: none;">
+    </div>
+
+<div class="table-container">
+    <table class="global-table">
+        <thead>
+            <tr>
+                <th>Discente</th>
+                <th>Matrícula</th>
+                <th>Data Solic.</th>
+                <th>Status</th>
+                <th>Alertas de Sistema</th> <th style="width: 140px;">Ações</th>
+            </tr>
+        </thead>
+        <tbody id="tb-inscricoes">
+            <tr><td colspan="6" align="center">Selecione uma atividade acima.</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="modalRejeicaoInscricao" class="modal-overlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h2>Rejeitar Inscrição</h2>
+            <span class="modal-close" onclick="fecharModalInsc('modalRejeicaoInscricao')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <p>Por favor, informe o motivo da rejeição para o discente <strong><span id="nomeAlunoRejeicao"></span></strong>.</p>
+            
+            <div class="alert alert-warning">
+                Esta ação liberará a vaga imediatamente e notificará o aluno.
+            </div>
+
+            <input type="hidden" id="idInscricaoRejeitar">
+            
+            <div class="form-group">
+                <label class="form-label">Justificativa *</label>
+                <textarea id="txtJustificativaInsc" class="textarea" placeholder="Ex: Pré-requisitos não atendidos..."></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-ghost" onclick="fecharModalInsc('modalRejeicaoInscricao')">Cancelar</button>
+            <button class="btn btn-danger" onclick="confirmarRejeicaoInsc()">Confirmar Rejeição</button>
+        </div>
+    </div>
+</div>
