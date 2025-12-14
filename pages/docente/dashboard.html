@@ -35,6 +35,7 @@
         import { carregarViewFrequencia, initFrequencia } from "../../assets/js/docente/frequencia.js";
         import { carregarViewGrupos, initGrupos } from "../../assets/js/docente/grupos.js";
         import { carregarViewRelatorios, initRelatorios } from "../../assets/js/docente/relatorios.js";
+        import { carregarViewNotificacoes, initNotificacoes } from "../../assets/js/docente/notificacoes.js";
 
 
         async function init() {
@@ -46,6 +47,7 @@
             const htmlFrequencia = await carregarViewFrequencia();
             const htmlGrupos = await carregarViewGrupos();
             const htmlRelatorios = await carregarViewRelatorios();
+            const htmlNotificacoes = await carregarViewNotificacoes();
 
             // Configura o Menu do Docente
             carregarLayout([
@@ -92,7 +94,18 @@
                     title: "Prestação de Contas",
                     description: "Consolidação de resultados e exportação UCE/PROEC.",
                     onRender: () => initRelatorios()
+                },
+                {
+                    label: "Notificações", 
+                    // Adiciona o span do badge dentro do label para o layout.js renderizar
+                    // Nota: O layout.js precisaria suportar HTML no label, ou ajustamos via CSS depois. 
+                    // Por enquanto vamos usar texto puro e o badge é injetado via JS ou no layout.js
+                    content: htmlNotificacoes,
+                    title: "Central de Notificações",
+                    description: "Alertas e pendências.",
+                    onRender: () => initNotificacoes()
                 }
+
             ]);
         }
 
