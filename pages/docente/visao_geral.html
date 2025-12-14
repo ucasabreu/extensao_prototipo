@@ -1,0 +1,84 @@
+<link rel="stylesheet" href="../../assets/css/ui/docente/visao_geral.css">
+
+<div class="dashboard-container">
+
+    <div style="display: flex; flex-direction: column;">
+        
+        <div class="kpi-grid" style="margin-bottom: 25px;">
+            
+            <div class="kpi-card" style="border-left-color: #d4a017;">
+                <div class="kpi-title">Inscrições Pendentes</div>
+                <div class="kpi-value" id="kpi-doc-inscricoes">0</div>
+                <div class="kpi-sub kpi-warning">Ação necessária</div>
+            </div>
+
+            <div class="kpi-card" style="border-left-color: #2e8b57;">
+                <div class="kpi-title">Atividades em Execução</div>
+                <div class="kpi-value" id="kpi-doc-ativas">0</div>
+                <div class="kpi-sub kpi-positive">Aprovadas e rodando</div>
+            </div>
+
+            <div class="kpi-card" style="border-left-color: #5d0b0b;">
+                <div class="kpi-title">Para Encerrar</div>
+                <div class="kpi-value" id="kpi-doc-encerrar">0</div>
+                <div class="kpi-sub" style="color: #b01313;">Prazo finalizado</div>
+            </div>
+
+        </div>
+
+        <div class="table-container">
+            <h3 class="table-title">Minhas Atividades e Propostas</h3>
+            <p class="table-subtitle">Acompanhe o status de aprovação e execução dos seus projetos.</p>
+            
+            <table class="global-table">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Categoria</th>
+                        <th>Período</th>
+                        <th>Vagas/Inscritos</th>
+                        <th>Status</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody id="tb-minhas-atividades">
+                    <tr><td colspan="6" align="center">Carregando...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+
+        <div class="dash-card" style="border-top: 5px solid #b01313;">
+            <h4 style="margin: 0 0 15px 0; color: #5d0b0b; display: flex; align-items: center; gap: 8px;">
+                ⚠️ Atenção Necessária
+            </h4>
+            <div id="lista-alertas-docente" style="display: flex; flex-direction: column; gap: 10px;">
+                </div>
+        </div>
+
+        <div class="dash-card">
+            <h4 style="margin: 0 0 10px 0; color: #5d0b0b;">👥 Meus Grupos Estudantis</h4>
+            <div id="lista-grupos-docente">
+                </div>
+            <button class="btn-small btn-small-secondary" style="width: 100%; margin-top: 10px;" onclick="alert('Ir para tela de Grupos')">Gerenciar Grupos</button>
+        </div>
+
+        <div class="dash-card">
+            <h4 style="margin: 0 0 15px 0; color: #5d0b0b;">⚡ Acesso Rápido</h4>
+            
+            <button class="quick-action-btn" onclick="irParaAba('Minhas Propostas')"> <span style="font-size: 20px;">➕</span> Nova Proposta
+            </button>
+            
+            <button class="quick-action-btn" onclick="irParaAba('Gerenciar Inscrições')"> <span style="font-size: 20px;">✅</span> Validar Inscrições
+            </button>
+            
+            <button class="quick-action-btn" onclick="irParaAba('Gerenciar Inscrições')"> <span style="font-size: 20px;">📝</span> Lançar Frequência
+            </button>
+        </div>
+
+    </div>
+
+</div>
