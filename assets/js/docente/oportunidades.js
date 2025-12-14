@@ -15,7 +15,7 @@ let minhasOportunidadesDB = [
         ch: 40,
         vagasTotal: 40,
         vagasOcupadas: 35,
-        inscricoesPendentes: 5, 
+        inscricoesPendentes: 5,
         status: "Publicada", // Permite acessar gestão de inscrições
         alerta: null
     },
@@ -28,7 +28,7 @@ let minhasOportunidadesDB = [
         ch: 60,
         vagasTotal: 2,
         vagasOcupadas: 2,
-        inscricoesPendentes: 0, 
+        inscricoesPendentes: 0,
         status: "Em Execução", // Permite acessar Frequência e Plano
         alerta: "Plano de atividades pendente"
     },
@@ -112,7 +112,7 @@ export function initMinhasOportunidades() {
 
 // Simula o redirecionamento para outra seção do sistema
 window.acessarModulo = (modulo, idOportunidade) => {
-    
+
     if (modulo === 'inscricoes') {
         // Chama a função global definida no dashboard.html
         if (window.navegarParaInscricoes) {
@@ -141,12 +141,15 @@ window.acessarModulo = (modulo, idOportunidade) => {
         return;
     }
 
-    // Outros módulos continuam como mockup por enquanto
-    const mensagens = {
-        'plano': `🔄 Redirecionando para o módulo "Plano de Atividades" (ID: ${idOportunidade})...`,
-    };
+    // ... na função acessarModulo ...
+    if (modulo === 'plano') {
+        // Agora redireciona para a nova aba!
+        const aba = Array.from(document.querySelectorAll(".menu-item")).find(el => el.textContent.includes("Plano de Atividades"));
+        if (aba) aba.click();
+        // (Opcional) Implementar deep linking para abrir o editor direto
+        return;
+    }
 
-    alert(mensagens[modulo] || "Módulo em desenvolvimento.");
 };
 
 /* ====================================================
@@ -172,7 +175,7 @@ function renderizarTabela() {
 
     tbody.innerHTML = filtrados.map(op => {
         let badgeClass = "badge-neutral";
-        let acoesNavegacao = ""; 
+        let acoesNavegacao = "";
 
         // Lógica de Status e Ações
         switch (op.status) {
@@ -182,7 +185,7 @@ function renderizarTabela() {
                     <button class="btn-small btn-small-primary" onclick="editarRascunho(${op.id})" style="width: 100%;">✏️ Editar</button>
                     <button class="btn-small btn-small-success" onclick="enviarAprovacao(${op.id})" style="width: 100%;">🚀 Enviar</button>`;
                 break;
-            
+
             case "Em Análise":
                 badgeClass = "badge-warning";
                 // CORREÇÃO DE DESIGN:
@@ -224,9 +227,22 @@ function renderizarTabela() {
 
             case "Em Execução":
                 badgeClass = "badge-success";
+
+                // 1. Define qual botão de plano mostrar (Ver ou Definir)
+                let btnPlano = "";
+                if (op.plano) {
+                    // Se já tem plano: Botão Azul (Info)
+                    btnPlano = `<button class="btn-small btn-small-info" onclick="acessarModulo('plano', ${op.id})" style="width: 100%;">📋 Ver Plano ↗</button>`;
+                } else {
+                    // Se não tem plano: Botão Amarelo (Alerta)
+                    btnPlano = `<button class="btn-small btn-small-warning" onclick="acessarModulo('plano', ${op.id})" style="width: 100%;">⚠️ Definir Plano ↗</button>`;
+                }
+
+                // 2. Monta o HTML final com os 3 botões
                 acoesNavegacao = `
                     <button class="btn-small btn-small-primary" onclick="acessarModulo('frequencia', ${op.id})" style="width: 100%;">📝 Frequência ↗</button>
-                    <button class="btn-small btn-small-secondary" onclick="acessarModulo('plano', ${op.id})" style="width: 100%;">📋 Plano ↗</button>
+                    ${btnPlano}
+                    <button class="btn-small btn-small-info" onclick="acessarModulo('inscricoes', ${op.id})" style="width: 100%;">👥 Inscrições ↗</button>
                 `;
                 break;
 
@@ -263,11 +279,11 @@ function renderizarKPIsOp() {
     const emExecucao = minhasOportunidadesDB.filter(o => o.status === "Em Execução").length;
     const emAnalise = minhasOportunidadesDB.filter(o => o.status === "Em Análise").length;
     const pendentes = minhasOportunidadesDB.reduce((acc, o) => acc + (o.inscricoesPendentes || 0), 0);
-    
+
     // Cálculo de ocupação total
     const totalVagas = minhasOportunidadesDB.reduce((acc, o) => acc + (o.vagasTotal || 0), 0);
     const totalOcupadas = minhasOportunidadesDB.reduce((acc, o) => acc + (o.vagasOcupadas || 0), 0);
-    
+
     document.getElementById("kpi-op-execucao").textContent = emExecucao;
     document.getElementById("kpi-op-analise").textContent = emAnalise;
     document.getElementById("kpi-op-inscricoes").textContent = pendentes;
@@ -330,7 +346,7 @@ window.salvarProposta = () => {
                 minhasOportunidadesDB[index].alerta = null;
             }
         }
-        if(window.showToast) showToast("success", "Rascunho atualizado.");
+        if (window.showToast) showToast("success", "Rascunho atualizado.");
     } else {
         // Novo Rascunho
         minhasOportunidadesDB.unshift({
@@ -345,7 +361,7 @@ window.salvarProposta = () => {
             status: "Rascunho",
             alerta: null
         });
-        if(window.showToast) showToast("success", "Rascunho criado.");
+        if (window.showToast) showToast("success", "Rascunho criado.");
     }
     fecharModalOp('modalNovaProposta');
     renderizarTabela();
@@ -353,12 +369,12 @@ window.salvarProposta = () => {
 };
 
 window.enviarAprovacao = (id) => {
-    if(confirm("Enviar para análise da coordenação?")) {
+    if (confirm("Enviar para análise da coordenação?")) {
         const op = minhasOportunidadesDB.find(o => o.id === id);
         op.status = "Em Análise";
         renderizarTabela();
         renderizarKPIsOp();
-        if(window.showToast) showToast("info", "Proposta enviada para análise.");
+        if (window.showToast) showToast("info", "Proposta enviada para análise.");
     }
 };
 
@@ -380,7 +396,7 @@ window.filtrarMinhasOportunidades = renderizarTabela;
 window.fecharModalOp = (id) => document.getElementById(id).style.display = "none";
 
 function formatarData(dataStr) {
-    if(!dataStr) return "-";
+    if (!dataStr) return "-";
     const [ano, mes, dia] = dataStr.split("-");
     return `${dia}/${mes}/${ano}`;
 }

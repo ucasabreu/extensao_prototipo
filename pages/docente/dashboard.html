@@ -36,6 +36,7 @@
         import { carregarViewGrupos, initGrupos } from "../../assets/js/docente/grupos.js";
         import { carregarViewRelatorios, initRelatorios } from "../../assets/js/docente/relatorios.js";
         import { carregarViewNotificacoes, initNotificacoes } from "../../assets/js/docente/notificacoes.js";
+        import { carregarViewPlanos, initPlanos } from "../../assets/js/docente/plano_atividades.js"; 
 
 
         async function init() {
@@ -48,6 +49,7 @@
             const htmlGrupos = await carregarViewGrupos();
             const htmlRelatorios = await carregarViewRelatorios();
             const htmlNotificacoes = await carregarViewNotificacoes();
+            const htmlPlanos = await carregarViewPlanos();
 
             // Configura o Menu do Docente
             carregarLayout([
@@ -82,6 +84,14 @@
                 },
 
                 {
+                    label: "Plano de Atividades", 
+                    content: htmlPlanos,
+                    title: "Planos de Trabalho",
+                    description: "Detalhamento pedagógico e cronograma (RF018).",
+                    onRender: () => initPlanos()
+                },
+
+                {
                     label: "Meus Grupos",
                     content: htmlGrupos,
                     title: "Gestão de Grupos e Ligas", // Título ajustado para contexto pedagógico
@@ -96,7 +106,7 @@
                     onRender: () => initRelatorios()
                 },
                 {
-                    label: "Notificações", 
+                    label: "Notificações",
                     // Adiciona o span do badge dentro do label para o layout.js renderizar
                     // Nota: O layout.js precisaria suportar HTML no label, ou ajustamos via CSS depois. 
                     // Por enquanto vamos usar texto puro e o badge é injetado via JS ou no layout.js

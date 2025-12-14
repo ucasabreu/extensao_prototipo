@@ -1,81 +1,80 @@
-<link rel="stylesheet" href="../../assets/css/ui/docente/visao_geral.css">
-
-<div class="dashboard-container">
-
-    <div style="display: flex; flex-direction: column;">
-        
-        <div class="kpi-grid" style="margin-bottom: 25px;">
-            
-            <div class="kpi-card" style="border-left-color: #d4a017;">
-                <div class="kpi-title">Inscrições Pendentes</div>
-                <div class="kpi-value" id="kpi-doc-inscricoes">0</div>
-                <div class="kpi-sub kpi-warning">Ação necessária</div>
-            </div>
-
-            <div class="kpi-card" style="border-left-color: #2e8b57;">
-                <div class="kpi-title">Atividades em Execução</div>
-                <div class="kpi-value" id="kpi-doc-ativas">0</div>
-                <div class="kpi-sub kpi-positive">Aprovadas e rodando</div>
-            </div>
-
-            <div class="kpi-card" style="border-left-color: #5d0b0b;">
-                <div class="kpi-title">Para Encerrar</div>
-                <div class="kpi-value" id="kpi-doc-encerrar">0</div>
-                <div class="kpi-sub" style="color: #b01313;">Prazo finalizado</div>
-            </div>
-
-        </div>
-
-        <div class="table-container">
-            <h3 class="table-title">Minhas Atividades e Propostas</h3>
-            <p class="table-subtitle">Acompanhe o status de aprovação e execução dos seus projetos.</p>
-            
-            <table class="global-table">
-                <thead>
-                    <tr>
-                        <th>Título</th>
-                        <th>Categoria</th>
-                        <th>Período</th>
-                        <th>Vagas/Inscritos</th>
-                        <th>Status</th>
-                        <th>Ação</th>
-                    </tr>
-                </thead>
-                <tbody id="tb-minhas-atividades">
-                    <tr><td colspan="6" align="center">Carregando...</td></tr>
-                </tbody>
-            </table>
-        </div>
-
+<div class="kpi-grid" style="margin-bottom: 30px;">
+    
+    <div class="kpi-card">
+        <div class="kpi-title">Em Execução</div>
+        <div class="kpi-value">2</div>
+        <div class="kpi-sub kpi-positive">Atividades ativas</div>
     </div>
 
-    <div style="display: flex; flex-direction: column;">
+    <div class="kpi-card" style="border-left-color: #d4a017;">
+        <div class="kpi-title">Inscrições Pendentes</div>
+        <div class="kpi-value">5</div>
+        <div class="kpi-sub">Aguardando sua validação</div>
+    </div>
 
-        <div class="dash-card" style="border-top: 5px solid #b01313;">
-            <h4 style="margin: 0 0 15px 0; color: #5d0b0b; display: flex; align-items: center; gap: 8px;">
-                ⚠️ Atenção Necessária
-            </h4>
-            <div id="lista-alertas-docente" style="display: flex; flex-direction: column; gap: 10px;">
-                </div>
+    <div class="kpi-card" style="border-left-color: #5d0b0b;">
+        <div class="kpi-title">Pendências de Frequência</div>
+        <div class="kpi-value">1</div>
+        <div class="kpi-sub kpi-negative">Diários atrasados</div>
+    </div>
+
+    <div class="kpi-card" style="border-left-color: #2c75b9;">
+        <div class="kpi-title">Notificações</div>
+        <div class="kpi-value">3</div>
+        <div class="kpi-sub">Novos avisos</div>
+    </div>
+
+</div>
+
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
+
+    <div class="table-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <div class="table-title" style="margin: 0;">Minhas Atividades Ativas</div>
+            <button class="btn-small btn-small-info" onclick="irParaMinhasOportunidades()">Ver Todas</button>
         </div>
+        
+        <table class="global-table">
+            <thead>
+                <tr>
+                    <th>Atividade</th>
+                    <th>Status</th>
+                    <th>Próxima Ação Sugerida</th>
+                </tr>
+            </thead>
+            <tbody id="tb-visao-atividades">
+                </tbody>
+        </table>
+    </div>
 
-        <div class="dash-card">
-            <h4 style="margin: 0 0 10px 0; color: #5d0b0b;">👥 Meus Grupos Estudantis</h4>
-            <div id="lista-grupos-docente">
-                </div>
-            <button class="btn-small btn-small-secondary" style="width: 100%; margin-top: 10px;" onclick="alert('Ir para tela de Grupos')">Gerenciar Grupos</button>
-        </div>
-
-        <div class="dash-card">
-            <h4 style="margin: 0 0 15px 0; color: #5d0b0b;">⚡ Acesso Rápido</h4>
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+        
+        <div style="background: #fff; padding: 20px; border-radius: 12px; border: 1px solid #e3d8c7; box-shadow: 0 3px 8px rgba(0,0,0,0.05);">
+            <h3 style="font-size: 16px; color: #5d0b0b; margin-bottom: 15px;">🚀 Acesso Rápido</h3>
             
-            <button class="quick-action-btn" onclick="irParaAba('Minhas Propostas')"> <span style="font-size: 20px;">➕</span> Nova Proposta
+            <button class="btn btn-secondary" onclick="irParaCriarProposta()" style="width: 100%; margin-bottom: 10px; text-align: left;">
+                ➕ Nova Proposta
             </button>
             
-            <button class="quick-action-btn" onclick="irParaAba('Gerenciar Inscrições')"> <span style="font-size: 20px;">✅</span> Validar Inscrições
+            <button class="btn btn-secondary" onclick="irParaInscricoesPendentes()" style="width: 100%; margin-bottom: 10px; text-align: left;">
+                👥 Validar Inscrições (5)
             </button>
-            
-            <button class="quick-action-btn" onclick="irParaAba('Gerenciar Inscrições')"> <span style="font-size: 20px;">📝</span> Lançar Frequência
+
+            <button class="btn btn-secondary" onclick="irParaFrequenciaHoje()" style="width: 100%; margin-bottom: 10px; text-align: left;">
+                📝 Lançar Frequência
+            </button>
+
+            <button class="btn btn-secondary" onclick="irParaRelatoriosGeral()" style="width: 100%; text-align: left;">
+                📊 Relatórios e UCE
+            </button>
+        </div>
+
+        <div style="background: #fff; padding: 20px; border-radius: 12px; border: 1px solid #e3d8c7; box-shadow: 0 3px 8px rgba(0,0,0,0.05);">
+            <h3 style="font-size: 16px; color: #5d0b0b; margin-bottom: 10px;">🔔 Últimos Avisos</h3>
+            <div id="lista-mini-notificacoes" style="font-size: 13px; color: #666;">
+                </div>
+            <button class="btn-text" onclick="irParaNotificacoes()" style="margin-top: 10px; color: #2c75b9; font-weight: bold; cursor: pointer; border: none; background: none;">
+                Ver todas →
             </button>
         </div>
 

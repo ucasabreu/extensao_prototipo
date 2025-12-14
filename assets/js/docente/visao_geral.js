@@ -1,157 +1,139 @@
 /* ====================================================================
-   LÓGICA DA VISÃO GERAL (DOCENTE)
-   Arquivo: assets/js/docente/visao_geral.js
-   Requisitos: RF011, RF015, RF019, RF020, RN006
+   VISÃO GERAL DO DOCENTE (DASHBOARD)
    ==================================================================== */
-
-// MOCK: Dados do Docente com casos de uso específicos
-const dadosDocente = {
-    // Lista unificada para facilitar
-    itens: [
-        { 
-            id: 1,
-            titulo: "Curso de Python Básico", 
-            categoria: "Atividade", // Já aprovada
-            tipo: "Curso", 
-            inicio: "2025-01-10",
-            fim: "2025-02-10", // Futuro
-            inscritos: 35,
-            vagas: 40,
-            pendentes: 5, // Inscrições para aprovar
-            frequenciaMedia: "85%",
-            status: "Em Execução"
-        },
-        { 
-            id: 2,
-            titulo: "Semana da Engenharia 2025", 
-            categoria: "Proposta", // Ainda não aprovada
-            tipo: "Evento", 
-            inicio: "2025-05-20",
-            fim: "2025-05-25",
-            inscritos: 0,
-            vagas: 150,
-            pendentes: 0,
-            frequenciaMedia: "-",
-            status: "Em Análise"
-        },
-        { 
-            id: 3,
-            titulo: "Workshop de IoT", 
-            categoria: "Atividade",
-            tipo: "Workshop", 
-            inicio: "2024-11-01",
-            fim: "2024-11-05", // Passado -> Deve encerrar
-            inscritos: 20,
-            vagas: 20,
-            pendentes: 0,
-            frequenciaMedia: "60%", // ALERTA: Frequência baixa
-            status: "Aguardando Encerramento" // Estado implícito RF020
-        }
-    ],
-    grupos: [
-        { nome: "Liga de Robótica", membros: 12 },
-        { nome: "Grupo de Pesquisa IA", membros: 5 }
-    ]
-};
 
 export async function carregarVisaoGeralDocente() {
     try {
         const response = await fetch('../../pages/docente/visao_geral.html');
         return await response.text();
-    } catch (error) {
-        console.error("Erro ao carregar view docente:", error);
-        return "Erro ao carregar painel.";
-    }
+    } catch (e) { return "Erro ao carregar visão geral."; }
 }
 
 export function initVisaoGeralDocente() {
-    renderizarDashboardDocente();
+    renderizarAtividadesRecentes();
+    renderizarMiniNotificacoes();
 }
 
-function renderizarDashboardDocente() {
-    const itens = dadosDocente.itens;
+/* ====================================================
+   MOCKS DE DADOS (Resumo)
+   ==================================================== */
+const resumoAtividades = [
+    { 
+        id: 1, 
+        titulo: "Curso de Introdução ao Python", 
+        status: "Em Execução", 
+        pendencia: "inscricao" // Flag para sugerir ação
+    },
+    { 
+        id: 2, 
+        titulo: "Monitoria de Algoritmos", 
+        status: "Em Execução", 
+        pendencia: "frequencia" 
+    },
+    { 
+        id: 3, 
+        titulo: "Workshop de IoT", 
+        status: "Rascunho", 
+        pendencia: "editar" 
+    }
+];
 
-    // 1. Cálculos de KPI
-    const inscricoesPendentes = itens.reduce((acc, i) => acc + (i.pendentes || 0), 0);
-    const ativas = itens.filter(i => i.status === "Em Execução").length;
-    const paraEncerrar = itens.filter(i => i.status === "Aguardando Encerramento").length;
+const ultimasNotificacoes = [
+    { texto: "Nova inscrição em 'Curso Python'", tempo: "10 min atrás" },
+    { texto: "Frequência pendente em 'Monitoria'", tempo: "1 dia atrás" },
+    { texto: "Proposta devolvida p/ ajuste", tempo: "2 dias atrás" }
+];
 
-    document.getElementById("kpi-doc-inscricoes").textContent = inscricoesPendentes;
-    document.getElementById("kpi-doc-ativas").textContent = ativas;
-    document.getElementById("kpi-doc-encerrar").textContent = paraEncerrar;
+/* ====================================================
+   RENDERIZAÇÃO
+   ==================================================== */
+function renderizarAtividadesRecentes() {
+    const tbody = document.getElementById("tb-visao-atividades");
+    if(!tbody) return;
 
-    // 2. Renderizar Tabela
-    const tbody = document.getElementById("tb-minhas-atividades");
-    tbody.innerHTML = itens.map(item => {
+    tbody.innerHTML = resumoAtividades.map(a => {
+        let btnAcao = "";
         let badgeClass = "badge-neutral";
-        let acaoBtn = "";
 
-        // Lógica de Status e Ações
-        if (item.status === "Em Execução") {
-            badgeClass = "badge-success";
-            acaoBtn = `<button class="btn-small btn-small-info" title="Lançar Frequência">📝 Diário</button>`;
-        } else if (item.status === "Em Análise") {
-            badgeClass = "badge-warning";
-            acaoBtn = `<button class="btn-small btn-small-secondary" title="Ver Detalhes">👁️ Ver</button>`;
-        } else if (item.status === "Aguardando Encerramento") {
-            badgeClass = "badge-danger"; // Urgente
-            acaoBtn = `<button class="btn-small btn-small-success" title="Emitir Certificados">🏁 Encerrar</button>`;
+        if (a.status === "Em Execução") badgeClass = "badge-success";
+        if (a.status === "Rascunho") badgeClass = "badge-warning";
+
+        // Lógica inteligente de sugestão de ação
+        if (a.pendencia === "inscricao") {
+            btnAcao = `<button class="btn-small btn-small-info" onclick="navegarParaInscricoes(${a.id})">👥 Validar Inscrições</button>`;
+        } else if (a.pendencia === "frequencia") {
+            btnAcao = `<button class="btn-small btn-small-primary" onclick="navegarParaFrequencia(${a.id})">📝 Lançar Frequência</button>`;
+        } else if (a.pendencia === "editar") {
+            btnAcao = `<button class="btn-small btn-small-secondary" onclick="irParaMinhasOportunidades()">✏️ Continuar Edição</button>`;
         }
-
-        // Diferenciação Visual Proposta vs Atividade
-        const iconCategoria = item.categoria === "Proposta" ? "📄" : "🚀";
 
         return `
             <tr>
-                <td><strong>${item.titulo}</strong></td>
-                <td><span style="font-size:12px; color:#555;">${iconCategoria} ${item.categoria}</span></td>
-                <td><span style="font-size:12px;">${formatarData(item.inicio)}</span></td>
-                <td>${item.inscritos} / ${item.vagas}</td>
-                <td><span class="badge ${badgeClass}">${item.status}</span></td>
-                <td class="actions">${acaoBtn}</td>
+                <td><strong>${a.titulo}</strong></td>
+                <td><span class="badge ${badgeClass}">${a.status}</span></td>
+                <td class="actions">${btnAcao}</td>
             </tr>
         `;
     }).join("");
+}
 
-    // 3. Renderizar Alertas (Lógica de Negócio)
-    const containerAlertas = document.getElementById("lista-alertas-docente");
-    let htmlAlertas = "";
+function renderizarMiniNotificacoes() {
+    const div = document.getElementById("lista-mini-notificacoes");
+    if(!div) return;
 
-    // Alerta de Frequência (RN006)
-    const frequenciaCritica = itens.filter(i => i.frequenciaMedia !== "-" && parseInt(i.frequenciaMedia) < 75);
-    if (frequenciaCritica.length > 0) {
-        frequenciaCritica.forEach(f => {
-            htmlAlertas += `
-                <div class="alert alert-danger" style="margin-bottom:0; font-size:12px; padding:10px;">
-                    <strong>Frequência Crítica:</strong> A atividade "${f.titulo}" está com média de ${f.frequenciaMedia}. Alunos podem não ser certificados.
-                </div>`;
-        });
-    }
-
-    // Alerta de Inscrições
-    if (inscricoesPendentes > 0) {
-        htmlAlertas += `
-            <div class="alert alert-warning" style="margin-bottom:0; font-size:12px; padding:10px;">
-                Você tem <strong>${inscricoesPendentes} novas inscrições</strong> aguardando validação.
-            </div>`;
-    }
-
-    if (htmlAlertas === "") {
-        htmlAlertas = `<div style="text-align:center; color:#666; font-size:13px; padding:10px;">✅ Tudo em dia!</div>`;
-    }
-    containerAlertas.innerHTML = htmlAlertas;
-
-    // 4. Renderizar Grupos
-    const containerGrupos = document.getElementById("lista-grupos-docente");
-    containerGrupos.innerHTML = dadosDocente.grupos.map(g => `
-        <div class="grupo-item">
-            <span style="font-weight:600; color:#333;">${g.nome}</span>
-            <span class="badge badge-neutral" style="font-size:11px;">${g.membros} membros</span>
+    div.innerHTML = ultimasNotificacoes.map(n => `
+        <div style="border-bottom: 1px solid #eee; padding: 8px 0;">
+            <p style="margin: 0; color: #333;">${n.texto}</p>
+            <small style="color: #999;">${n.tempo}</small>
         </div>
     `).join("");
 }
 
-function formatarData(dataStr) {
-    const [ano, mes, dia] = dataStr.split("-");
-    return `${dia}/${mes}/${ano}`;
+/* ====================================================
+   NAVEGAÇÃO (LINKS ATIVOS)
+   Usa as funções globais definidas no dashboard.html
+   ==================================================== */
+
+// 1. Ir para Minhas Oportunidades (Aba)
+window.irParaMinhasOportunidades = () => {
+    acionarAba("Minhas Oportunidades");
+};
+
+// 2. Ir para Criação (Abre aba Oportunidades -> Abre Modal é complexo, então vamos só para a aba)
+window.irParaCriarProposta = () => {
+    acionarAba("Minhas Oportunidades");
+    if(window.showToast) window.showToast("info", "Clique em '+ Nova Proposta' na tela de oportunidades.");
+};
+
+// 3. Ir para Inscrições (Pega o primeiro ID com pendência do mock)
+window.irParaInscricoesPendentes = () => {
+    // Simula ir para o Curso de Python (ID 1)
+    if(window.navegarParaInscricoes) window.navegarParaInscricoes(1);
+};
+
+// 4. Ir para Frequência
+window.irParaFrequenciaHoje = () => {
+    // Simula ir para Monitoria (ID 2)
+    if(window.navegarParaFrequencia) window.navegarParaFrequencia(2);
+};
+
+// 5. Ir para Relatórios
+window.irParaRelatoriosGeral = () => {
+    acionarAba("Relatórios");
+};
+
+// 6. Ir para Notificações
+window.irParaNotificacoes = () => {
+    acionarAba("Notificações");
+};
+
+// Função auxiliar para clicar na aba pelo texto
+function acionarAba(nomeAba) {
+    const abas = document.querySelectorAll(".menu-item");
+    const abaAlvo = Array.from(abas).find(aba => aba.textContent.includes(nomeAba));
+    if (abaAlvo) {
+        abaAlvo.click();
+    } else {
+        console.error(`Aba ${nomeAba} não encontrada.`);
+    }
 }
