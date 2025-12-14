@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Docente</title>
+
+    <link rel="stylesheet" href="../../assets/css/common/layout.css">
+    <link rel="stylesheet" href="../../assets/css/global/cards.css">
+    <link rel="stylesheet" href="../../assets/css/global/tables.css">
+    <link rel="stylesheet" href="../../assets/css/global/badges.css">
+    <link rel="stylesheet" href="../../assets/css/global/button.css">
+    <link rel="stylesheet" href="../../assets/css/global/forms.css">
+    <link rel="stylesheet" href="../../assets/css/global/modal.css">
+    <link rel="stylesheet" href="../../assets/css/global/alerts.css">
+
+
+</head>
+
+<body>
+
+    <div id="layout-area"></div>
+
+    <div id="toast-container"></div>
+
+    <script src="../../assets/js/common/alerts.js"></script>
+
+    <script type="module">
+        import { carregarLayout } from "../../assets/js/coordenador/layout.js";
+
+        // Importações das Views do Docente
+        import { carregarVisaoGeralDocente, initVisaoGeralDocente } from "../../assets/js/docente/visao_geral.js";
+        import { carregarViewMinhasOportunidades, initMinhasOportunidades } from "../../assets/js/docente/oportunidades.js";
+        import { carregarViewInscricoes, initInscricoes } from "../../assets/js/docente/gerenciar_inscricoes.js";
+
+
+        async function init() {
+
+            // Carrega o HTML da Visão Geral
+            const htmlVisaoGeral = await carregarVisaoGeralDocente();
+            const htmlMinhasOportunidades = await carregarViewMinhasOportunidades();
+            const htmlInscricoes = await carregarViewInscricoes();
+
+            // Configura o Menu do Docente
+            carregarLayout([
+                {
+                    label: "Visão Geral",
+                    content: htmlVisaoGeral,
+                    title: "Painel do Docente",
+                    description: "Gestão de projetos e alunos.",
+                    onRender: () => initVisaoGeralDocente() // ESSENCIAL PARA RODAR O JS
+                },
+                {
+                    label: "Minhas Oportunidades",
+                    content: htmlMinhasOportunidades,
+                    title: "Minhas Propostas e Atividades",
+                    description: "Submeta e acompanhe o status de seus projetos.",
+                    onRender: () => initMinhasOportunidades()
+                },
+                {
+                    label: "Gerenciar Inscrições",
+                    content: htmlInscricoes,
+                    title: "Controle de Participantes",
+                    description: "Gerencie inscrições do discentes nas atividades.",
+                    onRender: () => initInscricoes()
+                },
+                
+                {
+                    label: "Frequência",
+                    content: "<h2>Frequência (Em Breve)</h2>",
+                    title: "Frequência de Participantes",
+                    description: ""
+                },
+
+                {
+                    label: "Meus Grupos",
+                    content: "<h2>Grupos Estudantis (Em Breve)</h2>",
+                    title: "Grupos e Ligas",
+                    description: "Gestão de ligas acadêmicas e grupos de estudo."
+                }
+            ]);
+        }
+
+        init();
+    </script>
+
+</body>
+
+</html>
