@@ -1,48 +1,82 @@
+<link rel="stylesheet" href="../../assets/css/ui/coordenador/grupos.css">
+
 <div style="margin-bottom: 25px;">
-    <h2 style="color: #5d0b0b; font-size: 24px; font-weight: 700; margin-bottom: 5px;">👥 Gestão de Grupos e Ligas</h2>
-    <p style="color: #666; margin: 0;">Cadastre e gerencie as entidades de extensão (Ligas, Núcleos, D.A.) e vincule seus docentes responsáveis.</p>
+    <h2 style="color: #5d0b0b; margin-bottom: 5px;">👥 Gestão de Grupos e Ligas</h2>
+    <p style="color: #666;">Cadastre e gerencie as entidades de extensão e analise solicitações de criação.</p>
 </div>
 
-<div style="display: flex; gap: 25px; align-items: flex-start; flex-wrap: wrap;">
+<div class="grupos-container">
 
-    <div class="table-container" style="flex: 2; min-width: 600px;">
+    <div class="table-container">
         
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <div class="table-title" style="margin: 0;">Grupos Cadastrados</div>
-            <span class="badge badge-info" id="total-grupos">Carregando...</span>
+        <div style="margin-bottom: 20px; border-bottom: 1px solid #e3d8c7; padding-bottom: 10px; display: flex; gap: 10px;">
+            <button class="btn btn-secondary btn-small" id="tab-ativos" onclick="alternarAbaGrupos('ativos')">
+                Grupos Ativos
+            </button>
+            <button class="btn btn-ghost btn-small" id="tab-solicitacoes" onclick="alternarAbaGrupos('solicitacoes')">
+                Solicitações de Criação <span class="badge badge-warning" style="font-size: 10px; margin-left: 5px;">2</span>
+            </button>
         </div>
 
-        <table class="global-table">
-            <thead>
-                <tr>
-                    <th>Nome do Grupo</th>
-                    <th>Tipo</th>
-                    <th>Docente Responsável (RF 006)</th>
-                    <th style="text-align: right;">Ações</th>
-                </tr>
-            </thead>
-            <tbody id="lista-grupos-body">
-                <tr><td colspan="4" align="center">Carregando dados...</td></tr>
-            </tbody>
-        </table>
+        <div id="view-ativos">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 class="table-title">Entidades Cadastradas</h3>
+                <span class="badge badge-info" id="total-grupos">Carregando...</span>
+            </div>
+
+            <table class="global-table">
+                <thead>
+                    <tr>
+                        <th style="width: 35%;">Nome do Grupo</th>
+                        <th style="width: 20%;">Tipo</th>
+                        <th style="width: 30%;">Docente Responsável</th>
+                        <th style="width: 15%; text-align: center;">Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="lista-grupos-body">
+                    </tbody>
+            </table>
+        </div>
+
+        <div id="view-solicitacoes" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 class="table-title">Solicitações de Abertura</h3>
+                <p class="table-subtitle" style="margin: 0;">Docentes aguardando aprovação para iniciar atividades.</p>
+            </div>
+
+            <table class="global-table">
+                <thead>
+                    <tr>
+                        <th style="width: 30%;">Nome Proposto</th>
+                        <th style="width: 30%;">Solicitante (Docente)</th>
+                        <th style="width: 20%;">Data Pedido</th>
+                        <th style="width: 20%; text-align: center;">Decisão</th>
+                    </tr>
+                </thead>
+                <tbody id="lista-solicitacoes-body">
+                    </tbody>
+            </table>
+        </div>
+
     </div>
 
-    <div class="table-container" style="flex: 1; min-width: 320px;">
-        
-        <div class="table-title" style="margin-bottom: 20px; border-bottom: 1px solid #e5dccc; padding-bottom: 10px;">
-            + Novo Grupo
+    <div class="form-card">
+        <div class="form-header">
+            + Cadastro Manual
         </div>
-
         <form id="form-grupo">
+            <div class="alert alert-info" style="font-size: 12px; margin-bottom: 15px;">
+                Use este formulário para criar grupos institucionais diretamente.
+            </div>
             
             <div class="form-group">
                 <label for="grupo-nome" class="form-label">Nome da Entidade *</label>
-                <input type="text" class="input-text" id="grupo-nome" placeholder="Ex: Liga de I.A." style="width: 100%; box-sizing: border-box;" required>
+                <input type="text" class="input-text" id="grupo-nome" placeholder="Ex: Liga de I.A.">
             </div>
 
             <div class="form-group">
                 <label for="grupo-tipo" class="form-label">Tipo *</label>
-                <select class="select" id="grupo-tipo" style="width: 100%; box-sizing: border-box;">
+                <select class="select" id="grupo-tipo" style="width: 100%;">
                     <option value="Liga Acadêmica">Liga Acadêmica</option>
                     <option value="Núcleo de Pesquisa">Núcleo de Pesquisa</option>
                     <option value="Diretório Acadêmico">Diretório Acadêmico (D.A.)</option>
@@ -52,29 +86,28 @@
 
             <div class="form-group">
                 <label for="grupo-email" class="form-label">E-mail de Contato *</label>
-                <input type="email" class="input-text" id="grupo-email" placeholder="contato.liga@ufma.br" style="width: 100%; box-sizing: border-box;" required>
+                <input type="email" class="input-text" id="grupo-email" placeholder="contato.liga@ufma.br">
             </div>
 
             <div class="form-group">
-                <label for="grupo-desc" class="form-label">Descrição Resumida</label>
-                <textarea class="textarea" id="grupo-desc" rows="3" style="width: 100%; box-sizing: border-box;"></textarea>
+                <label for="grupo-desc" class="form-label">Descrição</label>
+                <textarea class="textarea" id="grupo-desc" rows="2"></textarea>
             </div>
 
-            <div class="alert alert-warning" style="margin-bottom: 15px; padding: 10px;">
-                <div style="width: 100%;">
-                    <label for="grupo-docente" class="form-label" style="color: #d4a017;">Docente Responsável (RF 006) *</label>
-                    <select class="select" id="grupo-docente" required style="width: 100%; box-sizing: border-box;">
+            <div class="alert alert-warning" style="margin-bottom: 15px; padding: 10px; font-size: 12px;">
+                <div style="margin-top: 5px;">
+                    <label class="form-label" style="font-size: 11px;">Responsável (Obrigatório)</label>
+                    <select class="select" id="grupo-docente" required style="width: 100%;">
                         <option value="">Carregando...</option>
                     </select>
                 </div>
             </div>
 
-            <div style="margin-top: 10px;">
+            <div style="margin-top: 15px;">
                 <button type="button" class="btn btn-primary" style="width: 100%;" onclick="salvarGrupo()">
                     Cadastrar Grupo
                 </button>
             </div>
-
         </form>
     </div>
 
