@@ -1,0 +1,81 @@
+<div style="margin-bottom: 25px;">
+    <h2 style="color: #5d0b0b; font-size: 24px; font-weight: 700; margin-bottom: 5px;">👥 Gestão de Grupos e Ligas</h2>
+    <p style="color: #666; margin: 0;">Cadastre e gerencie as entidades de extensão (Ligas, Núcleos, D.A.) e vincule seus docentes responsáveis.</p>
+</div>
+
+<div style="display: flex; gap: 25px; align-items: flex-start; flex-wrap: wrap;">
+
+    <div class="table-container" style="flex: 2; min-width: 600px;">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <div class="table-title" style="margin: 0;">Grupos Cadastrados</div>
+            <span class="badge badge-info" id="total-grupos">Carregando...</span>
+        </div>
+
+        <table class="global-table">
+            <thead>
+                <tr>
+                    <th>Nome do Grupo</th>
+                    <th>Tipo</th>
+                    <th>Docente Responsável (RF 006)</th>
+                    <th style="text-align: right;">Ações</th>
+                </tr>
+            </thead>
+            <tbody id="lista-grupos-body">
+                <tr><td colspan="4" align="center">Carregando dados...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="table-container" style="flex: 1; min-width: 320px;">
+        
+        <div class="table-title" style="margin-bottom: 20px; border-bottom: 1px solid #e5dccc; padding-bottom: 10px;">
+            + Novo Grupo
+        </div>
+
+        <form id="form-grupo">
+            
+            <div class="form-group">
+                <label for="grupo-nome" class="form-label">Nome da Entidade *</label>
+                <input type="text" class="input-text" id="grupo-nome" placeholder="Ex: Liga de I.A." style="width: 100%; box-sizing: border-box;" required>
+            </div>
+
+            <div class="form-group">
+                <label for="grupo-tipo" class="form-label">Tipo *</label>
+                <select class="select" id="grupo-tipo" style="width: 100%; box-sizing: border-box;">
+                    <option value="Liga Acadêmica">Liga Acadêmica</option>
+                    <option value="Núcleo de Pesquisa">Núcleo de Pesquisa</option>
+                    <option value="Diretório Acadêmico">Diretório Acadêmico (D.A.)</option>
+                    <option value="Atlética">Atlética</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="grupo-email" class="form-label">E-mail de Contato *</label>
+                <input type="email" class="input-text" id="grupo-email" placeholder="contato.liga@ufma.br" style="width: 100%; box-sizing: border-box;" required>
+            </div>
+
+            <div class="form-group">
+                <label for="grupo-desc" class="form-label">Descrição Resumida</label>
+                <textarea class="textarea" id="grupo-desc" rows="3" style="width: 100%; box-sizing: border-box;"></textarea>
+            </div>
+
+            <div class="alert alert-warning" style="margin-bottom: 15px; padding: 10px;">
+                <div style="width: 100%;">
+                    <label for="grupo-docente" class="form-label" style="color: #d4a017;">Docente Responsável (RF 006) *</label>
+                    <select class="select" id="grupo-docente" required style="width: 100%; box-sizing: border-box;">
+                        <option value="">Carregando...</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="margin-top: 10px;">
+                <button type="button" class="btn btn-primary" style="width: 100%;" onclick="salvarGrupo()">
+                    Cadastrar Grupo
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+</div>

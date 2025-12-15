@@ -38,6 +38,8 @@
         import { carregarViewVisaoGeral, initVisaoGeral } from "../../assets/js/coordenador/dashboard_home.js";
 
         import { carregarViewPPC, initPPC } from "../../assets/js/coordenador/ppc.js";
+
+        import { carregarViewGrupos, initGrupos } from "../../assets/js/coordenador/grupos.js";
         async function init() {
             
             // 1. Carrega o HTML de todas as views (string)
@@ -48,6 +50,7 @@
             const htmlComunicados = await carregarViewComunicados();
             const htmlVisaoGeral = await carregarViewVisaoGeral();
             const htmlPPC = await carregarViewPPC();
+            const htmlGrupos = await carregarViewGrupos();
 
             // 2. Configura o Menu e AS AÇÕES DE INICIALIZAÇÃO (onRender)
            carregarLayout([
@@ -89,6 +92,14 @@
                     description: "Acompanhamento de alunos e histórico de extensão.",
                     onRender: () => initDiscentes()
                     
+                },
+
+                {
+                    label: "Grupos (Ligas)",
+                    content: htmlGrupos,
+                    title: "Gestão de Grupos e Ligas",
+                    description: "Cadastre e gerencie as entidades de extensão (Ligas, Núcleos, D.A.) e seus responsáveis.",
+                    onRender: () => initGrupos()
                 },
 
                 { 
