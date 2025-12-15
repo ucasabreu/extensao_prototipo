@@ -1,0 +1,85 @@
+<div class="toolbar" style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px; align-items: flex-end;">
+    
+    <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">Status</label>
+        <select class="select" id="filtroValStatus" onchange="filtrarValidacao()">
+            <option value="todos">Todos</option>
+            <option value="aguardando" selected>Aguardando Validação</option> <option value="aprovada">Aprovadas</option>
+            <option value="rejeitada">Rejeitadas</option>
+        </select>
+    </div>
+
+    <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">Tipo</label>
+        <select class="select" id="filtroValTipo" onchange="filtrarValidacao()">
+            <option value="todos">Todos</option>
+            <option value="Projeto">Projeto</option>
+            <option value="Curso">Curso</option>
+            <option value="Evento">Evento</option>
+        </select>
+    </div>
+
+    <div class="form-group" style="margin-bottom:0; flex-grow: 1; max-width: 400px;">
+        <label class="form-label">Buscar</label>
+        <div class="search-box" style="width: 100%;">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="buscaValInput" onkeyup="filtrarValidacao()" placeholder="Título da proposta ou Nome do docente...">
+        </div>
+    </div>
+</div>
+
+<div class="table-container">
+    <table class="global-table">
+        <thead>
+            <tr>
+                <th>Data Submissão</th>
+                <th>Docente Proponente</th>
+                <th>Título da Proposta</th>
+                <th>Tipo</th>
+                <th>C.H. Total</th>
+                <th>Status</th>
+                <th style="min-width: 120px;">Ações</th>
+            </tr>
+        </thead>
+        <tbody id="tabela-validacao-corpo">
+            <tr><td colspan="7" style="text-align:center; padding: 20px;">Carregando propostas...</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="modalValDetalhes" class="modal-overlay">
+    <div class="modal" style="width: 700px;">
+        <div class="modal-header">
+            <h2>Análise de Proposta</h2>
+            <span class="modal-close" onclick="fecharModalVal('modalValDetalhes')">&times;</span>
+        </div>
+        <div class="modal-body" id="conteudoValDetalhes" style="max-height: 70vh; overflow-y: auto;">
+            </div>
+        <div class="modal-footer" id="footerValDetalhes">
+            <button class="btn btn-primary" onclick="fecharModalVal('modalValDetalhes')">Fechar</button>
+        </div>
+    </div>
+</div>
+
+<div id="modalValRejeicao" class="modal-overlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h2>Rejeitar Proposta</h2>
+            <span class="modal-close" onclick="fecharModalVal('modalValRejeicao')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="alert alert-warning">
+                A justificativa será enviada ao e-mail do docente para correção.
+            </div>
+            <div class="form-group">
+                <label class="form-label">Justificativa da Rejeição (Obrigatório) [cite: 5]</label>
+                <textarea id="txtValJustificativa" class="textarea" placeholder="Ex: A metodologia não está clara; Carga horária excede o permitido..."></textarea>
+            </div>
+            <input type="hidden" id="idValRejeicaoTemp">
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-ghost" onclick="fecharModalVal('modalValRejeicao')">Cancelar</button>
+            <button class="btn btn-danger" onclick="confirmarValRejeicao()">Confirmar Rejeição</button>
+        </div>
+    </div>
+</div>

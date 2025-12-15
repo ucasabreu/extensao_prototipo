@@ -1,0 +1,83 @@
+<div class="kpi-grid" style="margin-bottom: 30px;">
+    
+    <div class="kpi-card">
+        <div class="kpi-title">Em Execução</div>
+        <div class="kpi-value">2</div>
+        <div class="kpi-sub kpi-positive">Atividades ativas</div>
+    </div>
+
+    <div class="kpi-card" style="border-left-color: #d4a017;">
+        <div class="kpi-title">Inscrições Pendentes</div>
+        <div class="kpi-value">5</div>
+        <div class="kpi-sub">Aguardando sua validação</div>
+    </div>
+
+    <div class="kpi-card" style="border-left-color: #5d0b0b;">
+        <div class="kpi-title">Pendências de Frequência</div>
+        <div class="kpi-value">1</div>
+        <div class="kpi-sub kpi-negative">Diários atrasados</div>
+    </div>
+
+    <div class="kpi-card" style="border-left-color: #2c75b9;">
+        <div class="kpi-title">Notificações</div>
+        <div class="kpi-value">3</div>
+        <div class="kpi-sub">Novos avisos</div>
+    </div>
+
+</div>
+
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
+
+    <div class="table-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <div class="table-title" style="margin: 0;">Minhas Atividades Ativas</div>
+            <button class="btn-small btn-small-info" onclick="irParaMinhasOportunidades()">Ver Todas</button>
+        </div>
+        
+        <table class="global-table">
+            <thead>
+                <tr>
+                    <th>Atividade</th>
+                    <th>Status</th>
+                    <th>Próxima Ação Sugerida</th>
+                </tr>
+            </thead>
+            <tbody id="tb-visao-atividades">
+                </tbody>
+        </table>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+        
+        <div style="background: #fff; padding: 20px; border-radius: 12px; border: 1px solid #e3d8c7; box-shadow: 0 3px 8px rgba(0,0,0,0.05);">
+            <h3 style="font-size: 16px; color: #5d0b0b; margin-bottom: 15px;">🚀 Acesso Rápido</h3>
+            
+            <button class="btn btn-secondary" onclick="irParaCriarProposta()" style="width: 100%; margin-bottom: 10px; text-align: left;">
+                ➕ Nova Proposta
+            </button>
+            
+            <button class="btn btn-secondary" onclick="irParaInscricoesPendentes()" style="width: 100%; margin-bottom: 10px; text-align: left;">
+                👥 Validar Inscrições (5)
+            </button>
+
+            <button class="btn btn-secondary" onclick="irParaFrequenciaHoje()" style="width: 100%; margin-bottom: 10px; text-align: left;">
+                📝 Lançar Frequência
+            </button>
+
+            <button class="btn btn-secondary" onclick="irParaRelatoriosGeral()" style="width: 100%; text-align: left;">
+                📊 Relatórios e UCE
+            </button>
+        </div>
+
+        <div style="background: #fff; padding: 20px; border-radius: 12px; border: 1px solid #e3d8c7; box-shadow: 0 3px 8px rgba(0,0,0,0.05);">
+            <h3 style="font-size: 16px; color: #5d0b0b; margin-bottom: 10px;">🔔 Últimos Avisos</h3>
+            <div id="lista-mini-notificacoes" style="font-size: 13px; color: #666;">
+                </div>
+            <button class="btn-text" onclick="irParaNotificacoes()" style="margin-top: 10px; color: #2c75b9; font-weight: bold; cursor: pointer; border: none; background: none;">
+                Ver todas →
+            </button>
+        </div>
+
+    </div>
+
+</div>

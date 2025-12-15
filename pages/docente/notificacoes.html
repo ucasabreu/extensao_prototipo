@@ -1,0 +1,26 @@
+<link rel="stylesheet" href="../../assets/css/ui/docente/notificacoes.css">
+
+<div style="margin-bottom: 25px; display: flex; justify-content: space-between; align-items: flex-end;">
+    <div>
+        <h2 style="color: #5d0b0b; margin-bottom: 5px;">Central de Notificações</h2>
+        <p style="color: #666; font-size: 14px; margin: 0;">
+            Acompanhe alertas sobre prazos, inscrições e pendências acadêmicas.
+        </p>
+    </div>
+    
+    <button class="btn-ghost" onclick="marcarTodasComoLidas()" style="font-size: 13px;">
+        ✓ Marcar todas como lidas
+    </button>
+</div>
+
+<div class="toolbar-notificacoes">
+    <button class="btn-filter active" id="filtro-todas" onclick="filtrarNotificacoes('todas')">Todas</button>
+    <button class="btn-filter" id="filtro-nao-lidas" onclick="filtrarNotificacoes('nao_lida')">Não Lidas</button>
+    <button class="btn-filter" id="filtro-pendencias" onclick="filtrarNotificacoes('acao')">Pendentes</button>
+</div>
+
+<div id="lista-notificacoes" class="notification-feed">
+    <div style="text-align: center; padding: 40px; color: #999;">
+        Carregando notificações...
+    </div>
+</div>
