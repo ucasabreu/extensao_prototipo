@@ -1,0 +1,153 @@
+.discenteOfertante-oportunidades {
+    width: 1200px;
+    max-width: 95vw;
+    margin: 30px auto;
+    
+}
+
+/* filtros */
+.filtros {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.filtros input,
+.filtros select {
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #a32626;
+    font-size: 14px;
+}
+
+
+/* lista */
+/* Faz a área de scroll ocupar mais espaço dentro da box-interna */
+/* Altera apenas a box externa dentro da seção de oportunidades */
+.discenteOfertante-oportunidades .box-externa {
+    height: 600px;      /* altura maior só para oportunidades */
+}
+
+/* Altera apenas a box interna dentro da seção de oportunidades */
+.discenteOfertante-oportunidades .box-interna {
+    height: 100%;       /* ocupa toda a box-externa específica */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Área que rola os cards */
+.discenteOfertante-oportunidades .oportunidades-disponiveis {
+    flex: 1;
+    overflow-y: auto;   /* scroll aparece só se precisar */
+}
+
+/* Mantém os cards com tamanho original */
+.discenteOfertante-oportunidades .card-op {
+    min-height: 180px;
+    height: auto;
+}
+.oportunidades-disponiveis {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    overflow-y: auto; /* scroll só aparece se precisar */
+    max-height: 800px; /* aumenta a área */
+    flex: 1;
+}
+
+
+.card-op {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* empurra os botões para o fim */
+    border: 1px solid #a32626;
+    padding: 12px;
+    border-radius: 8px;
+    min-height: 180px; /* mantém o tamanho original */
+    height: auto; /* evita que o grid force expansão */
+}
+/* mantém os cards do tamanho certo */
+
+
+
+.card-botoes {
+    display: flex;
+    justify-content: flex-end; /* alinhado à direita */
+    gap: 10px;
+    margin-top: 12px;
+}
+
+/* botões de inscrição */
+.btn-inscricao {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    color: #fff;
+    transition: background 0.2s;
+}
+
+.btn-inscricao.solicitar {
+    background-color: #28a745; /* verde */
+}
+
+.btn-inscricao.cancelar {
+    background-color: #dc3545; /* vermelho */
+}
+
+.btn-inscricao:hover.solicitar {
+    background-color: #218838;
+}
+
+.btn-inscricao:hover.cancelar {
+    background-color: #c82333;
+}
+
+/* botão saiba mais azul */
+.btn-saiba-mais {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    color: #fff;
+    background-color: #007bff; /* azul */
+    transition: background 0.2s;
+}
+
+.btn-saiba-mais:hover {
+    background-color: #0069d9;
+}
+
+
+.modal-detalhes {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-conteudo {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    max-width: 90%;
+    position: relative;
+}
+
+.modal-conteudo .fechar {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+    font-size: 20px;
+}
+

@@ -38,7 +38,7 @@ const noticiasMock = [
 ================================ */
 
 export async function carregarDashboardDiscente() {
-    const response = await fetch("../../pages/discente/dashboard_view.html")
+    const response = await fetch("../../pages/discenteOfertante/dashboard_view.html");
 
    
     return await response.text();

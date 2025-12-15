@@ -1,4 +1,4 @@
-.discente-dashboard {
+.discenteOfertante-dashboard {
     width: 1200px;          /* largura controlada */
     max-width: 95vw;        /* adapta em telas menores */
     margin: 30px auto;      /* centraliza vertical e horizontal */
@@ -140,7 +140,7 @@
    RESPONSIVO
 ========================= */
 @media (max-width: 900px) {
-    .discente-dashboard {
+    .discenteOfertante-dashboard {
         grid-template-columns: 1fr;
     }
 

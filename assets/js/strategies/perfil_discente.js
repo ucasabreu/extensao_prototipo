@@ -1,26 +1,82 @@
+/* =====================================================
+   STRATEGY — PERFIL DISCENTE
+   Contexto: Aluno participante de ações de extensão
+   ===================================================== */
+
 export const PerfilDiscenteStrategy = {
-    // ... header e basic data ...
 
-    // Abas EXTRAS
-    getExtraTabs: () => [
-        { id: "academico", label: "Acadêmico", templateId: "tpl-academico", fillData: null }
-    ],
-
-    // --- DADOS PARA AS ABAS OBRIGATÓRIAS ---
-    getVinculosData: () => ({
-        papel: "Discente Regular",
-        unidade: "Engenharia de Software",
-        status: "Matriculado",
-        desde: "2021.1",
-        grupos: ["Empresa Júnior"]
+    /* =================================================
+       HEADER DO PERFIL
+       ================================================= */
+    getHeaderData: () => ({
+        nome: "Discente",
+        email: "discente@aluno.ufma.br",
+        matricula: "Matrícula: 202312345",
+        avatar: "D"
     }),
 
-    getComunicados: () => [
-        { data: "12/02/2025", origem: "Coordenação", titulo: "Renovação de Matrícula", msg: "Fique atento aos prazos." }
-    ],
+    /* =================================================
+       DADOS BÁSICOS (ABA EDITAR DADOS)
+       ================================================= */
+    getBasicData: () => ({
+        nomeCivil: "Aluno Exemplo",
+        emailInstitucional: "discente@aluno.ufma.br",
+        telefone: "(98) 90000-0000",
+        endereco: "São Luís - MA"
+    }),
 
-    getHistorico: () => [
-        { data: "Hoje, 09:00", acao: "Login no sistema" },
-        { data: "10/02/2025", acao: "Solicitou inscrição", detalhe: "Curso de Python" }
+    /* =================================================
+       VÍNCULOS ACADÊMICOS
+       ================================================= */
+    getVinculosData: () => ({
+        papel: "Discente",
+        curso: "Ciência da Computação",
+        turno: "Integral",
+        periodoAtual: "5º período",
+        status: "Ativo",
+        ingressouEm: "2022.2",
+        grupos: [
+            "Projeto Robótica Educacional",
+            "Programa Extensão Digital"
+        ]
+    }),
+
+    /* =================================================
+       COMUNICADOS / AVISOS
+       ================================================= */
+    getComunicados: () => ([
+        {
+            titulo: "Inscrição aprovada",
+            descricao: "Você foi aprovado na oportunidade Robótica Educacional.",
+            data: "2024-04-10"
+        },
+        {
+            titulo: "Novo edital disponível",
+            descricao: "Edital de extensão 2024.1 aberto.",
+            data: "2024-03-28"
+        }
+    ]),
+
+    /* =================================================
+       HISTÓRICO DO PERFIL
+       (Discente NÃO possui auditoria administrativa)
+       ================================================= */
+    getHistorico: null,
+
+    /* =================================================
+       ABAS EXTRAS (DISCENTE NÃO POSSUI)
+       ================================================= */
+    getExtraTabs: () => [],
+
+    /* =================================================
+       CONTROLE DE ABAS VISÍVEIS
+       PERFIL DISCENTE É SIMPLES
+       ================================================= */
+    allowedTabs: [
+        "editar",       // Editar Dados
+        "vinculos",     // Vínculos Acadêmicos
+        "avisos",       // Comunicados
+        "preferencias", // Preferências
+        "acessibilidade"
     ]
 };

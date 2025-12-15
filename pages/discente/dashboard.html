@@ -1,81 +1,65 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visão Geral - Discente</title>
+    <title>Dashboard Discente</title>
 
-    <!-- CSS GLOBAL -->
-    <link rel="stylesheet" href="../../assets/css/global/reset.css">
-    <link rel="stylesheet" href="../../assets/css/global/buttons.css">
-    <link rel="stylesheet" href="../../assets/css/global/badges.css">
-    <link rel="stylesheet" href="../../assets/css/global/alerts.css">
-    <link rel="stylesheet" href="../../assets/css/global/inputs.css">
-    <link rel="stylesheet" href="../../assets/css/global/modal.css">
-    <link rel="stylesheet" href="../../assets/css/global/tables.css">
-
-    <!-- CSS ESPECÍFICO DA PÁGINA -->
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../assets/css/common/layout.css">
     <link rel="stylesheet" href="../../assets/css/ui/discente/dashboard.css">
+    <link rel="stylesheet" href="../../assets/css/ui/discente/oportunidades.css">
+    <link rel="stylesheet" href="../../assets/css/ui/discente/solicitacoes.css">
+    <link rel="stylesheet" href="../../assets/css/ui/discente/solicitacoes.css">
+    <link rel="stylesheet" href="../../assets/css/ui/discente/certificacoes.css">
+
+    <link rel="stylesheet" href="../../assets/css/global/button.css">
+
 </head>
+
 <body>
+    <div id="layout-area"></div>
 
-    <header class="top-bar">
-        <div class="logo-area">
-            <div class="logo"></div>
-            <div>
-                <h1>Sistema de Extensão</h1>
-                <span>Menu Discente</span>
-            </div>
-        </div>
+    <script type="module">
+        import { carregarLayout } from "../../assets/js/common/layout.js";
 
-        <div class="profile-area">
-            <div class="profile-circle">D</div>
-            <div class="profile-info">
-                <span class="name">Nome Discente</span>
-                <span class="email">discente.001@discente.ufma.br</span>
-            </div>
-            <button class="btn-perfil">Perfil</button>
-        </div>
-    </header>
+        import {
+            renderDashboardDiscente,
+            renderOportunidadesDiscente,
+            renderSolicitacoesDiscente,
+            renderCertificacoesDiscente
+        } from "../../assets/js/discente/discente.controller.js";
 
-    <nav class="menu">
-        <a class="menu-item active">Visão Geral</a>
-        <a class="menu-item">Minhas Oportunidades</a>
-        <a class="menu-item">Minhas Solicitações</a>
-        <a class="menu-item">Certificações</a>
-    </nav>
 
-    <main class="container">
-
-        <section class="oportunidades">
-            <h2>Oportunidades inscritas</h2>
-            <div class="oportunidades-grid" id="cards-container">
-                <!-- Cards mockados via JS -->
-            </div>
-        </section>
-
-        <section class="progresso">
-            <h2>Gráfico de Progresso</h2>
-            <div id="progress-container">
-                <!-- Barras mockadas via JS -->
-            </div>
-        </section>
-
-        <section class="notificacoes">
-            <h2>Notificações</h2>
-            <div class="notificacoes-box">
-                <p>Sem notificações recentes...</p>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- JS GLOBAL -->
-    <script src="../../assets/js/toast.js"></script>
-    <script src="../../assets/js/modal.js"></script>
-    <script src="../../assets/js/routerPerfil.js"></script>
-
-    <!-- JS ESPECÍFICO -->
-    <script src="../../assets/js/discente/dashboard.js"></script>
+        // Discente
+        localStorage.setItem("perfil", "discente");
+        
+        carregarLayout([
+            {
+                label: "Visão Geral",
+                title: "Visão Geral",
+                description: "Resumo das suas atividades",
+                content: "",
+                onRender: renderDashboardDiscente
+            },
+            {
+                label: "Oportunidades",
+                content: "",
+                onRender: renderOportunidadesDiscente
+            },
+            {
+                label: "Solicitações",
+                content: "",
+                onRender: renderSolicitacoesDiscente
+            },
+            {
+                label: "Certificações",
+                content: "",
+                onRender: renderCertificacoesDiscente
+            }
+        ]);
+    </script>
 </body>
+
 </html>

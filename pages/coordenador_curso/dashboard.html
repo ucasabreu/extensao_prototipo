@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <title>Dashboard - Coordenador de Curso</title>
 
     <link rel="stylesheet" href="../../assets/css/common/layout.css">
     <link rel="stylesheet" href="../../assets/css/global/tables.css">
-    <link rel="stylesheet" href="../../assets/css/global/cards.css"> 
+    <link rel="stylesheet" href="../../assets/css/global/cards.css">
     <link rel="stylesheet" href="../../assets/css/global/badges.css">
     <link rel="stylesheet" href="../../assets/css/global/button.css">
     <link rel="stylesheet" href="../../assets/css/global/forms.css">
@@ -17,15 +18,15 @@
 <body>
 
     <div id="layout-area"></div>
-    
+
     <div id="toast-container"></div>
 
     <script type="module">
         import { carregarLayout } from "../../assets/js/common/layout.js";
-        
+
         // Importa Módulo Oportunidades
         import { carregarViewOportunidades, initOportunidades } from "../../assets/js/coordenador/oportunidades.js";
-        
+
         // Importa Módulo Validação (NOVO)
         import { carregarViewValidacao, initValidacao } from "../../assets/js/coordenador/validacao.js";
 
@@ -41,6 +42,10 @@
 
         import { carregarViewGrupos, initGrupos } from "../../assets/js/coordenador/grupos.js";
         async function init() {
+
+
+            // Coordenador
+            localStorage.setItem("perfil", "coordenador_curso");
             
             // 1. Carrega o HTML de todas as views (string)
             const htmlOportunidades = await carregarViewOportunidades();
@@ -53,31 +58,31 @@
             const htmlGrupos = await carregarViewGrupos();
 
             // 2. Configura o Menu e AS AÇÕES DE INICIALIZAÇÃO (onRender)
-           carregarLayout([
-                 { 
-                    label: "Visão Geral", 
+            carregarLayout([
+                {
+                    label: "Visão Geral",
                     content: htmlVisaoGeral,
                     title: "Dashboard e KPIs",
                     description: "Visão sistêmica e indicadores de desempenho.",
                     onRender: () => initVisaoGeral()
                 },
-                { 
-                    label: "Oportunidades", 
+                {
+                    label: "Oportunidades",
                     content: htmlOportunidades,
                     // Novos campos para o Header:
                     title: "Gestão de Oportunidades",
                     description: "Criar, editar e validar atividades de extensão do curso.",
                     onRender: () => initOportunidades()
                 },
-                { 
-                    label: "Validação", 
+                {
+                    label: "Validação",
                     content: htmlValidacao,
                     title: "Validação de Propostas",
                     description: " Analise, aprove ou rejeite propostas de extensão submetidas por docentes do curso.",
                     onRender: () => initValidacao()
                 },
-                { 
-                    label: "Relatórios", 
+                {
+                    label: "Relatórios",
                     content: htmlRelatorios,
                     title: "Relatórios Gerenciais",
                     description: "Exportação de dados para UCE e PROEC.",
@@ -85,13 +90,13 @@
                         initRelatorios();
                     }
                 },
-                { 
-                    label: "Discentes", 
-                    content: htmlDiscentes ,
+                {
+                    label: "Discentes",
+                    content: htmlDiscentes,
                     title: "Gestão Acadêmica",
                     description: "Acompanhamento de alunos e histórico de extensão.",
                     onRender: () => initDiscentes()
-                    
+
                 },
 
                 {
@@ -102,17 +107,17 @@
                     onRender: () => initGrupos()
                 },
 
-                { 
-                    label: "Projeto Pedagogico", 
-                    content: htmlPPC ,
+                {
+                    label: "Projeto Pedagogico",
+                    content: htmlPPC,
                     title: "Projeto Pedagógico (PPC)",
                     description: "Acompanhamento e definição de carga horária mínima, as regras de validação e o status dos discentes.",
                     onRender: () => initPPC()
-                    
+
                 },
 
-                { 
-                    label: "Comunicado", 
+                {
+                    label: "Comunicado",
                     content: htmlComunicados,
                     title: "Comunicados Oficiais",
                     description: "Envie notificações oficias em massa para discentes ou docentes.",
@@ -120,7 +125,7 @@
                 }
 
             ]);
-            
+
             // Força a aba "Visão Geral" a abrir primeiro (padrão)
             // Se quiser testar validação direto, troque a ordem no array acima.
         }
@@ -128,4 +133,5 @@
         init();
     </script>
 </body>
+
 </html>

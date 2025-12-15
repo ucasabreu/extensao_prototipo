@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Discente</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../assets/css/common/layout.css">
+    <link rel="stylesheet" href="../../assets/css/ui/discenteOfertante/dashboard.css">
+    <link rel="stylesheet" href="../../assets/css/ui/discenteOfertante/oportunidades.css">
+    <link rel="stylesheet" href="../../assets/css/ui/discenteOfertante/solicitacoes.css">
+    <link rel="stylesheet" href="../../assets/css/ui/discenteOfertante/certificacoes.css">
+    <link rel="stylesheet" href="../../assets/css/ui/discenteOfertante/projetos.css">
+
+    <link rel="stylesheet" href="../../assets/css/global/button.css">
+
+
+</head>
+
+<body>
+    <div id="layout-area"></div>
+
+    <script type="module">
+        import { carregarLayout } from "../../assets/js/common/layout.js";
+
+        import {
+            renderDashboardDiscenteOfertante,
+            renderOportunidadesDiscenteOfertante,
+            renderSolicitacoesDiscenteOfertante,
+            renderProjetosDiscenteOfertante,
+            renderCertificacoesDiscenteOfertante
+        } from "../../assets/js/discenteOfertante/discenteOfertante.controller.js";
+
+
+        // Discente Ofertante
+        localStorage.setItem("perfil", "discenteOfertante");
+
+        carregarLayout([
+            {
+                label: "Visão Geral",
+                title: "Visão Geral",
+                description: "Resumo das suas atividades ofertadas",
+                content: "",
+                onRender: renderDashboardDiscenteOfertante
+            },
+            {
+                label: "Oportunidades",
+                content: "",
+                onRender: renderOportunidadesDiscenteOfertante
+            },
+            {
+                label: "Solicitações",
+                content: "",
+                onRender: renderSolicitacoesDiscenteOfertante
+            },
+            {
+                label: "Meus Projetos",
+                content: "",
+                onRender: renderProjetosDiscenteOfertante
+            },
+            {
+                label: "Certificações",
+                content: "",
+                onRender: renderCertificacoesDiscenteOfertante
+            }
+        ]);
+    </script>
+</body>
+
+</html>
