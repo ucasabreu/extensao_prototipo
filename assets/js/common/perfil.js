@@ -39,18 +39,39 @@ function montarAbas() {
     // === ABAS PADRÃO (GLOBAL) ===
     // Definimos aqui as funções de preenchimento (fillData) para cada uma
     const abasPadrao = [
-        { id: "editar", label: "Editar Dados", templateId: "tpl-editar", fillData: preencherEditar },
-        { id: "vinculos", label: "Vínculos", templateId: "tpl-vinculos", fillData: preencherVinculos }, // [NOVO]
-        { id: "comunicacao", label: "Avisos", templateId: "tpl-comunicacao", fillData: preencherComunicacao }, // [NOVO]
-        { id: "preferencias", label: "Preferências", templateId: "tpl-preferencias", fillData: null },
-        { id: "acessibilidade", label: "Acessibilidade", templateId: "tpl-acessibilidade", fillData: null },
-        { id: "seguranca", label: "Segurança", templateId: "tpl-seguranca", fillData: null },
-        { id: "historico", label: "Auditoria", templateId: "tpl-historico", fillData: preencherHistorico } // [NOVO]
+        { id: "editar", label: "Editar Dados", templateId: "tpl-editar", fillData: preencherEditar }
     ];
+
+    if (currentStrategy.getVinculosData) {
+        abasPadrao.push({
+            id: "vinculos",
+            label: "Vínculos",
+            templateId: "tpl-vinculos",
+            fillData: preencherVinculos
+        });
+    }
+
+    if (currentStrategy.getComunicados) {
+        abasPadrao.push({
+            id: "comunicacao",
+            label: "Avisos",
+            templateId: "tpl-comunicacao",
+            fillData: preencherComunicacao
+        });
+    }
+
+    if (currentStrategy.getHistorico) {
+        abasPadrao.push({
+            id: "historico",
+            label: "Auditoria",
+            templateId: "tpl-historico",
+            fillData: preencherHistorico
+        });
+    }
 
     // Abas Específicas da Estratégia (inseridas na posição 1, após Editar)
     const abasExtras = currentStrategy.getExtraTabs ? currentStrategy.getExtraTabs() : [];
-    
+
     abasConfig = [...abasPadrao];
     if (abasExtras.length > 0) {
         abasConfig.splice(1, 0, ...abasExtras);
@@ -76,7 +97,7 @@ function ativarAba(id) {
     document.getElementById(`btn-${id}`).classList.add("active");
 
     const containerPanes = document.getElementById("perfil-panes-container");
-    containerPanes.innerHTML = ""; 
+    containerPanes.innerHTML = "";
 
     const config = abasConfig.find(a => a.id === id);
     const template = document.getElementById(config.templateId);
@@ -102,7 +123,7 @@ function preencherEditar(clone) {
 function preencherVinculos(clone) {
     // Busca dados específicos da estratégia (Docente ou Coordenador)
     const dados = currentStrategy.getVinculosData ? currentStrategy.getVinculosData() : {};
-    
+
     clone.getElementById("vinc-status").textContent = dados.status || "-";
     clone.getElementById("vinc-data").textContent = dados.desde || "-";
     clone.getElementById("vinc-papel").value = dados.papel || "-";
@@ -122,8 +143,8 @@ function preencherComunicacao(clone) {
     // Se a estratégia não tiver comunicados, usa lista vazia
     const msgs = currentStrategy.getComunicados ? currentStrategy.getComunicados() : [];
     const lista = clone.getElementById("lista-comunicados");
-    
-    if(msgs.length === 0) {
+
+    if (msgs.length === 0) {
         lista.innerHTML = "<div style='padding:20px; text-align:center; color:#999'>Nenhum comunicado recente.</div>";
         return;
     }
@@ -142,7 +163,7 @@ function preencherHistorico(clone) {
     const logs = currentStrategy.getHistorico ? currentStrategy.getHistorico() : [];
     const lista = clone.getElementById("lista-auditoria");
 
-    if(logs.length === 0) {
+    if (logs.length === 0) {
         lista.innerHTML = "<li>Sem histórico recente.</li>";
         return;
     }
@@ -160,4 +181,4 @@ function preencherHistorico(clone) {
 }
 
 window.fecharPerfilVoltar = () => location.reload();
-window.salvarPerfilGeral = () => { if(window.showToast) window.showToast("success", "Salvo!"); };
+window.salvarPerfilGeral = () => { if (window.showToast) window.showToast("success", "Salvo!"); };

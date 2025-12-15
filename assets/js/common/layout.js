@@ -116,12 +116,15 @@ async function abrirPaginaPerfil() {
 
         if (tipoPerfil === "docente") {
             strategyModule = await import('../strategies/perfil_docente.js');
-        } else if (tipoPerfil.includes("coordenador")) {
+        }
+        else if (tipoPerfil.includes("coordenador")) {
             strategyModule = await import('../strategies/perfil_coordenador.js');
-        } else if (tipoPerfil === "discente" || tipoPerfil === "discenteOfertante") {
+        }
+        else if (tipoPerfil === "discente") {
             strategyModule = await import('../strategies/perfil_discente.js');
-        } else {
-            strategyModule = await import('../strategies/perfil_docente.js');
+        }
+        else if (tipoPerfil === "discenteOfertante") {
+            strategyModule = await import('../strategies/perfil_discente_ofertante.js');
         }
 
         const strategy = Object.values(strategyModule)[0];

@@ -1,30 +1,36 @@
-export const perfilDiscenteOfertante = {
-    id: "discenteOfertante",
-    nome: "Discente Ofertante",
-    email: "discente.ofertante@aluno.ufma.br",
+export const PerfilDiscenteOfertanteStrategy = {
 
-    menu: [
+    getHeaderData: () => ({
+        nome: "Discente Ofertante",
+        email: "ofertante@aluno.ufma.br",
+        matricula: "Matrícula: 202312345",
+        avatar: "D"
+    }),
+
+    getBasicData: () => ({
+        telefone: "(98) 90000-0000",
+        endereco: "Residência Acadêmica"
+    }),
+
+    getExtraTabs: () => [
         {
-            label: "Visão Geral",
-            title: "Visão Geral",
-            description: "Resumo das oportunidades que você oferta",
-            content: `
-                <section>
-                    <h2>Dashboard do Discente Ofertante</h2>
-                    <p>Acompanhe suas ofertas e inscrições.</p>
-                </section>
-            `
-        },
-        {
-            label: "Minhas Oportunidades",
-            title: "Minhas Oportunidades",
-            description: "Oportunidades criadas por você",
-            content: `
-                <section>
-                    <h2>Oportunidades Ofertadas</h2>
-                    <p>Lista de oportunidades criadas.</p>
-                </section>
-            `
+            id: "projetos",
+            label: "Meus Projetos",
+            templateId: "tpl-projetos",
+            fillData: (container) => {
+                container.querySelector("#proj-total").textContent = "3 ativos";
+            }
         }
-    ]
+    ],
+
+    getVinculosData: () => ({
+        papel: "Discente Ofertante",
+        unidade: "Curso de Computação",
+        status: "Ativo",
+        desde: "2023.1",
+        grupos: ["Projeto Robótica", "Extensão IA"]
+    }),
+
+    getComunicados: () => [],
+    getHistorico: () => []
 };

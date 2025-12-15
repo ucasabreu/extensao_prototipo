@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,67 +24,47 @@
         import { carregarLayout } from "../../assets/js/common/layout.js";
 
         import {
-            carregarDashboardDiscente,
-            ativarDashboardDiscente
-        } from "../../assets/js/discenteOfertante/dashboard.js";
-
-        import {
-            carregarOportunidadesDiscente,
-            ativarOportunidadesDiscente
-        } from "../../assets/js/discenteOfertante/oportunidades.js";
-
-        import { 
-            carregarSolicitacoesDiscente, 
-            ativarSolicitacoesDiscente 
-        } from "../../assets/js/discenteOfertante/solicitacoes.js";
-
-        import { 
-            carregarCertificacoesDiscente,
-            ativarCertificacoesDiscente
-        } from "../../assets/js/discenteOfertante/certificacoes.js";
-
-        import { 
-            carregarProjetosDiscente,
-            ativarProjetosDiscente
-        } from "../../assets/js/discenteOfertante/projetos.js";
+            renderDashboardDiscenteOfertante,
+            renderOportunidadesDiscenteOfertante,
+            renderSolicitacoesDiscenteOfertante,
+            renderProjetosDiscenteOfertante,
+            renderCertificacoesDiscenteOfertante
+        } from "../../assets/js/discenteOfertante/discenteOfertante.controller.js";
 
 
-        async function init() {
-            const dashboardHTML = await carregarDashboardDiscente();
-            const oportunidadesHTML = await carregarOportunidadesDiscente();
+        // Discente Ofertante
+        localStorage.setItem("perfil", "discenteOfertante");
 
-            carregarLayout([
-                {
-                    label: "Visão Geral",
-                    content: dashboardHTML,
-                    onActivate: ativarDashboardDiscente
-                },
-                {
-                    label: "Oportunidades",
-                    content: oportunidadesHTML,
-                    onActivate: ativarOportunidadesDiscente
-                },
-                {
-                    label: "Solicitações",
-                    content: await carregarSolicitacoesDiscente(), 
-                    onActivate: ativarSolicitacoesDiscente  
-                },
-                {
-                    label: "Meus Projetos",
-                    content: await carregarProjetosDiscente(), // seu HTML de projetos
-                    onActivate: ativarProjetosDiscente
-                },
-
-                {
-                    label: "Certificações",
-                    content: await carregarCertificacoesDiscente(),
-                    onActivate: ativarCertificacoesDiscente
-                }
-
-            ]);
-        }
-
-        init();
+        carregarLayout([
+            {
+                label: "Visão Geral",
+                title: "Visão Geral",
+                description: "Resumo das suas atividades ofertadas",
+                content: "",
+                onRender: renderDashboardDiscenteOfertante
+            },
+            {
+                label: "Oportunidades",
+                content: "",
+                onRender: renderOportunidadesDiscenteOfertante
+            },
+            {
+                label: "Solicitações",
+                content: "",
+                onRender: renderSolicitacoesDiscenteOfertante
+            },
+            {
+                label: "Meus Projetos",
+                content: "",
+                onRender: renderProjetosDiscenteOfertante
+            },
+            {
+                label: "Certificações",
+                content: "",
+                onRender: renderCertificacoesDiscenteOfertante
+            }
+        ]);
     </script>
 </body>
+
 </html>

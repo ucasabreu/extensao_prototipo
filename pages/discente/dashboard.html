@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,55 +23,41 @@
         import { carregarLayout } from "../../assets/js/common/layout.js";
 
         import {
-            carregarDashboardDiscente,
-            ativarDashboardDiscente
-        } from "../../assets/js/discente/dashboard.js";
-
-        import {
-            carregarOportunidadesDiscente,
-            ativarOportunidadesDiscente
-        } from "../../assets/js/discente/oportunidades.js";
-
-        import { 
-            carregarSolicitacoesDiscente, 
-            ativarSolicitacoesDiscente 
-        } from "../../assets/js/discente/solicitacoes.js";
-
-        import { 
-            carregarCertificacoesDiscente,
-            ativarCertificacoesDiscente
-        } from "../../assets/js/discente/certificacoes.js";
+            renderDashboardDiscente,
+            renderOportunidadesDiscente,
+            renderSolicitacoesDiscente,
+            renderCertificacoesDiscente
+        } from "../../assets/js/discente/discente.controller.js";
 
 
-        async function init() {
-            const dashboardHTML = await carregarDashboardDiscente();
-            const oportunidadesHTML = await carregarOportunidadesDiscente();
-
-            carregarLayout([
-                {
-                    label: "Visão Geral",
-                    content: dashboardHTML,
-                    onActivate: ativarDashboardDiscente
-                },
-                {
-                    label: "Oportunidades",
-                    content: oportunidadesHTML,
-                    onActivate: ativarOportunidadesDiscente
-                },
-                {
-                    label: "Solicitações",
-                    content: await carregarSolicitacoesDiscente(), 
-                    onActivate: ativarSolicitacoesDiscente  
-                },
-                {
-                    label: "Certificações",
-                    content: await carregarCertificacoesDiscente(),
-                    onActivate: ativarCertificacoesDiscente
-                }
-            ]);
-        }
-
-        init();
+        // Discente
+        localStorage.setItem("perfil", "discente");
+        
+        carregarLayout([
+            {
+                label: "Visão Geral",
+                title: "Visão Geral",
+                description: "Resumo das suas atividades",
+                content: "",
+                onRender: renderDashboardDiscente
+            },
+            {
+                label: "Oportunidades",
+                content: "",
+                onRender: renderOportunidadesDiscente
+            },
+            {
+                label: "Solicitações",
+                content: "",
+                onRender: renderSolicitacoesDiscente
+            },
+            {
+                label: "Certificações",
+                content: "",
+                onRender: renderCertificacoesDiscente
+            }
+        ]);
     </script>
 </body>
+
 </html>
