@@ -1,0 +1,122 @@
+<div style="margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center;">
+    <div>
+        <h2 style="color: #5d0b0b; margin-bottom: 5px;">Envie avisos para turmas, grupos ou todo o curso e acompanhe o recebimento.</h2>
+        <!--<p style="color: #666;">Envie avisos para turmas, grupos ou todo o curso e acompanhe o recebimento.</p>-->
+    </div>
+    
+    <button class="btn btn-primary" onclick="abrirModalComunicado()">
+        📢 Novo Comunicado
+    </button>
+</div>
+
+<div style="margin-bottom: 20px; border-bottom: 2px solid #e3d8c7; padding-bottom: 10px;">
+    <button class="btn btn-secondary active-tab-btn" id="btnTabEnviados" onclick="filtrarTipoComunicado('enviados')">
+        📤 Histórico de Envios
+    </button>
+    <button class="btn btn-ghost" id="btnTabRecebidos" onclick="filtrarTipoComunicado('recebidos')">
+        📥 Avisos da Reitoria/PROEC
+    </button>
+</div>
+
+<div class="toolbar" style="background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #e3d8c7; margin-bottom: 20px; display: flex; gap: 15px;">
+    <div class="search-box" style="flex: 1;">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="buscaComunicado" onkeyup="renderizarTabelaComunicados()" placeholder="Buscar por assunto...">
+    </div>
+    <select class="select" id="filtroDestino" onchange="renderizarTabelaComunicados()" style="width: 200px;">
+        <option value="todos">Todos os Públicos</option>
+        <option value="geral">Todo o Curso</option>
+        <option value="semestre">Por Semestre</option>
+        <option value="grupo">Grupos Específicos</option>
+    </select>
+</div>
+
+<div class="table-container">
+    <table class="global-table">
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Assunto</th>
+                <th>Público-Alvo</th>
+                <th>Canais</th>
+                <th>Status de Envio</th> <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody id="tb-comunicados">
+            <tr><td colspan="6" align="center">Carregando histórico...</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="modalNovoComunicado" class="modal-overlay">
+    <div class="modal" style="width: 700px;">
+        <div class="modal-header">
+            <h2>Criar Novo Comunicado</h2>
+            <span class="modal-close" onclick="fecharModalC('modalNovoComunicado')">&times;</span>
+        </div>
+        <div class="modal-body">
+            
+            <div class="form-group">
+                <label class="form-label">Título / Assunto *</label>
+                <input type="text" class="input-text" id="comTitulo" placeholder="Ex: Prazo final para entrega de relatórios">
+            </div>
+
+            <div style="display: flex; gap: 20px; margin-bottom: 15px;">
+                <div class="form-group" style="flex: 1;">
+                    <label class="form-label">Curso (Pré-selecionado)</label>
+                    <input type="text" class="input-text input-disabled" value="Ciência da Computação" disabled>
+                </div>
+                
+                <div class="form-group" style="flex: 1;">
+                    <label class="form-label">Destinatários *</label>
+                    <select class="select" id="comDestino" style="width: 100%;">
+                        <option value="geral">Todos os Discentes do Curso</option>
+                        <option value="semestre_1">Calouros (1º Semestre)</option>
+                        <option value="semestre_final">Formandos</option>
+                        <option value="grupo_atletica">Membros da Atlética</option>
+                        <option value="grupo_pesquisa">Grupos de Pesquisa</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Mensagem *</label>
+                <textarea id="comMensagem" class="textarea" style="height: 120px;" placeholder="Digite o conteúdo do comunicado aqui..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Canais de Envio</label>
+                <div style="display: flex; gap: 20px; background: #f8efda; padding: 10px; border-radius: 6px;">
+                    <div class="checkbox-group" style="margin: 0;">
+                        <input type="checkbox" id="chkSistema" checked disabled>
+                        <label for="chkSistema">Sistema (Notificação In-App)</label>
+                    </div>
+                    <div class="checkbox-group" style="margin: 0;">
+                        <input type="checkbox" id="chkEmail" checked>
+                        <label for="chkEmail">E-mail Institucional</label>
+                    </div>
+                </div>
+                <small style="color: #666;">* O envio pelo sistema é obrigatório para registro de log.</small>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="fecharModalC('modalNovoComunicado')">Cancelar</button>
+            <button class="btn btn-primary" onclick="enviarComunicado()">🚀 Enviar Comunicado</button>
+        </div>
+    </div>
+</div>
+
+<div id="modalDetalheComunicado" class="modal-overlay">
+    <div class="modal" style="width: 600px;">
+        <div class="modal-header">
+            <h2>Detalhes do Comunicado</h2>
+            <span class="modal-close" onclick="fecharModalC('modalDetalheComunicado')">&times;</span>
+        </div>
+        <div class="modal-body" id="corpoDetalheComunicado">
+            </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" onclick="fecharModalC('modalDetalheComunicado')">Fechar</button>
+        </div>
+    </div>
+</div>

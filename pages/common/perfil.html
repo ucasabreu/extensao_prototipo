@@ -1,0 +1,185 @@
+<link rel="stylesheet" href="../../assets/css/common/perfil.css">
+
+<div class="perfil-wrapper">
+    <div class="perfil-sidebar">
+        <div class="perfil-avatar-big" id="p-avatar">U</div>
+        <div class="perfil-nome" id="p-nome">Carregando...</div>
+        <div class="perfil-email" id="p-email">...</div>
+        <div class="perfil-matricula" id="p-matricula">...</div>
+        <button class="btn-sair-perfil" onclick="window.location.href='../../index.html'">Sair</button>
+    </div>
+
+    <div class="perfil-content">
+        <div style="margin-bottom: 10px;">
+            <h2 style="color: #5d0b0b; margin: 0;">Configurações de Conta</h2>
+        </div>
+
+        <div class="perfil-tabs" id="perfil-tabs-container"></div>
+
+        <div id="perfil-panes-container" style="flex: 1;"></div>
+
+        <div style="margin-top: 30px; text-align: right; padding-top: 20px; border-top: 1px solid #eee;">
+            <button class="btn btn-ghost" onclick="fecharPerfilVoltar()">Voltar</button>
+            <button class="btn btn-primary" onclick="salvarPerfilGeral()">Salvar Alterações</button>
+        </div>
+    </div>
+</div>
+
+<template id="tpl-editar">
+    <div class="form-group">
+        <label class="form-label">Nome Civil (Sincronizado com RH/DRH)</label>
+        <input type="text" class="input-text input-disabled" id="edit-nome" disabled>
+    </div>
+    <div class="form-group">
+        <label class="form-label">E-mail Institucional</label>
+        <input type="text" class="input-text input-disabled" id="edit-email" disabled>
+    </div>
+    <div style="display:flex; gap:20px;">
+        <div class="form-group" style="flex:1">
+            <label class="form-label">Telefone de Contato</label>
+            <input type="text" class="input-text" id="edit-telefone">
+        </div>
+        <div class="form-group" style="flex:2">
+            <label class="form-label">Endereço Residencial</label>
+            <input type="text" class="input-text" id="edit-endereco">
+        </div>
+    </div>
+</template>
+
+<template id="tpl-vinculos">
+    <div class="kpi-grid" style="margin-bottom:20px;">
+        <div class="kpi-card" style="min-height:80px; padding:15px; border-left-color: #2e8b57;">
+            <span class="kpi-title">Status</span>
+            <strong style="font-size:18px; color:#2e8b57;" id="vinc-status">Ativo</strong>
+        </div>
+        <div class="kpi-card" style="min-height:80px; padding:15px;">
+            <span class="kpi-title">Desde</span>
+            <strong style="font-size:18px;" id="vinc-data">...</strong>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="form-label">Papel / Cargo Principal</label>
+        <input type="text" class="input-text input-disabled" id="vinc-papel" disabled>
+    </div>
+    <div class="form-group">
+        <label class="form-label">Unidade de Lotação / Curso</label>
+        <input type="text" class="input-text input-disabled" id="vinc-unidade" disabled>
+    </div>
+    <h4 style="color:#5d0b0b; margin-top:20px; border-bottom:1px solid #eee; padding-bottom:5px;">Grupos e Comissões</h4>
+    <ul style="padding-left:20px; color:#555;" id="vinc-lista-grupos">
+        </ul>
+</template>
+
+<template id="tpl-comunicacao">
+    <div class="alert alert-info">📢 Central de comunicados oficiais da instituição.</div>
+    <div id="lista-comunicados">
+        </div>
+</template>
+
+<template id="tpl-preferencias">
+    <h3 style="color:#5d0b0b; font-size:16px; margin-bottom:15px;">Notificações</h3>
+    <div class="config-row">
+        <span>Receber resumo semanal por e-mail</span>
+        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+    </div>
+    <div class="config-row">
+        <span>Alertas de prazos (Push)</span>
+        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+    </div>
+</template>
+
+<template id="tpl-acessibilidade">
+    <div class="config-row">
+        <span>Modo Alto Contraste</span>
+        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+    </div>
+    <div class="config-row">
+        <span>Fonte Ampliada</span>
+        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+    </div>
+    <div class="config-row">
+        <span>Leitor de Tela (Otimização ARIA)</span>
+        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+    </div>
+</template>
+
+<template id="tpl-seguranca">
+    <div class="config-row">
+        <span>Autenticação de Dois Fatores (2FA)</span>
+        <button class="btn-small btn-small-secondary">Configurar</button>
+    </div>
+    <div class="form-group" style="margin-top:20px;">
+        <button class="btn btn-secondary" style="width:100%">Redefinir Senha</button>
+    </div>
+</template>
+
+<template id="tpl-historico">
+    <p style="font-size:12px; color:#666; margin-bottom:15px;">Este é um espelho das suas ações recentes no sistema.</p>
+    <ul class="timeline-list" id="lista-auditoria">
+        </ul>
+</template>
+
+<template id="tpl-lattes">
+    <div class="form-group">
+        <label class="form-label">Link do Currículo Lattes</label>
+        <input type="text" class="input-text" value="http://lattes.cnpq.br/123456789">
+    </div>
+    <div class="form-group">
+        <label class="form-label">Área de Atuação Principal</label>
+        <input type="text" class="input-text" value="Ciência da Computação">
+    </div>
+</template>
+
+<template id="tpl-academico">
+    <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+        <div class="kpi-card" style="padding: 15px; min-height: 80px; flex:1;">
+            <span class="kpi-title">CRA Global</span>
+            <strong style="font-size: 24px;" id="acad-cra">...</strong>
+        </div>
+        <div class="kpi-card" style="padding: 15px; min-height: 80px; flex:1;">
+            <span class="kpi-title">Semestre Atual</span>
+            <strong style="font-size: 24px;" id="acad-semestre">...</strong>
+        </div>
+    </div>
+
+    <h4 style="color:#5d0b0b; margin-bottom:10px;">Progresso da Extensão (PPC)</h4>
+    <div style="background: #eee; border-radius: 10px; height: 20px; width: 100%; overflow: hidden; margin-bottom: 5px;">
+        <div id="acad-progress-bar" style="background: #2e8b57; height: 100%; width: 0%; color:white; font-size:11px; text-align:center; line-height:20px;">0%</div>
+    </div>
+    <div style="display:flex; justify-content:space-between; font-size:12px; color:#666; margin-bottom:20px;">
+        <span>Concluído: <strong id="acad-horas-feitas">0h</strong></span>
+        <span>Meta: <strong id="acad-horas-total">0h</strong></span>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">Curso</label>
+        <span id="acad-curso" style="font-weight:bold; color:#333;">...</span>
+    </div>
+</template>
+
+<template id="tpl-gestao">
+    <div class="alert alert-info">
+        ℹ️ Dados vinculados à Portaria de Designação <strong id="gestao-portaria">...</strong>.
+    </div>
+    
+    <div class="form-group">
+        <label class="form-label">Curso sob Responsabilidade</label>
+        <input type="text" class="input-text input-disabled" id="gestao-curso" disabled>
+    </div>
+
+    <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+        <div class="kpi-card" style="padding: 15px; min-height: 80px; border-left-color: #2c75b9;">
+            <span class="kpi-title">Vigência</span>
+            <strong style="font-size: 16px; display:block; margin-top:5px;" id="gestao-vigencia">...</strong>
+        </div>
+        <div class="kpi-card" style="padding: 15px; min-height: 80px;">
+            <span class="kpi-title">Docentes Vinculados</span>
+            <strong style="font-size: 16px; display:block; margin-top:5px;" id="gestao-docentes">...</strong>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="form-label">E-mail da Coordenação (Institucional)</label>
+        <input type="text" class="input-text" id="gestao-email">
+    </div>
+</template>

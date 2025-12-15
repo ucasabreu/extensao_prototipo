@@ -1,0 +1,127 @@
+<link rel="stylesheet" href="../../assets/css/ui/coordenador/visao_geral.css">
+
+<div class="dashboard-container">
+
+    <div style="display: flex; flex-direction: column;">
+        
+        <div class="kpi-grid" style="margin-bottom: 25px;">
+            
+            <div class="kpi-card" style="border-left: 5px solid #d4a017;">
+                <div class="kpi-title">Aguardando Validação</div>
+                <div class="kpi-value" id="dash-validacao">0</div>
+                <div class="kpi-sub kpi-warning">Propostas Docentes</div>
+            </div>
+
+            <div class="kpi-card" style="border-left: 5px solid #b01313;">
+                <div class="kpi-title">Discentes em Risco</div>
+                <div class="kpi-value" id="dash-risco">0</div>
+                <div class="kpi-sub kpi-negative">Abaixo da meta</div>
+            </div>
+
+            <div class="kpi-card" style="border-left: 5px solid #2e8b57;">
+                <div class="kpi-title">Atividades Ativas</div>
+                <div class="kpi-value" id="dash-ativas">0</div>
+                <div class="kpi-sub kpi-positive">Em andamento</div>
+            </div>
+
+        </div>
+
+        <div class="dash-card">
+            <div class="dash-header">
+                <h3 class="dash-title">Distribuição de Carga Horária do Curso</h3>
+                <p class="dash-subtitle">Visão consolidada do progresso dos discentes no semestre.</p>
+            </div>
+            
+            <div class="chart-container">
+                <div class="bar-group">
+                    <div class="bar-value">45%</div>
+                    <div class="bar" style="height: 120px; background: #2e8b57;"></div>
+                    <span class="bar-label">Concluído</span>
+                </div>
+                <div class="bar-group">
+                    <div class="bar-value">30%</div>
+                    <div class="bar" style="height: 80px; background: #d4a017;"></div>
+                    <span class="bar-label">Em Curso</span>
+                </div>
+                <div class="bar-group">
+                    <div class="bar-value">25%</div>
+                    <div class="bar" style="height: 60px; background: #b01313;"></div>
+                    <span class="bar-label">Pendente</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div style="display: flex; flex-direction: column;">
+
+        <div class="dash-card" style="padding: 20px; border-left: 4px solid #5d0b0b;">
+            <div class="dash-header" style="margin-bottom: 12px; border-bottom: none; padding-bottom: 0;">
+                <h4 class="dash-title">
+                    👤 Minha Atuação
+                </h4>
+            </div>
+            
+            <div style="display: flex; flex-direction: column;">
+                
+                <div class="summary-row">
+                    <span>Propostas Pendentes:</span>
+                    <strong id="resumo-propostas-pend">0</strong>
+                </div>
+                
+                <div class="summary-row">
+                    <span>Solicitações Externas:</span>
+                    <strong id="resumo-solicitacoes-ext">0</strong>
+                </div>
+
+                <div style="height: 1px; background: #eee; margin: 8px 0;"></div>
+
+                <div class="summary-row" style="font-size: 12px;">
+                    <span>Última ação:</span>
+                    <span id="resumo-ultima-acao" style="color: #666;">-</span>
+                </div>
+
+                <div class="summary-row">
+                    <span>Status:</span>
+                    <span class="badge badge-success" id="resumo-status" style="font-size: 10px; padding: 2px 8px;">-</span>
+                </div>
+
+                <div style="height: 1px; background: #eee; margin: 8px 0;"></div>
+
+                <div class="summary-row">
+                    <span>Analisadas (mês):</span>
+                    <strong style="color: #2e8b57;" id="resumo-analisadas">0</strong>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="dash-card" style="border-top: 5px solid #d4a017; padding-top: 20px;">
+            <div class="dash-header">
+                <h4 class="dash-title">⚠️ Alertas e Pendências</h4>
+            </div>
+            <div id="lista-alertas" style="display: flex; flex-direction: column; gap: 10px;">
+                <div style="font-size: 13px; color: #999; text-align: center; padding: 20px;">Carregando...</div>
+            </div>
+        </div>
+
+        <div class="dash-card">
+            <div class="dash-header">
+                <h4 class="dash-title">⚡ Acesso Rápido</h4>
+            </div>
+            <div>
+                <button class="quick-action-btn" onclick="irParaAba('Validação')">
+                    <span class="quick-icon">🔍</span> Validar Propostas
+                </button>
+                <button class="quick-action-btn" onclick="irParaAba('Oportunidades')">
+                    <span class="quick-icon">➕</span> Nova Oportunidade
+                </button>
+                <button class="quick-action-btn" onclick="irParaAba('Gestão de Discentes')">
+                    <span class="quick-icon">👥</span> Analisar Risco
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+</div>

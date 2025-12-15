@@ -1,0 +1,152 @@
+/* =======================================================
+   ESTILOS DA CENTRAL DE NOTIFICAÇÕES (DOCENTE)
+   Arquivo: assets/css/ui/docente/notificacoes.css
+   ======================================================= */
+
+/* --- BARRA DE FILTROS --- */
+.toolbar-notificacoes {
+    background: #fff;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #e3d8c7; /* Bege suave padrão */
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.btn-filter {
+    background: transparent;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    color: #666;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+.btn-filter:hover {
+    background: #f8efda;
+    color: #5d0b0b;
+}
+
+.btn-filter.active {
+    background: #5d0b0b; /* Bordô Institucional */
+    color: #fff;
+}
+
+/* --- CARD DE NOTIFICAÇÃO --- */
+.notification-feed {
+    display: flex;
+    flex-direction: column;
+}
+
+.notif-card {
+    background: #fff;
+    border: 1px solid #e3d8c7;
+    border-radius: 8px;
+    padding: 18px;
+    margin-bottom: 12px;
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    cursor: pointer; /* Indica que é clicável (marcar como lida) */
+}
+
+.notif-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(93, 11, 11, 0.08);
+    border-color: #c9b8a5;
+}
+
+/* Estado: Não Lido */
+.notif-unread {
+    background: #fffdf5; /* Fundo levemente amarelado */
+    border-left: 4px solid #d4a017; /* Amarelo Ouro Institucional */
+}
+
+/* Indicador visual de não lido (bolinha) */
+.notif-indicator {
+    width: 8px;
+    height: 8px;
+    background: #d4a017;
+    border-radius: 50%;
+    margin-top: 5px;
+}
+
+/* --- ÍCONES E IDENTIDADE --- */
+.notif-icon-box {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+/* Variações de Cores dos Ícones */
+.icon-institucional { background: #fbeaea; color: #5d0b0b; } /* Bordô (Inscrições) */
+.icon-sucesso       { background: #e4f5e9; color: #2e8b57; } /* Verde (Oportunidades) */
+.icon-alerta        { background: #fff5d6; color: #d4a017; } /* Amarelo (Frequência/Prazos) */
+.icon-neutro        { background: #f4f4f4; color: #666; }    /* Cinza (Sistema) */
+
+/* --- CONTEÚDO DO CARD --- */
+.notif-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.notif-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.notif-title {
+    font-weight: 700;
+    color: #333;
+    font-size: 14px;
+}
+
+.notif-time {
+    font-size: 11px;
+    color: #888;
+    white-space: nowrap;
+}
+
+.notif-msg {
+    color: #555;
+    font-size: 13px;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* --- BOTÕES DE AÇÃO (CTA) --- */
+.btn-notif-action {
+    margin-top: 10px;
+    padding: 6px 14px;
+    background: #fff;
+    color: #5d0b0b;
+    border: 1px solid #5d0b0b;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: 0.2s;
+    align-self: flex-start; /* Alinha à esquerda dentro do flex column */
+}
+
+.btn-notif-action:hover {
+    background: #5d0b0b;
+    color: #fff;
+}
