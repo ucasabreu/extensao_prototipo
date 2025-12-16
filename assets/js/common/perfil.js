@@ -39,8 +39,15 @@ function montarAbas() {
     // === ABAS PADRÃO (GLOBAL) ===
     // Definimos aqui as funções de preenchimento (fillData) para cada uma
     const abasPadrao = [
-        { id: "editar", label: "Editar Dados", templateId: "tpl-editar", fillData: preencherEditar }
+        { id: "editar", label: "Editar Dados", templateId: "tpl-editar", fillData: preencherEditar },
+        { 
+            id: "configuracoes",
+            label: "Configurações",
+            templateId: "tpl-configuracoes",
+            fillData: preencherConfiguracoes
+        }
     ];
+
 
     if (currentStrategy.getVinculosData) {
         abasPadrao.push({
@@ -182,3 +189,28 @@ function preencherHistorico(clone) {
 
 window.fecharPerfilVoltar = () => location.reload();
 window.salvarPerfilGeral = () => { if (window.showToast) window.showToast("success", "Salvo!"); };
+
+
+function preencherConfiguracoes(clone) {
+
+    // Preferências
+    const prefTpl = document.getElementById("tpl-preferencias");
+    if (prefTpl) {
+        clone.querySelector("#cfg-preferencias")
+             .appendChild(prefTpl.content.cloneNode(true));
+    }
+
+    // Acessibilidade
+    const acessTpl = document.getElementById("tpl-acessibilidade");
+    if (acessTpl) {
+        clone.querySelector("#cfg-acessibilidade")
+             .appendChild(acessTpl.content.cloneNode(true));
+    }
+
+    // Segurança
+    const segTpl = document.getElementById("tpl-seguranca");
+    if (segTpl) {
+        clone.querySelector("#cfg-seguranca")
+             .appendChild(segTpl.content.cloneNode(true));
+    }
+}

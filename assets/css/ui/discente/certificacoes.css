@@ -1,83 +1,146 @@
+/* ===============================
+   CERTIFICAÇÕES – DISCENTE
+================================ */
+
+.discente-certificacoes {
+    width: 1200px;
+    max-width: 95vw;
+    margin: 32px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Caixa externa – moldura */
 .discente-certificacoes .box-externa {
-    background: #7a0c0c;
-    border-radius: 12px;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    height: 600px;
+    background: linear-gradient(135deg, #8b1d1d, #6f1414);
+    border-radius: 16px;
+    padding: 14px;
 }
 
+/* Caixa interna – conteúdo */
 .discente-certificacoes .box-interna {
-    background: #f3e3b8;
-    border-radius: 10px;
-    padding: 12px;
-    flex: 1;
+    background: #fbf6ea;
+    border-radius: 14px;
+    padding: 18px;
     display: flex;
     flex-direction: column;
-    overflow-y: auto; /* Scroll interno */
+    gap: 14px;
 }
 
-.discente-certificacoes .certificacoes-header {
+/* Header */
+.certificacoes-header {
     display: grid;
-    grid-template-columns: 2fr 2fr 2fr 1fr 1fr;
-    font-weight: bold;
-    margin-bottom: 10px;
-    padding-bottom: 6px;
-    border-bottom: 2px solid #a32626;
+    grid-template-columns: 2.2fr 2fr 2fr 1.2fr 1.2fr;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.4px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #c03939;
+    color: #5a0d0d;
+    text-transform: uppercase;
 }
 
-.discente-certificacoes .certificacoes-lista {
+/* Lista */
+.certificacoes-lista {
     display: grid;
-    grid-auto-rows: minmax(50px, auto);
-    gap: 8px;
+    gap: 10px;
 }
 
-.discente-certificacoes .certificacao-card {
+/* Card */
+.certificacao-card {
     display: grid;
-    grid-template-columns: 2fr 2fr 2fr 1fr 1fr;
-    background: #ffffff;
-    border: 1px solid #a32626;
-    border-radius: 8px;
-    padding: 6px 10px;
+    grid-template-columns: 2.2fr 2fr 2fr 1.2fr 1.2fr;
     align-items: center;
+
+    background: #ffffff;
+    border: 1px solid #eadfcb;
+    border-radius: 12px;
+    padding: 10px 14px;
+
     font-size: 14px;
-    overflow-wrap: anywhere;
+    color: #333;
+
+    transition: 
+        box-shadow 0.15s ease,
+        transform 0.15s ease;
 }
 
-.discente-certificacoes .certificacao-card a {
-    color: #007bff;
+.certificacao-card:hover {
+    box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+    transform: translateY(-1px);
+}
+
+/* Links */
+.certificacao-card a {
+    color: #0d6efd;
     text-decoration: none;
+    font-weight: 500;
 }
 
-.discente-certificacoes .certificacao-card a:hover {
+.certificacao-card a:hover {
     text-decoration: underline;
 }
 
-.discente-certificacoes .certificacoes-footer {
-    margin-top: 12px;
+/* Status */
+.certificacao-card .Concluído {
+    color: #1e7e34;
+    font-weight: 700;
+}
+
+.certificacao-card .Em-andamento {
+    color: #856404;
+    font-weight: 700;
+}
+
+/* Estado vazio */
+.certificacoes-vazio {
     text-align: center;
+    font-style: italic;
+    padding: 16px;
+    color: #6b6b6b;
+    background: #fffaf0;
+    border: 1px dashed #e1d5bf;
+    border-radius: 10px;
 }
 
-.discente-certificacoes .btn-gerar-historico {
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 12px 24px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.2s;
+/* Footer */
+.certificacoes-footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 6px;
 }
 
-.discente-certificacoes .btn-gerar-historico:hover {
-    background-color: #218838;
+/* Botão */
+.btn-gerar-historico {
+    padding: 12px 28px;
+    font-size: 15px;
+    border-radius: 12px;
+    font-weight: 600;
 }
 
-/* Responsivo */
+/* ===============================
+   RESPONSIVO
+================================ */
+
 @media (max-width: 900px) {
-    .discente-certificacoes .certificacoes-header,
-    .discente-certificacoes .certificacao-card {
+
+    .certificacoes-header {
+        display: none;
+    }
+
+    .certificacao-card {
         grid-template-columns: 1fr;
         gap: 6px;
+        font-size: 13px;
+    }
+
+    .certificacao-card div::before {
+        content: attr(data-label);
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: #777;
+        display: block;
     }
 }
