@@ -1,4 +1,57 @@
-// MOCK de certificações
+import { getCertificacoes } from "../services/discente.service.js";
+
+/* ===============================
+   CARREGA VIEW
+================================ */
+export async function carregarCertificacoesDiscenteOfertante () {
+    const res = await fetch("../../pages/discenteOfertante/certificacoes.html");
+    return await res.text();
+}
+
+/* ===============================
+   ATIVAÇÃO
+================================ */
+export async function ativarCertificacoesDiscenteOfertante () {
+    const certificacoes = await getCertificacoes();
+    renderizarCertificacoesOfertante (certificacoes);
+}
+
+/* ===============================
+   RENDERIZA
+================================ */
+function renderizarCertificacoesOfertante (certificacoes) {
+    const container = document.getElementById("certificacoes");
+    if (!container) return;
+
+    if (!certificacoes.length) {
+        container.innerHTML =
+            `<p class="certificacoes-vazio">Nenhuma certificação encontrada.</p>`;
+        return;
+    }
+
+    container.innerHTML = certificacoes.map(c => `
+        <div class="certificacao-card">
+            <div>${c.nome}</div>
+            <div>${c.provedor}</div>
+            <div>
+                <button class="btn btn-secondary btn-small">Baixar</button>
+            </div>
+            <div>${c.carga}h</div>
+            <div>
+                <span class="badge ${getBadgeClass(c.status)}">${c.status}</span>
+            </div>
+        </div>
+    `).join("");
+}
+
+function getBadgeClass(status) {
+    if (status === "Aprovada") return "badge-success";
+    if (status === "Em análise") return "badge-warning";
+    return "badge-info";
+}
+
+
+/*// MOCK de certificações
 const certificacoesMock = [
     {
         nome: "Fulano de Tal",
@@ -55,4 +108,4 @@ export function ativarCertificacoesDiscente() {
 export async function carregarCertificacoesDiscente() {
     const response = await fetch("../../pages/discenteOfertante/certificacoes.html");
     return await response.text();
-}
+}*/

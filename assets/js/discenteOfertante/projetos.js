@@ -288,12 +288,12 @@ function inicializarSubmenu() {
    INIT / EXPORTS
 ==================================================== */
 
-export async function carregarProjetosDiscente() {
+export async function carregarProjetosDiscenteOfertante() {
     const response = await fetch("../../pages/discenteOfertante/projetos.html");
     return await response.text();
 }
 
-export function ativarProjetosDiscente() {
+export function ativarProjetosDiscenteOfertante() {
     inicializarSubmenu();
     popularFiltroProfessor();
     inicializarFormOportunidade();
