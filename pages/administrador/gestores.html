@@ -1,0 +1,27 @@
+<div class="toolbar" style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+    <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" placeholder="Buscar por nome ou matrícula...">
+    </div>
+    <button class="btn btn-primary" onclick="novoGestor()">
+        + Novo Gestor
+    </button>
+</div>
+
+<div class="table-container">
+    <table class="global-table">
+        <thead>
+            <tr>
+                <th>Nome Completo</th>
+                <th>E-mail Institucional</th>
+                <th>Matrícula/SIAPE</th>
+                <th>Perfil</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody id="tabela-gestores-corpo">
+            <tr><td colspan="6" style="text-align:center">Carregando...</td></tr>
+        </tbody>
+    </table>
+</div>

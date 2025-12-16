@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Administrador do Sistema</title>
+
+    <link rel="stylesheet" href="../../assets/css/common/layout.css">
+    <link rel="stylesheet" href="../../assets/css/global/tables.css">
+    <link rel="stylesheet" href="../../assets/css/global/cards.css">
+    <link rel="stylesheet" href="../../assets/css/global/badges.css">
+    <link rel="stylesheet" href="../../assets/css/global/button.css">
+    <link rel="stylesheet" href="../../assets/css/global/forms.css">
+    <link rel="stylesheet" href="../../assets/css/global/modal.css">
+    <link rel="stylesheet" href="../../assets/css/global/alerts.css">
+</head>
+<body>
+
+    <div id="layout-area"></div>
+    <div id="toast-container"></div>
+
+    <script type="module">
+        // Importa o Layout Base (Menu Lateral e Topbar)
+        import { carregarLayout } from "../../assets/js/common/layout.js";
+
+        // Importa Módulos Específicos do Administrador
+        // (Nota: Você deve criar esses arquivos JS correspondentes na pasta assets)
+       // import { carregarViewVisaoGeral, initVisaoGeral } from "../../assets/js/administrador/dashboard_home.js";
+        import { carregarViewGestores, initGestores } from "../../assets/js/administrador/gestores.js";
+      //  import { carregarViewPermissoes, initPermissoes } from "../../assets/js/administrador/permissoes.js";
+      //  import { carregarViewConteudo, initConteudo } from "../../assets/js/administrador/conteudo.js";
+
+        async function init() {
+            // Define o contexto de sessão
+            localStorage.setItem("perfil", "administrador");
+
+            // 1. Carrega os HTMLs das Views (Assíncrono)
+            // Tratamento de erro básico caso o arquivo ainda não exista
+            let htmlVisaoGeral, htmlGestores, htmlPermissoes, htmlConteudo;
+            
+            try { htmlVisaoGeral = await carregarViewVisaoGeral(); } catch(e) { htmlVisaoGeral = "<div>Erro Visão Geral</div>"; }
+            try { htmlGestores = await carregarViewGestores(); } catch(e) { htmlGestores = "<div>Erro Gestores</div>"; }
+            try { htmlPermissoes = await carregarViewPermissoes(); } catch(e) { htmlPermissoes = "<div>Erro Permissões</div>"; }
+            try { htmlConteudo = await carregarViewConteudo(); } catch(e) { htmlConteudo = "<div>Erro Conteúdo</div>"; }
+
+            // 2. Configura o Menu Lateral e as callbacks de inicialização
+            carregarLayout([
+                {
+                    label: "Visão Geral",
+                    content: htmlVisaoGeral,
+                    title: "Painel Administrativo",
+                    description: "Status do sistema e atalhos rápidos.",
+                    onRender: () => initVisaoGeral()
+                },
+                {
+                    label: "Gestores e Usuários",
+                    content: htmlGestores,
+                    title: "Gestão de Usuários (RF 003)",
+                    description: "Cadastrar Docentes, Coordenadores e Secretários.",
+                    onRender: () => initGestores()
+                },
+                {
+                    label: "Permissões",
+                    content: htmlPermissoes,
+                    title: "Matriz de Acessos (RF 004)",
+                    description: "Configurar permissões por perfil e módulo.",
+                    onRender: () => initPermissoes()
+                },
+                {
+                    label: "Conteúdo e FAQ",
+                    content: htmlConteudo,
+                    title: "Central de Ajuda (RF 044)",
+                    description: "Gerenciar perguntas frequentes e documentos institucionais.",
+                    onRender: () => initConteudo()
+                }
+            ]);
+        }
+
+        init();
+    </script>
+</body>
+</html>
