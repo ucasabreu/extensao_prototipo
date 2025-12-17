@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/assets/css/ui/login/resetpassscreen.css" />
+    <link rel="stylesheet" href="/assets/css/global/forms.css" />
+    <title>Recuperar senha</title>
+  </head>
+  <body>
+    <body>
+      <section class="main-container">
+        <div id="popup" class="popup-container">
+          <div class="popup">
+            <span>Senha atualizada!</span>
+          </div>
+        </div>
+        <div class="form-container">
+          <form action="" class="form">
+            <h1 class="form-title">Recuperar senha</h1>
+            <div class="form-group mb-10">
+              <label class="label-form" for="">Nova Senha</label>
+              <input
+                class="input-text"
+                type="password"
+                placeholder="Nova senha"
+                id="newPassInput"
+              />
+            </div>
+            <div class="form-group">
+              <label class="label-form" for="">Confirmar nova senha</label>
+              <input
+                class="input-text"
+                type="password"
+                placeholder="Confirmar nova senha"
+                id="confirmPassInput"
+              />
+            </div>
+            <div class="bottom-container">
+              <button id="sendBtn" type="button" class="buttom-form">
+                Enviar
+              </button>
+              <button
+                id="cancelButtom"
+                type="button"
+                class="buttom-form"
+                onclick="window.location.href='loginscreen.html'"
+              >
+                Cancelar
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </body>
+    <script src="/assets/js/login/resetpassscreen.js"></script>
+  </body>
+</html>
