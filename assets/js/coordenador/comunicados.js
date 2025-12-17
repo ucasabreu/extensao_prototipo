@@ -1,45 +1,14 @@
 /* ====================================================================
    MÓDULO DE COMUNICADOS (COORDENADOR)
    Arquivo: assets/js/coordenador/comunicados.js
-   Requisitos: RF042, RF043
+   Refatorado para usar: coordenador.service.js
    ==================================================================== */
 
-// MOCK: Histórico de Comunicados
-// Inclui status de erro para atender ao requisito de "Falha de envio"
-let comunicadosDB = [
-    {
-        id: 1,
-        data: "12/12/2025",
-        titulo: "Prazo para Relatório Final UCE",
-        mensagem: "Prezados, o prazo final para submissão é dia 20/12. Não haverá prorrogação.",
-        publico: "Formandos",
-        canais: ["Sistema", "Email"],
-        status: "Enviado", // Sucesso total
-        autor: "Coordenação"
-    },
-    {
-        id: 2,
-        data: "10/11/2025",
-        titulo: "Abertura de Edital PIBEX",
-        mensagem: "O edital para bolsas de extensão está aberto. Consultem o site da PROEC.",
-        publico: "Todo o Curso",
-        canais: ["Sistema", "Email"],
-        status: "Falha Parcial", // Simulação de erro (RF043)
-        detalheErro: "5 emails retornaram (caixa cheia)",
-        autor: "Coordenação"
-    },
-    {
-        id: 3,
-        data: "01/11/2025",
-        titulo: "Manutenção no SIGAA",
-        mensagem: "Sistema ficará indisponível no final de semana.",
-        publico: "Institucional",
-        canais: ["Sistema"],
-        status: "Recebido", // Vindo da Reitoria
-        autor: "Reitoria / TI"
-    }
-];
+// 1. IMPORTAÇÃO DO SERVICE
+import { getComunicados, criarComunicado } from "../services/coordenador.service.js";
 
+// 2. ESTADO LOCAL (Substitui o array fixo antigo)
+let listaLocal = []; 
 let abaAtual = 'enviados'; // 'enviados' ou 'recebidos'
 
 export async function carregarViewComunicados() {
@@ -52,7 +21,10 @@ export async function carregarViewComunicados() {
     }
 }
 
-export function initComunicados() {
+// 3. INIT AGORA É ASYNC (Para buscar dados)
+export async function initComunicados() {
+    // Busca dados do serviço antes de renderizar
+    listaLocal = await getComunicados();
     renderizarTabelaComunicados();
 }
 
@@ -64,10 +36,11 @@ window.renderizarTabelaComunicados = () => {
     const tbody = document.getElementById("tb-comunicados");
     if(!tbody) return;
 
-    const termo = document.getElementById("buscaComunicado").value.toLowerCase();
+    const termoInput = document.getElementById("buscaComunicado");
+    const termo = termoInput ? termoInput.value.toLowerCase() : "";
     
-    // Filtra por aba (Enviados x Recebidos) e Busca
-    const filtrados = comunicadosDB.filter(c => {
+    // Filtra usando a listaLocal (que veio do Service)
+    const filtrados = listaLocal.filter(c => {
         // Lógica da Aba
         let pertenceAba = false;
         if (abaAtual === 'enviados') pertenceAba = c.autor === "Coordenação";
@@ -85,13 +58,13 @@ window.renderizarTabelaComunicados = () => {
     }
 
     tbody.innerHTML = filtrados.map(c => {
-        // Badges de Status
+        // Badges de Status (Mantido igual)
         let badgeStatus = `<span class="badge badge-success">Enviado</span>`;
-        if (c.status === "Falha Parcial") badgeStatus = `<span class="badge badge-danger" title="${c.detalheErro}">⚠️ Falha Parcial</span>`;
+        if (c.status === "Falha Parcial") badgeStatus = `<span class="badge badge-danger" title="${c.detalheErro || ''}">⚠️ Falha Parcial</span>`;
         if (c.status === "Recebido") badgeStatus = `<span class="badge badge-info">Recebido</span>`;
 
         // Formata canais
-        const canaisStr = c.canais.join(" + ");
+        const canaisStr = c.canais ? c.canais.join(" + ") : "-";
 
         return `
             <tr>
@@ -112,8 +85,8 @@ window.renderizarTabelaComunicados = () => {
    AÇÕES (ENVIO E VISUALIZAÇÃO)
    ======================= */
 
-// Enviar Comunicado (RF043)
-window.enviarComunicado = () => {
+// Enviar Comunicado (Agora chama o Service)
+window.enviarComunicado = async () => {
     const titulo = document.getElementById("comTitulo").value;
     const mensagem = document.getElementById("comMensagem").value;
     const destinoSelect = document.getElementById("comDestino");
@@ -125,38 +98,50 @@ window.enviarComunicado = () => {
         return;
     }
 
-    // Mock de Envio
     const canais = ["Sistema"];
     if (enviaEmail) canais.push("Email");
 
-    comunicadosDB.unshift({
-        id: Date.now(),
+    // Cria objeto temporário
+    const novoComunicado = {
         data: new Date().toLocaleDateString(),
         titulo: titulo,
         mensagem: mensagem,
         publico: destinoTexto,
         canais: canais,
-        status: "Enviado", // Sucesso por padrão no mock
+        status: "Enviado",
         autor: "Coordenação"
-    });
+    };
 
-    fecharModalC("modalNovoComunicado");
-    
-    // Força a aba para "Enviados" e atualiza
-    window.filtrarTipoComunicado('enviados');
-    
-    if(window.showToast) showToast("success", "Comunicado enviado com sucesso para " + destinoTexto);
+    // 4. CHAMADA AO SERVICE
+    try {
+        await criarComunicado(novoComunicado); // Service salva e gera ID
+        
+        // Atualiza lista local com a versão mais recente
+        listaLocal = await getComunicados();
+        
+        fecharModalC("modalNovoComunicado");
+        
+        // Força a aba para "Enviados" e atualiza
+        window.filtrarTipoComunicado('enviados');
+        
+        if(window.showToast) showToast("success", "Comunicado enviado com sucesso para " + destinoTexto);
+
+    } catch (e) {
+        console.error(e);
+        alert("Erro ao enviar comunicado.");
+    }
 };
 
-// Ver Detalhes (Modal de Leitura)
+// Ver Detalhes (Lê de listaLocal)
 window.verDetalheComunicado = (id) => {
-    const c = comunicadosDB.find(x => x.id === id);
+    // Busca na lista local atualizada
+    const c = listaLocal.find(x => x.id === id);
     if (!c) return;
 
     let alertaErro = "";
     if (c.status === "Falha Parcial") {
         alertaErro = `<div class="alert alert-danger" style="margin-bottom:15px;">
-            <strong>Erro no envio:</strong> ${c.detalheErro}.<br>
+            <strong>Erro no envio:</strong> ${c.detalheErro || 'Erro desconhecido'}.<br>
             <a href="#" style="text-decoration:underline; font-weight:bold;">Reenviar para pendentes</a>
         </div>`;
     }
@@ -178,20 +163,19 @@ window.verDetalheComunicado = (id) => {
     document.getElementById("modalDetalheComunicado").style.display = "flex";
 };
 
-// Controle de Abas
+// Controle de Abas (Lógica visual inalterada)
 window.filtrarTipoComunicado = (tipo) => {
     abaAtual = tipo;
     
-    // Atualiza botões
     const btnEnviados = document.getElementById("btnTabEnviados");
     const btnRecebidos = document.getElementById("btnTabRecebidos");
     
     if (tipo === 'enviados') {
-        btnEnviados.className = "btn btn-secondary active-tab-btn";
-        btnRecebidos.className = "btn btn-ghost";
+        if(btnEnviados) btnEnviados.className = "btn btn-secondary active-tab-btn";
+        if(btnRecebidos) btnRecebidos.className = "btn btn-ghost";
     } else {
-        btnEnviados.className = "btn btn-ghost";
-        btnRecebidos.className = "btn btn-secondary active-tab-btn";
+        if(btnEnviados) btnEnviados.className = "btn btn-ghost";
+        if(btnRecebidos) btnRecebidos.className = "btn btn-secondary active-tab-btn";
     }
 
     renderizarTabelaComunicados();
