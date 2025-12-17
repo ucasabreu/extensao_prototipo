@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Discente</title>
+    <title>Dashboard Discente Ofertante</title>
 
     <!-- CSS -->
     <link rel="stylesheet" href="../../assets/css/common/layout.css">
@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="../../assets/css/ui/discenteOfertante/solicitacoes.css">
     <link rel="stylesheet" href="../../assets/css/ui/discenteOfertante/certificacoes.css">
     <link rel="stylesheet" href="../../assets/css/ui/discenteOfertante/projetos.css">
+    
 
     <link rel="stylesheet" href="../../assets/css/global/button.css">
     <link rel="stylesheet" href="../../assets/css/global/tables.css">
@@ -21,7 +22,6 @@
     <link rel="stylesheet" href="../../assets/css/global/forms.css">
     <link rel="stylesheet" href="../../assets/css/global/modal.css">
     <link rel="stylesheet" href="../../assets/css/global/alerts.css">
-
 
 </head>
 
@@ -40,34 +40,42 @@
         } from "../../assets/js/discenteOfertante/discenteOfertante.controller.js";
 
 
-        // Discente Ofertante
+        // Discente
         localStorage.setItem("perfil", "discenteOfertante");
-
+        
         carregarLayout([
             {
                 label: "Visão Geral",
                 title: "Visão Geral",
-                description: "Resumo das suas atividades ofertadas",
+                description: "Resumo das suas atividades",
                 content: "",
                 onRender: renderDashboardDiscenteOfertante
             },
             {
                 label: "Oportunidades",
+                title: "Oportunidades",
+                description: "Oportunidades disponíveis para você",
                 content: "",
                 onRender: renderOportunidadesDiscenteOfertante
             },
             {
                 label: "Solicitações",
+                title: "Solicitações",
+                description: "Solicitações pendentes, aprovadas e rejeitadas",
                 content: "",
                 onRender: renderSolicitacoesDiscenteOfertante
             },
             {
                 label: "Meus Projetos",
+                title: "Meus Projetos",
+                description: "Projetos em que você participa",
                 content: "",
                 onRender: renderProjetosDiscenteOfertante
             },
             {
                 label: "Certificações",
+                title: "Certificações",
+                description: "Certificações obtidas e histórico",
                 content: "",
                 onRender: renderCertificacoesDiscenteOfertante
             }
@@ -76,3 +84,8 @@
 </body>
 
 </html>
+
+
+
+
+

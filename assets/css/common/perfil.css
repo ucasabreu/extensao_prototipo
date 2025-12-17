@@ -194,3 +194,10 @@
         padding: 20px;
     }
 }
+
+.perfil-content section {
+    background: #fafafa;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #eee;
+}
