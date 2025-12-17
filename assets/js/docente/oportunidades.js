@@ -182,8 +182,8 @@ function renderizarTabela() {
             case "Rascunho":
                 badgeClass = "badge-neutral";
                 acoesNavegacao = `
-                    <button class="btn-small btn-small-primary" onclick="editarRascunho(${op.id})" style="width: 100%;">✏️ Editar</button>
-                    <button class="btn-small btn-small-success" onclick="enviarAprovacao(${op.id})" style="width: 100%;">🚀 Enviar</button>`;
+                    <button class="btn-small btn-small-primary" onclick="editarRascunho(${op.id})" style="width: 100%;">Editar</button>
+                    <button class="btn-small btn-small-success" onclick="enviarAprovacao(${op.id})" style="width: 100%;">Enviar</button>`;
                 break;
 
             case "Em Análise":
@@ -206,7 +206,7 @@ function renderizarTabela() {
                         justify-content: center;
                         gap: 6px;
                         cursor: help;" title="Aguardando análise da coordenação">
-                        <span>⏳</span>
+                        <span></span>
                         <span>Em Análise...</span>
                     </div>`;
                 break;
@@ -214,14 +214,14 @@ function renderizarTabela() {
             case "Rejeitada":
                 badgeClass = "badge-danger";
                 acoesNavegacao = `
-                    <button class="btn-small btn-small-danger" onclick="verJustificativa(${op.id})" style="width: 100%;">👁️ Ver Parecer</button>
-                    <button class="btn-small btn-small-primary" onclick="editarRascunho(${op.id})" style="width: 100%;">✏️ Corrigir</button>`;
+                    <button class="btn-small btn-small-danger" onclick="verJustificativa(${op.id})" style="width: 100%;">Ver Parecer</button>
+                    <button class="btn-small btn-small-primary" onclick="editarRascunho(${op.id})" style="width: 100%;">Corrigir</button>`;
                 break;
 
             case "Publicada":
                 badgeClass = "badge-info";
                 acoesNavegacao = `
-                    <button class="btn-small btn-small-info" onclick="acessarModulo('inscricoes', ${op.id})" style="width: 100%;">👥 Inscrições ↗</button>
+                    <button class="btn-small btn-small-info" onclick="acessarModulo('inscricoes', ${op.id})" style="width: 100%;">Inscrições ↗</button>
                 `;
                 break;
 
@@ -232,17 +232,17 @@ function renderizarTabela() {
                 let btnPlano = "";
                 if (op.plano) {
                     // Se já tem plano: Botão Azul (Info)
-                    btnPlano = `<button class="btn-small btn-small-info" onclick="acessarModulo('plano', ${op.id})" style="width: 100%;">📋 Ver Plano ↗</button>`;
+                    btnPlano = `<button class="btn-small btn-small-info" onclick="acessarModulo('plano', ${op.id})" style="width: 100%;">Ver Plano ↗</button>`;
                 } else {
                     // Se não tem plano: Botão Amarelo (Alerta)
-                    btnPlano = `<button class="btn-small btn-small-warning" onclick="acessarModulo('plano', ${op.id})" style="width: 100%;">⚠️ Definir Plano ↗</button>`;
+                    btnPlano = `<button class="btn-small btn-small-warning" onclick="acessarModulo('plano', ${op.id})" style="width: 100%;">Definir Plano ↗</button>`;
                 }
 
                 // 2. Monta o HTML final com os 3 botões
                 acoesNavegacao = `
-                    <button class="btn-small btn-small-primary" onclick="acessarModulo('frequencia', ${op.id})" style="width: 100%;">📝 Frequência ↗</button>
+                    <button class="btn-small btn-small-primary" onclick="acessarModulo('frequencia', ${op.id})" style="width: 100%;">Frequência ↗</button>
                     ${btnPlano}
-                    <button class="btn-small btn-small-info" onclick="acessarModulo('inscricoes', ${op.id})" style="width: 100%;">👥 Inscrições ↗</button>
+                    <button class="btn-small btn-small-info" onclick="acessarModulo('inscricoes', ${op.id})" style="width: 100%;">Inscrições ↗</button>
                 `;
                 break;
 

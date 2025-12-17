@@ -158,21 +158,21 @@ window.filtrarInscricoes = () => {
             if (bloqueiaAprovacao) {
                 // Botão desabilitado com tooltip explicando o motivo
                 let motivo = isVagasCheias ? "Vagas Esgotadas" : "Conflito de Horário";
-                acoes += `<button class="btn-small btn-small-secondary" disabled title="${motivo}" style="opacity: 0.5; cursor: not-allowed;">✅</button>`;
+                acoes += `<button class="btn-small btn-small-secondary" disabled title="${motivo}" style="opacity: 0.5; cursor: not-allowed;">aprovar</button>`;
             } else {
-                acoes += `<button class="btn-small btn-small-success" onclick="acaoAprovarInsc(${insc.id})" title="Aprovar">✅</button>`;
+                acoes += `<button class="btn-small btn-small-success" onclick="acaoAprovarInsc(${insc.id})" title="Aprovar">aprovar</button>`;
             }
-            acoes += ` <button class="btn-small btn-small-danger" onclick="acaoRejeitarInsc(${insc.id})" title="Rejeitar">❌</button>`;
+            acoes += ` <button class="btn-small btn-small-danger" onclick="acaoRejeitarInsc(${insc.id})" title="Rejeitar">rejeitar</button>`;
         }
         
         if (insc.status === "aprovada") {
-            acoes += `<button class="btn-small btn-small-danger" onclick="acaoRemoverInsc(${insc.id})" title="Cancelar Inscrição">🗑️</button>`;
+            acoes += `<button class="btn-small btn-small-danger" onclick="acaoRemoverInsc(${insc.id})" title="Cancelar Inscrição">cancelar</button>`;
         }
 
         if (insc.status === "rejeitada") {
             // Escapar aspas para evitar erro no onclick
             const just = (insc.justificativa || 'N/A').replace(/'/g, "\\'");
-            acoes += `<button class="btn-small btn-small-info" onclick="alert('Justificativa: ${just}')">👁️ Motivo</button>`;
+            acoes += `<button class="btn-small btn-small-info" onclick="alert('Justificativa: ${just}')">Motivo</button>`;
         }
 
         return `

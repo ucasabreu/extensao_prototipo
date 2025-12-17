@@ -112,7 +112,7 @@ function salvarGrupoInterno() {
 
     // RF 006: Validação Obrigatória
     if (!docente || docente === "") {
-        alert("⚠️ O campo 'Docente Responsável' é obrigatório.");
+        alert("O campo 'Docente Responsável' é obrigatório.");
         return;
     }
     if (!nome || !email) {
@@ -166,9 +166,9 @@ function renderizarTabelaAtivos() {
                 <small style="color:#777;">${grupo.email}</small>
             </td>
             <td><span class="badge ${badgeClass}">${grupo.tipo}</span></td>
-            <td><span style="color: #5d0b0b; font-weight: 500;">🎓 ${grupo.docente}</span></td>
+            <td><span style="color: #5d0b0b; font-weight: 500;">${grupo.docente}</span></td>
             <td style="text-align: center;">
-                <button class="btn-small btn-small-danger" onclick="excluirGrupo(${grupo.id})" title="Dissolver">🗑️</button>
+                <button class="btn-small btn-small-danger" onclick="excluirGrupo(${grupo.id})" title="Dissolver">dissolver</button>
             </td>
         `;
         tbody.appendChild(tr);
@@ -193,10 +193,10 @@ function renderizarTabelaSolicitacoes() {
             <td>${solic.data}</td>
             <td style="text-align: center;">
                 <button class="btn-small btn-small-info" onclick="carregarSolicitacao(${solic.id})" title="Processar Cadastro">
-                    📝 Processar
+                    Processar
                 </button>
                 <button class="btn-small btn-small-danger" onclick="rejeitarSolicitacao(${solic.id})" title="Rejeitar">
-                    ❌
+                    rejeitar
                 </button>
             </td>
         `;

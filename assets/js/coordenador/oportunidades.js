@@ -105,8 +105,8 @@ function atualizarTabela() {
 
         if (op.status === "pendente") {
             botoes += `
-                <button class="btn-small btn-small-success" onclick="acaoAprovar(${op.id})" title="Aprovar">✅</button>
-                <button class="btn-small btn-small-danger" onclick="acaoRejeitar(${op.id})" title="Rejeitar">❌</button>
+                <button class="btn-small btn-small-success" onclick="acaoAprovar(${op.id})" title="Aprovar">aprovar</button>
+                <button class="btn-small btn-small-danger" onclick="acaoRejeitar(${op.id})" title="Rejeitar">rejeitar</button>
             `;
         }
 

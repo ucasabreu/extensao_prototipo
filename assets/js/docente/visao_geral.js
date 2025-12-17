@@ -60,11 +60,11 @@ function renderizarAtividadesRecentes() {
 
         // Lógica inteligente de sugestão de ação
         if (a.pendencia === "inscricao") {
-            btnAcao = `<button class="btn-small btn-small-info" onclick="navegarParaInscricoes(${a.id})">👥 Validar Inscrições</button>`;
+            btnAcao = `<button class="btn-small btn-small-info" onclick="navegarParaInscricoes(${a.id})">Validar Inscrições</button>`;
         } else if (a.pendencia === "frequencia") {
-            btnAcao = `<button class="btn-small btn-small-primary" onclick="navegarParaFrequencia(${a.id})">📝 Lançar Frequência</button>`;
+            btnAcao = `<button class="btn-small btn-small-primary" onclick="navegarParaFrequencia(${a.id})">Lançar Frequência</button>`;
         } else if (a.pendencia === "editar") {
-            btnAcao = `<button class="btn-small btn-small-secondary" onclick="irParaMinhasOportunidades()">✏️ Continuar Edição</button>`;
+            btnAcao = `<button class="btn-small btn-small-secondary" onclick="irParaMinhasOportunidades()">Continuar Edição</button>`;
         }
 
         return `

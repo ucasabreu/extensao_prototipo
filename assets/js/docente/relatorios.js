@@ -105,7 +105,7 @@ function renderizarTabelaRelatorios() {
         
         if (r.statusRelatorio === "Aprovado") {
             botoes = `
-                <button class="btn-small btn-small-secondary" onclick="exportarIndividualUCE(${r.id})" style="width:100%">📥 UCE</button>
+                <button class="btn-small btn-small-secondary" onclick="exportarIndividualUCE(${r.id})" style="width:100%">UCE</button>
                 <button class="btn-small btn-small-info" onclick="abrirEditorRelatorio(${r.id}, true)" style="width:100%">Vesualizar</button>
             `;
         } else if (r.statusRelatorio === "Enviado") {
@@ -132,7 +132,7 @@ function renderizarTabelaRelatorios() {
         } else {
             // Pendente, Rascunho ou Devolvido -> Pode Editar
             botoes = `
-                <button class="btn-small btn-small-primary" onclick="abrirEditorRelatorio(${r.id})" style="width:100%">📝 Editar</button>
+                <button class="btn-small btn-small-primary" onclick="abrirEditorRelatorio(${r.id})" style="width:100%">Editar</button>
             `;
         }
 

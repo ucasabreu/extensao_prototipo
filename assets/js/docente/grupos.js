@@ -86,8 +86,8 @@ function renderizarTabelaGrupos() {
         // Ações
         // Se encerrado, apenas vê. Se ativo, gerencia.
         let btnAcao = g.status === "Ativo" 
-            ? `<button class="btn-small btn-small-primary" onclick="abrirGestaoMembros(${g.id})">👥 Gerenciar Membros</button>`
-            : `<button class="btn-small btn-small-info" onclick="abrirGestaoMembros(${g.id})">👁️ Ver Histórico</button>`;
+            ? `<button class="btn-small btn-small-primary" onclick="abrirGestaoMembros(${g.id})">Gerenciar Membros</button>`
+            : `<button class="btn-small btn-small-info" onclick="abrirGestaoMembros(${g.id})">Ver Histórico</button>`;
 
         return `
             <tr>
@@ -135,7 +135,7 @@ function renderizarTabelaMembros() {
             </td>
             <td>${m.inicio}</td>
             <td>
-                <button class="btn-small btn-small-danger" onclick="removerMembro(${m.id})" title="Remover do grupo">🗑️</button>
+                <button class="btn-small btn-small-danger" onclick="removerMembro(${m.id})" title="Remover do grupo">remover</button>
             </td>
         </tr>
     `).join("");

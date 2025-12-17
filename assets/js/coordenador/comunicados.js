@@ -60,7 +60,7 @@ window.renderizarTabelaComunicados = () => {
     tbody.innerHTML = filtrados.map(c => {
         // Badges de Status (Mantido igual)
         let badgeStatus = `<span class="badge badge-success">Enviado</span>`;
-        if (c.status === "Falha Parcial") badgeStatus = `<span class="badge badge-danger" title="${c.detalheErro || ''}">⚠️ Falha Parcial</span>`;
+        if (c.status === "Falha Parcial") badgeStatus = `<span class="badge badge-danger" title="${c.detalheErro || ''}">Falha Parcial</span>`;
         if (c.status === "Recebido") badgeStatus = `<span class="badge badge-info">Recebido</span>`;
 
         // Formata canais

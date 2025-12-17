@@ -154,7 +154,7 @@ function renderizarTabelaSolicitacoes() {
     const pendentes = solicitacoesDB.filter(s => s.status === "pendente");
 
     if (pendentes.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" align="center" style="padding:20px;">🎉 Nenhuma solicitação pendente no momento!</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" align="center" style="padding:20px;"> Nenhuma solicitação pendente no momento!</td></tr>`;
         return;
     }
 
@@ -175,7 +175,7 @@ function renderizarTabelaSolicitacoes() {
                 <td>${s.atividade}</td>
                 <td>${s.ch}h</td>
                 <td>${badgeStatus}</td>
-                <td><span style="font-size:18px;">📎</span></td>
+                <td><span style="font-size:18px;"></span></td>
                 <td>
                     <button class="btn-small btn-small-success" onclick="analisarSolicitacao(${s.id})">Analisar</button>
                 </td>
@@ -213,7 +213,7 @@ window.abrirPerfil = (id) => {
                 <td>${h.ch}h</td>
                 <td>${statusBadge}</td>
                 <td align="center">
-                    <button class="btn-small btn-small-secondary" onclick="alert('Simulação: Abrindo PDF do certificado...')">📄 Ver</button>
+                    <button class="btn-small btn-small-secondary" onclick="alert('Simulação: Abrindo PDF do certificado...')">Ver</button>
                 </td>
             </tr>
         `;

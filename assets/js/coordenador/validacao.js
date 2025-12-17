@@ -110,8 +110,8 @@ function renderizarTabelaValidacao() {
 
         if (p.status === "aguardando") {
             botoes += `
-                <button class="btn-small btn-small-success" onclick="valAprovar(${p.id})" title="Aprovar">✅</button>
-                <button class="btn-small btn-small-danger" onclick="valRejeitar(${p.id})" title="Rejeitar">❌</button>
+                <button class="btn-small btn-small-success" onclick="valAprovar(${p.id})" title="Aprovar">aprovar</button>
+                <button class="btn-small btn-small-danger" onclick="valRejeitar(${p.id})" title="Rejeitar">rejeitar</button>
             `;
         }
 
