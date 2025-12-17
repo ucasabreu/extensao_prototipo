@@ -27,11 +27,18 @@
     </div>
 
     <div style="display: flex; gap: 10px;">
+        <button class="btn btn-secondary" onclick="verPlanoAtividade()" title="Consultar objetivos e metodologia">
+            📋 Ver Plano
+        </button>
+
         <button class="btn btn-secondary" onclick="abrirHistorico()" title="Ver aulas anteriores">
             📜 Histórico
         </button>
         <button class="btn btn-primary" id="btnSalvarFreq" onclick="salvarFrequencia()">
             💾 Registrar Presença
+        </button>
+        <button class="btn" style="border: 1px solid #d9534f; color: #d9534f; background: #fff;" id="btnEncerrarTurma" onclick="abrirConsolidacao()" title="Consolidar notas e encerrar">
+            🔒 Encerrar Turma
         </button>
     </div>
 </div>
@@ -46,7 +53,8 @@
                 <th>Discente</th>
                 <th>Matrícula</th>
                 <th>Progresso Acumulado</th>
-                <th>Status Parcial de Frequência</th> </tr>
+                <th>Status Parcial de Frequência</th> 
+            </tr>
         </thead>
         <tbody id="tb-frequencia">
             <tr><td colspan="5" align="center">Selecione uma atividade para carregar.</td></tr>
@@ -72,11 +80,87 @@
                     </tr>
                 </thead>
                 <tbody id="tb-historico-corpo">
-                    </tbody>
+                </tbody>
             </table>
         </div>
         <div class="modal-footer">
             <button class="btn btn-secondary" onclick="fecharModalFreq('modalHistorico')">Fechar</button>
+        </div>
+    </div>
+</div>
+
+<div id="modalConsolidacao" class="modal-overlay">
+    <div class="modal" style="width: 700px; border-top: 5px solid #d9534f;">
+        <div class="modal-header">
+            <h2 style="color: #d9534f;">Encerramento e Consolidação</h2>
+            <span class="modal-close" onclick="fecharModalFreq('modalConsolidacao')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="alert alert-warning">
+                ⚠️ <strong>Atenção:</strong> Esta ação é irreversível. Ao confirmar, o sistema irá:
+                <ul style="margin-top: 5px; margin-left: 20px;">
+                    <li>Encerrar a oportunidade.</li>
+                    <li>Gerar certificados automaticamente para alunos <strong>APTOS (≥75%)</strong>.</li>
+                    <li>Reprovar alunos com frequência insuficiente.</li>
+                </ul>
+            </div>
+            
+            <h3 style="font-size: 16px; margin-bottom: 10px; margin-top: 20px;">Resumo Final da Turma</h3>
+            <div style="max-height: 300px; overflow-y: auto; border: 1px solid #eee;">
+                <table class="global-table">
+                    <thead>
+                        <tr>
+                            <th>Discente</th>
+                            <th>Carga Cump.</th>
+                            <th>Freq. %</th>
+                            <th>Situação Final</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tb-consolidacao-corpo">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="fecharModalFreq('modalConsolidacao')">Cancelar</button>
+            <button class="btn" style="background-color: #d9534f; color: white;" onclick="confirmarEncerramento()">Confirmar Encerramento</button>
+        </div>
+    </div>
+</div>
+
+<div id="modalPlano" class="modal-overlay">
+    <div class="modal" style="width: 600px;">
+        <div class="modal-header">
+            <h2>Plano de Atividades</h2>
+            <span class="modal-close" onclick="fecharModalFreq('modalPlano')">&times;</span>
+        </div>
+        <div class="modal-body" style="line-height: 1.6; color: #333; max-height: 70vh; overflow-y: auto;">
+            <p style="margin-bottom: 20px; font-size: 14px; color: #666;">
+                Atividade selecionada: <strong id="lblPlanoTitulo" style="color: #000;">-</strong>
+            </p>
+
+            <div style="margin-bottom: 15px;">
+                <label style="font-weight: bold; display: block; color: #8a2be2; margin-bottom: 5px;">🎯 1. Objetivos</label>
+                <div id="txtPlanoObjetivos" style="background: #f9f9f9; padding: 10px; border-radius: 4px; border-left: 3px solid #8a2be2;"></div>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="font-weight: bold; display: block; color: #2b8ae2; margin-bottom: 5px;">📚 2. Metodologia</label>
+                <div id="txtPlanoMetodologia" style="background: #f9f9f9; padding: 10px; border-radius: 4px; border-left: 3px solid #2b8ae2;"></div>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="font-weight: bold; display: block; color: #e28a2b; margin-bottom: 5px;">📅 3. Cronograma</label>
+                <div id="txtPlanoCronograma" style="background: #f9f9f9; padding: 10px; border-radius: 4px; border-left: 3px solid #e28a2b;"></div>
+            </div>
+            
+            <div style="margin-bottom: 10px;">
+                <label style="font-weight: bold; display: block; color: #d9534f; margin-bottom: 5px;">📊 4. Avaliação</label>
+                <div id="txtPlanoAvaliacao" style="background: #f9f9f9; padding: 10px; border-radius: 4px; border-left: 3px solid #d9534f;"></div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="fecharModalFreq('modalPlano')">Fechar</button>
         </div>
     </div>
 </div>
