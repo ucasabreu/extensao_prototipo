@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/assets/css/ui/login/activatescreen.css" />
+    <link rel="stylesheet" href="/assets/css/global/forms.css" />
+
+    <title>Ativação de conta</title>
+  </head>
+
+  <body>
+    <section class="main-container">
+      <div id="popup" class="popup-container">
+        <div class="popup">
+          <span>Sua conta foi verificada</span>
+        </div>
+      </div>
+      <div class="form-container">
+        <form action="" class="form">
+          <h1 class="form-title">Ative sua conta</h1>
+          <div class="form-group mb-10">
+            <label class="label-form" for="">Digite o código enviado</label>
+            <input
+              class="input-text"
+              type="text"
+              placeholder="Código"
+              id="codeInput"
+            />
+          </div>
+          <div class="bottom-container">
+            <button id="verifyBtn" type="button" class="buttom-form">
+              Verificar código
+            </button>
+            <button id="cancelButtom" type="button" class="buttom-form">
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+    <script src="/assets/js/login/activatescreen.js"></script>
+  </body>
+</html>

@@ -1,147 +1,283 @@
+/* ===============================
+   DASHBOARD – DISCENTE
+================================ */
+
 .discente-dashboard {
-    width: 1200px;          /* largura controlada */
-    max-width: 95vw;        /* adapta em telas menores */
-    margin: 30px auto;      /* centraliza vertical e horizontal */
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 24px;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 20px;
+    margin-top: 24px;
 }
 
+/* ===============================
+   GRID / HIERARQUIA
+================================ */
 
-/* =========================
-   PADRÃO DE CAIXA (BASE)
-========================= */
+/* Linha superior (destaque) */
+.oportunidades-box {
+    grid-column: span 8;
+    height: 380px; /* maior que antes */
+}
+
+.progresso-box {
+    grid-column: span 4;
+    height: 380px;
+}
+
+/* Linha inferior (menores / secundárias) */
+.notificacoes-box {
+    grid-column: span 6;
+    height: 140px; /* menor */
+}
+
+.noticias-box {
+    grid-column: span 6;
+    height: 140px; /* menor */
+}
+
+/* ===============================
+   BOX GLOBAL
+================================ */
 
 .box-externa {
-    background: #7a0c0c;
-    border-radius: 12px;
+    background: linear-gradient(135deg, #8b1d1d, #6f1414);
+    border-radius: 16px;
     padding: 12px;
-    height: 320px;
-    display: flex;
+    height: 100%;
 }
 
 .box-interna {
-    background: #f3e3b8;
-    border-radius: 10px;
-    padding: 16px;
-    flex: 1;
+    background: #fbf6ea;
+    border-radius: 14px;
+    padding: 14px;
+    height: 100%;
+
     display: flex;
     flex-direction: column;
+    gap: 10px;
 }
 
-.box-titulo {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 12px;
-    color: #5d0b0b;
+/* Destaque só na principal */
+.oportunidades-box .box-interna {
+    box-shadow: 0 10px 24px rgba(122, 16, 16, 0.18);
 }
+/* Linha superior */
+.oportunidades-box {
+    grid-column: span 8;
+    height: 420px; /* aumentei de 360px para 420px */
+}
+
+.progresso-box {
+    grid-column: span 4;
+    height: 420px; /* aumentei de 360px para 420px */
+}
+/* ===============================
+   DIMINUIR DESTAQUE DAS CAIXAS SECUNDÁRIAS
+================================ */
+
+/* Notícias: largura de progresso, altura de notificações */
+.noticias-box {
+    grid-column: span 4; /* mesma largura de progresso */
+    height: 220px;       /* altura de notificações */
+}
+
+.noticias-box .box-externa,
+.noticias-box .box-interna {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05); /* menos destaque */
+}
+
+/* Notificações: largura de atividades ativas, altura de notícias */
+.notificacoes-box {
+    grid-column: span 8; /* mesma largura de atividades ativas */
+    height: 220px;       /* altura de notícias */
+}
+
+.notificacoes-box .box-externa,
+.notificacoes-box .box-interna {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05); /* menos destaque */
+}
+
+
+/* ===============================
+   TÍTULOS
+================================ */
+
+.box-titulo {
+    font-size: 13px;
+    font-weight: 800;
+    color: #5d0b0b;
+    text-transform: uppercase;
+}
+
+/* ===============================
+   SCROLL (TODAS)
+================================ */
 
 .box-scroll {
     flex: 1;
     overflow-y: auto;
-    padding-right: 6px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    padding-right: 4px;
 }
 
-
-/* =========================
-   OPORTUNIDADES
-========================= */
-.oportunidades-box {
-    height: 360px;
+.box-scroll::-webkit-scrollbar {
+    width: 5px;
 }
+
+.box-scroll::-webkit-scrollbar-thumb {
+    background: #c9b8a5;
+    border-radius: 10px;
+}
+
+/* ===============================
+   ATIVIDADES ATIVAS
+================================ */
 
 .oportunidades-lista {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
 
-   
-}
-
-
-.oportunidades-lista,
-#progress-container {
+    /* limita o crescimento dos cards */
     overflow-y: auto;
-    flex: 1;
 }
 
-.card-op {
+.oportunidade-card {
     background: #ffffff;
-    border: 2px solid #a32626;
+    border: 1px solid #e6dbc9;
+    border-radius: 10px;
     padding: 12px;
-    border-radius: 8px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
-/* =========================
-   PROGRESSO
-========================= */
-.progresso-box {
-    height: 360px;
+.oportunidade-card strong {
+    font-size: 13px;
+    color: #5d0b0b;
 }
+
+.oportunidade-card span {
+    font-size: 12px;
+    color: #555;
+}
+
+/* ===============================
+   PROGRESSO
+================================ */
 
 .progress-card {
     background: #ffffff;
-    border: 2px solid #a32626;
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 12px;
+    border: 1px solid #e6dbc9;
+    border-radius: 10px;
+    padding: 10px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.progress-card strong {
+    font-size: 12px;
+    color: #5d0b0b;
 }
 
 .progress-bar {
-    width: 100%;
-    height: 18px;
-    background: #f78b44;
-    border-radius: 6px;
+    height: 8px;
+    background: #f0e7dc;
+    border-radius: 10px;
     overflow: hidden;
-    margin-top: 6px;
 }
 
 .progress-fill {
     height: 100%;
-    background: #5da463;
+    background: linear-gradient(90deg, #5fa15f, #ff944d);
 }
 
-/* =========================
-   NOTIFICAÇÕES
-========================= */
-.notificacoes-box,
-.noticias-box {
-    height: 220px;
-}
+/* ===============================
+   NOTIFICAÇÕES (COMPACTAS)
+================================ */
 
-.noticia-card,
 .notificacao-card {
     background: #ffffff;
-    border: 1px solid #a32626;
+    border-left: 3px solid #7a1010;
     border-radius: 6px;
-    padding: 10px;
-    margin-bottom: 10px;
-    font-size: 14px;
+    padding: 4px 6px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 11px;
 }
 
-.noticia-card strong,
 .notificacao-card strong {
+    color: #7a1010;
+}
+
+.notificacao-card span {
+    color: #444;
+}
+
+/* ===============================
+   NOTÍCIAS (COMPACTAS)
+================================ */
+
+.noticia-card {
+    background: #ffffff;
+    border-left: 3px solid #a11a1a;
+    border-radius: 6px;
+    padding: 4px 6px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 11px;
+}
+
+.noticia-card strong {
     color: #5d0b0b;
 }
 
-.noticias-box {
-    background: #7a0c0c;
+.noticia-card span {
+    color: #555;
 }
 
-.vazio {
-    color: #5d0b0b;
-    opacity: 0.8;
-    font-style: italic;
-    text-align: center;
-    margin-top: 20px;
-}
 
-/* =========================
+/* ===============================
+   cards internos (kpi-cards)
+================================ */
+/* KPI Card */
+.kpi-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    /* REMOVE height: 100% se tiver */
+    max-height: 200px;  /* ajusta para não crescer com a box-interna */
+}
+/* ===============================
    RESPONSIVO
-========================= */
+================================ */
+
 @media (max-width: 900px) {
     .discente-dashboard {
         grid-template-columns: 1fr;
+    }
+
+    .oportunidades-box,
+    .progresso-box,
+    .notificacoes-box,
+    .noticias-box {
+        grid-column: span 12;
+        height: auto;
     }
 
     .oportunidades-lista {

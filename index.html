@@ -1,68 +1,71 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Extensão Acadêmica</title>
 
     <!-- Importa os botões globais -->
-    <link rel="stylesheet" href="./assets/css/global/button.css">
+    <link rel="stylesheet" href="./assets/css/global/button.css" />
 
     <style>
-        body {
-            background: #f8efda;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            font-family: Arial, sans-serif;
-            margin: 0;
-        }
+      body {
+        background: #f8efda;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: Arial, sans-serif;
+        margin: 0;
+      }
 
-        .container {
-            text-align: center;
-        }
+      .container {
+        text-align: center;
+      }
 
-        .btn-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            margin-top: 20px;
-        }
+      .btn-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin-top: 20px;
+      }
 
-        .title {
-            font-size: 26px;
-            font-weight: bold;
-            color: #5d0b0b;
-            margin-bottom: 25px;
-        }
+      .title {
+        font-size: 26px;
+        font-weight: bold;
+        color: #5d0b0b;
+        margin-bottom: 25px;
+      }
     </style>
-</head>
+  </head>
 
-<body>
-
+  <body>
     <div class="container">
+      <div class="title">Portal de Extensão Acadêmica</div>
 
-        <div class="title">Portal de Extensão Acadêmica</div>
+      <div class="btn-wrapper">
+        <!-- Botão: Login -->
+        <button
+          class="btn btn-primary"
+          onclick="window.location.href='./pages/common/routerPerfil.html'"
+        >
+          🔐 Entrar no Sistema
+        </button>
 
-        <div class="btn-wrapper">
+        <button
+          class="btn btn-primary"
+          onclick="window.location.href='./pages/login/loginscreen.html'"
+        >
+          Login
+        </button>
 
-            <!-- Botão: Login -->
-            <button 
-                class="btn btn-primary"
-                onclick="window.location.href='./pages/common/routerPerfil.html'">
-                🔐 Entrar no Sistema
-            </button>
-
-            <!-- Botão: UI Preview -->
-            <button 
-                class="btn btn-secondary"
-                onclick="window.location.href='./pages/common/ui_preview.html'">
-                🔧 UI Preview – Componentes Globais
-            </button>
-
-        </div>
-
+        <!-- Botão: UI Preview -->
+        <button
+          class="btn btn-secondary"
+          onclick="window.location.href='./pages/common/ui_preview.html'"
+        >
+          🔧 UI Preview – Componentes Globais
+        </button>
+      </div>
     </div>
-
-</body>
+  </body>
 </html>

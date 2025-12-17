@@ -1,11 +1,141 @@
-/* ===============================
-   DASHBOARD – DISCENTE
-================================ */
+import {
+    getOportunidades,
+    getSolicitacoes,
+    getNoticias
+} from "../services/discente.service.js";
+
+/* =====================================================
+   CARREGA VIEW
+===================================================== */
+export async function carregarDashboardDiscenteOfertante () {
+    const response = await fetch("../../pages/discenteOfertante/dashboard_view.html");
+    return await response.text();
+}
+
+/* =====================================================
+   ATIVAÇÃO
+===================================================== */
+export async function ativarDashboardDiscenteOfertante () {
+    const oportunidades = await getOportunidades();
+    const solicitacoes = await getSolicitacoes();
+    const noticias = await getNoticias();
+
+    renderizarAtividadesAtivas(oportunidades);
+    renderizarProgresso(oportunidades);
+    renderizarNotificacoes(oportunidades, solicitacoes);
+    renderizarNoticias(noticias);
+}
 
 /* ===============================
-   MOCKS – DADOS
+   ATIVIDADES ATIVAS
 ================================ */
+function renderizarAtividadesAtivas(oportunidades) {
+    const container = document.querySelector(".oportunidades-lista");
+    if (!container) return;
 
+    const ativas = oportunidades.filter(o => o.inscrito);
+
+    if (!ativas.length) {
+        container.innerHTML =
+            `<p class="dashboard-vazio">Nenhuma atividade ativa.</p>`;
+        return;
+    }
+
+    container.innerHTML = ativas.map(o => `
+        <div class="kpi-card">
+            <span class="kpi-title">${o.titulo}</span>
+            <span class="badge badge-info">${o.status}</span>
+            <span class="kpi-sub">Carga horária: ${o.carga}h</span>
+
+            <button class="btn btn-secondary btn-small"
+                onclick="irParaSolicitacoes()">
+                Ver detalhes
+            </button>
+        </div>
+    `).join("");
+}
+
+/* ===============================
+   PROGRESSO
+================================ */
+function renderizarProgresso(oportunidades) {
+    const container = document.getElementById("progress-container");
+    if (!container) return;
+
+    const ativas = oportunidades.filter(o => o.inscrito);
+
+    container.innerHTML = ativas.map(o => `
+        <div class="progress-card">
+            <strong>${o.titulo}</strong>
+            <div class="progress-bar">
+                <div class="progress-fill"
+                     style="width:${o.progresso || 0}%">
+                </div>
+            </div>
+            <span class="kpi-sub">${o.progresso || 0}% concluído</span>
+        </div>
+    `).join("");
+}
+
+/* ===============================
+   NOTIFICAÇÕES
+================================ */
+function renderizarNotificacoes(oportunidades, solicitacoes) {
+    const container = document.getElementById("notificacoes-container");
+    if (!container) return;
+
+    if (!solicitacoes.length) {
+        container.innerHTML =
+            `<p class="dashboard-vazio">Nenhuma notificação.</p>`;
+        return;
+    }
+
+    container.innerHTML = solicitacoes.map(s => {
+        const atividade = oportunidades.find(o => o.id === s.atividadeId);
+
+        return `
+            <div class="notificacao-card">
+                <strong>Solicitação ${s.status}</strong>
+                <p>${atividade?.titulo || "Atividade desconhecida"}</p>
+            </div>
+        `;
+    }).join("");
+}
+
+/* ===============================
+   NOTÍCIAS
+================================ */
+function renderizarNoticias(noticias) {
+    const container = document.getElementById("noticias-container");
+    if (!container) return;
+
+    if (!noticias.length) {
+        container.innerHTML =
+            `<p class="dashboard-vazio">Nenhuma notícia.</p>`;
+        return;
+    }
+
+    container.innerHTML = noticias.map(n => `
+        <div class="noticia-card">
+            <strong>${n.titulo}</strong>
+            <p>${n.descricao}</p>
+        </div>
+    `).join("");
+}
+
+/* ===============================
+   NAVEGAÇÃO
+================================ */
+window.irParaSolicitacoes = function () {
+    document.querySelectorAll(".menu-item")
+        .forEach(m => m.classList.remove("active"));
+
+    document.querySelector(".menu-item:nth-child(3)")?.click();
+};
+
+
+
+/* 
 const oportunidadesMock = [
     { id: 1, titulo: "Projeto de Robótica Educacional", carga: "40h", status: "Em andamento" },
     { id: 2, titulo: "Extensão Comunitária – Quilombo", carga: "60h", status: "Concluído" },
@@ -35,7 +165,7 @@ const noticiasMock = [
 
 /* ===============================
    CARREGA VIEW (HTML PURO)
-================================ */
+================================ 
 
 export async function carregarDashboardDiscente() {
     const response = await fetch("../../pages/discenteOfertante/dashboard_view.html");
@@ -48,7 +178,7 @@ export async function carregarDashboardDiscente() {
 /* ===============================
    ATIVAÇÃO DA VIEW
    (chamada SEMPRE ao clicar na aba)
-================================ */
+================================ 
 
 export function ativarDashboardDiscente() {
     renderizarOportunidades();
@@ -59,9 +189,9 @@ export function ativarDashboardDiscente() {
 
 /* ===============================
    RENDERIZAÇÕES
-================================ */
+================================
 
-/* OPORTUNIDADES INSCRITAS */
+/* OPORTUNIDADES INSCRITAS 
 function renderizarOportunidades() {
     const container = document.querySelector(".oportunidades-lista");
     if (!container) return;
@@ -84,7 +214,7 @@ function renderizarOportunidades() {
     });
 }
 
-/* PROGRESSO */
+/* PROGRESSO 
 function renderizarProgresso() {
     const container = document.getElementById("progress-container");
     if (!container) return;
@@ -108,7 +238,7 @@ function renderizarProgresso() {
     });
 }
 
-/* NOTIFICAÇÕES */
+/* NOTIFICAÇÕES 
 function renderizarNotificacoes() {
     const container = document.querySelector(".notificacoes-box .box-scroll");
     if (!container) return;
@@ -130,7 +260,7 @@ function renderizarNotificacoes() {
     });
 }
 
-/* NOTÍCIAS */
+/* NOTÍCIAS 
 function renderizarNoticias() {
     const container = document.querySelector(".noticias-box .box-scroll");
     if (!container) return;
@@ -151,3 +281,4 @@ function renderizarNoticias() {
         `;
     });
 }
+*/
