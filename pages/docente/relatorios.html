@@ -1,0 +1,110 @@
+<div style="margin-bottom: 20px;">
+    <h2>Relatórios e Prestação de Contas</h2>
+    <p style="color: #666; font-size: 14px;">
+        Consolide os resultados das atividades para envio à Coordenação/PROEC (OR005). 
+        A certificação só é liberada após a aprovação deste relatório.
+    </p>
+</div>
+
+<div class="toolbar" style="background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #e3d8c7; margin-bottom: 20px; display: flex; gap: 15px; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+    
+    <div style="display: flex; gap: 15px; flex: 1; min-width: 300px;">
+        <div class="search-box" style="flex: 1.5;">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="buscaRelatorio" onkeyup="filtrarRelatorios()" placeholder="Buscar por atividade...">
+        </div>
+
+        <select class="select" id="filtroStatusRelatorio" onchange="filtrarRelatorios()" style="flex: 1;">
+            <option value="todos">Todos os Status</option>
+            <option value="Pendente">Pendente (Não iniciado)</option>
+            <option value="Rascunho">Rascunho</option>
+            <option value="Enviado">Enviado para Análise</option>
+            <option value="Aprovado">Aprovado (Finalizado)</option>
+            <option value="Devolvido">Devolvido (Ajustes)</option>
+        </select>
+    </div>
+
+    <button class="btn btn-secondary" onclick="exportarGeralUCE()" title="Exportar dados de todas as atividades (OR006)">
+        📊 Exportar Planilha UCE
+    </button>
+</div>
+
+<div class="table-container">
+    <table class="global-table">
+        <thead>
+            <tr>
+                <th>Atividade</th>
+                <th>Período</th>
+                <th>Status da Execução</th>
+                <th>Status do Relatório</th>
+                <th style="width: 180px;">Ações</th>
+            </tr>
+        </thead>
+        <tbody id="tb-relatorios">
+            <tr><td colspan="5" align="center">Carregando painel de contas...</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="modalRelatorio" class="modal-overlay">
+    <div class="modal" style="width: 900px; max-height: 90vh; overflow-y: auto;">
+        <div class="modal-header">
+            <h2>Prestação de Contas</h2>
+            <span class="modal-close" onclick="fecharModalRel('modalRelatorio')">&times;</span>
+        </div>
+        
+        <div class="modal-body">
+            <input type="hidden" id="idRelatorioAtual">
+            
+            <div style="background: #f4f4f4; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #ddd;">
+                <h4 style="margin-top: 0; color: #5d0b0b;">1. Métricas Consolidadas (Automático)</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-top: 10px; font-size: 13px;">
+                    <div>
+                        <strong>Inscritos Confirmados:</strong> <span id="lblInscritos">0</span>
+                    </div>
+                    <div>
+                        <strong>Aptos à Certificação (>75%):</strong> <span id="lblAptos">0</span>
+                    </div>
+                    <div>
+                        <strong>Taxa de Conclusão:</strong> <span id="lblTaxa">0%</span>
+                    </div>
+                    <div>
+                        <strong>Carga Horária Total:</strong> <span id="lblCH">0h</span>
+                    </div>
+                    <div style="grid-column: span 2;">
+                        <strong>Alertas de Sistema:</strong> <span id="lblAlertas" style="color: #d4a017;">Nenhum</span>
+                    </div>
+                </div>
+            </div>
+
+            <h4 style="color: #5d0b0b; margin-bottom: 10px;">2. Execução e Resultados</h4>
+            
+            <div class="form-group">
+                <label class="form-label">Resumo da Execução (Previsto vs Realizado) *</label>
+                <textarea id="txtResumo" class="textarea" rows="4" placeholder="Descreva se os objetivos do plano foram alcançados e eventuais desvios..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Resultados Alcançados e Impacto Social *</label>
+                <textarea id="txtResultados" class="textarea" rows="4" placeholder="Quais foram os benefícios para a comunidade externa?"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Evidências / Anexos (Lista de Presença Física, Fotos, etc)</label>
+                <input type="file" id="fileEvidencias" class="input-text">
+                <small style="color: #666;">Formatos aceitos: PDF, JPG, ZIP (Máx 10MB)</small>
+            </div>
+
+        </div>
+
+        <div class="modal-footer" style="justify-content: space-between;">
+            <div>
+                <button class="btn btn-ghost" onclick="gerarPDFPreview()">🖨️ Prévia PDF</button>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-secondary" onclick="salvarRascunhoRelatorio()">💾 Salvar Rascunho</button>
+                <button class="btn btn-primary" onclick="enviarRelatorioFinal()">🚀 Enviar para Coordenação</button>
+            </div>
+        </div>
+    </div>
+</div>

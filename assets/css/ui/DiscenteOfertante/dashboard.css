@@ -2,7 +2,7 @@
    DASHBOARD – DISCENTE
 ================================ */
 
-.discente-dashboard {
+.discenteOfertante-dashboard {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     gap: 20px;
@@ -268,7 +268,7 @@
 ================================ */
 
 @media (max-width: 900px) {
-    .discente-dashboard {
+    .discenteOfertante-dashboard {
         grid-template-columns: 1fr;
     }
 

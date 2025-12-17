@@ -4,15 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Discente</title>
+    <title>Dashboard Discente Ofertante</title>
 
     <!-- CSS -->
     <link rel="stylesheet" href="../../assets/css/common/layout.css">
-    <link rel="stylesheet" href="../../assets/css/ui/discente/dashboard.css">
-    <link rel="stylesheet" href="../../assets/css/ui/discente/oportunidades.css">
-    <link rel="stylesheet" href="../../assets/css/ui/discente/solicitacoes.css">
-    <link rel="stylesheet" href="../../assets/css/ui/discente/solicitacoes.css">
-    <link rel="stylesheet" href="../../assets/css/ui/discente/certificacoes.css">
+    <link rel="stylesheet" href="../../assets/css/ui/discenteOfertante/dashboard.css">
+    <link rel="stylesheet" href="../../assets/css/ui/discenteOfertante/oportunidades.css">
+    <link rel="stylesheet" href="../../assets/css/ui/discenteOfertante/solicitacoes.css">
+    <link rel="stylesheet" href="../../assets/css/ui/discenteOfertante/certificacoes.css">
+    <link rel="stylesheet" href="../../assets/css/ui/discenteOfertante/projetos.css">
+    
 
     <link rel="stylesheet" href="../../assets/css/global/button.css">
     <link rel="stylesheet" href="../../assets/css/global/tables.css">
@@ -31,15 +32,16 @@
         import { carregarLayout } from "../../assets/js/common/layout.js";
 
         import {
-            renderDashboardDiscente,
-            renderOportunidadesDiscente,
-            renderSolicitacoesDiscente,
-            renderCertificacoesDiscente
-        } from "../../assets/js/discente/discente.controller.js";
+            renderDashboardDiscenteOfertante,
+            renderOportunidadesDiscenteOfertante,
+            renderSolicitacoesDiscenteOfertante,
+            renderProjetosDiscenteOfertante,
+            renderCertificacoesDiscenteOfertante
+        } from "../../assets/js/discenteOfertante/discenteOfertante.controller.js";
 
 
         // Discente
-        localStorage.setItem("perfil", "discente");
+        localStorage.setItem("perfil", "discenteOfertante");
         
         carregarLayout([
             {
@@ -47,31 +49,43 @@
                 title: "Visão Geral",
                 description: "Resumo das suas atividades",
                 content: "",
-                onRender: renderDashboardDiscente
+                onRender: renderDashboardDiscenteOfertante
             },
             {
                 label: "Oportunidades",
                 title: "Oportunidades",
                 description: "Oportunidades disponíveis para você",
                 content: "",
-                onRender: renderOportunidadesDiscente
+                onRender: renderOportunidadesDiscenteOfertante
             },
             {
                 label: "Solicitações",
                 title: "Solicitações",
                 description: "Solicitações pendentes, aprovadas e rejeitadas",
                 content: "",
-                onRender: renderSolicitacoesDiscente
+                onRender: renderSolicitacoesDiscenteOfertante
+            },
+            {
+                label: "Meus Projetos",
+                title: "Meus Projetos",
+                description: "Projetos em que você participa",
+                content: "",
+                onRender: renderProjetosDiscenteOfertante
             },
             {
                 label: "Certificações",
                 title: "Certificações",
                 description: "Certificações obtidas e histórico",
                 content: "",
-                onRender: renderCertificacoesDiscente
+                onRender: renderCertificacoesDiscenteOfertante
             }
         ]);
     </script>
 </body>
 
 </html>
+
+
+
+
+

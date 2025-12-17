@@ -1,0 +1,146 @@
+/* ===============================
+   CERTIFICAÇÕES – DISCENTE
+================================ */
+
+.discenteOfertante-certificacoes {
+    width: 1200px;
+    max-width: 95vw;
+    margin: 32px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Caixa externa – moldura */
+.discenteOfertante-certificacoes .box-externa {
+    background: linear-gradient(135deg, #8b1d1d, #6f1414);
+    border-radius: 16px;
+    padding: 14px;
+}
+
+/* Caixa interna – conteúdo */
+.discenteOfertante-certificacoes .box-interna {
+    background: #fbf6ea;
+    border-radius: 14px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+/* Header */
+.certificacoes-header {
+    display: grid;
+    grid-template-columns: 2.2fr 2fr 2fr 1.2fr 1.2fr;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.4px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #c03939;
+    color: #5a0d0d;
+    text-transform: uppercase;
+}
+
+/* Lista */
+.certificacoes-lista {
+    display: grid;
+    gap: 10px;
+}
+
+/* Card */
+.certificacao-card {
+    display: grid;
+    grid-template-columns: 2.2fr 2fr 2fr 1.2fr 1.2fr;
+    align-items: center;
+
+    background: #ffffff;
+    border: 1px solid #eadfcb;
+    border-radius: 12px;
+    padding: 10px 14px;
+
+    font-size: 14px;
+    color: #333;
+
+    transition: 
+        box-shadow 0.15s ease,
+        transform 0.15s ease;
+}
+
+.certificacao-card:hover {
+    box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+    transform: translateY(-1px);
+}
+
+/* Links */
+.certificacao-card a {
+    color: #0d6efd;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.certificacao-card a:hover {
+    text-decoration: underline;
+}
+
+/* Status */
+.certificacao-card .Concluído {
+    color: #1e7e34;
+    font-weight: 700;
+}
+
+.certificacao-card .Em-andamento {
+    color: #856404;
+    font-weight: 700;
+}
+
+/* Estado vazio */
+.certificacoes-vazio {
+    text-align: center;
+    font-style: italic;
+    padding: 16px;
+    color: #6b6b6b;
+    background: #fffaf0;
+    border: 1px dashed #e1d5bf;
+    border-radius: 10px;
+}
+
+/* Footer */
+.certificacoes-footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 6px;
+}
+
+/* Botão */
+.btn-gerar-historico {
+    padding: 12px 28px;
+    font-size: 15px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+/* ===============================
+   RESPONSIVO
+================================ */
+
+@media (max-width: 900px) {
+
+    .certificacoes-header {
+        display: none;
+    }
+
+    .certificacao-card {
+        grid-template-columns: 1fr;
+        gap: 6px;
+        font-size: 13px;
+    }
+
+    .certificacao-card div::before {
+        content: attr(data-label);
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: #777;
+        display: block;
+    }
+}

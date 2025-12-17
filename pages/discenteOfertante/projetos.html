@@ -1,0 +1,237 @@
+<section class="discenteOfertante-projetos">
+
+    <!-- HEADER -->
+    <div class="projetos-header">
+        <div>
+            <h1>Meus Projetos</h1>
+            <p>Acompanhe sua participação em projetos e atividades acadêmicas</p>
+        </div>
+    </div>
+
+    <!-- SUBMENU -->
+    <div class="projetos-submenu">
+        <button class="submenu-btn active" data-target="tab-projetos">
+            Projetos Ativos
+        </button>
+        <button class="submenu-btn" data-target="tab-oportunidades">
+            Oportunidades
+        </button>
+        <button class="submenu-btn" data-target="tab-informacoes">
+            Gerenciar Informações
+        </button>
+    </div>
+
+    <!-- CONTEÚDO -->
+    <div class="projetos-content">
+
+        <!-- TAB: PROJETOS -->
+        <div class="tab-content active" id="tab-projetos">
+
+            <div class="toolbar">
+
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input
+                        type="text"
+                        id="buscaProjetoDiscente"
+                        placeholder="Buscar por título do projeto"
+                        onkeyup="filtrarProjetosDiscente()"
+                    >
+                </div>
+
+                <select
+                    class="select"
+                    id="filtroProfessorProjetoDiscente"
+                    onchange="filtrarProjetosDiscente()"
+                >
+                    <option value="todos">Professor líder</option>
+                </select>
+
+
+                <select
+                    class="select"
+                    id="filtroStatusProjetoDiscente"
+                    onchange="filtrarProjetosDiscente()"
+                >
+                    <option value="todos">Status</option>
+                    <option value="Em Execução">Em execução</option>
+                    <option value="Encerrado">Encerrado</option>
+                </select>
+
+                <select
+                    class="select"
+                    id="filtroAnoProjetoDiscente"
+                    onchange="filtrarProjetosDiscente()"
+                >
+                    <option value="todos">Ano</option>
+                    <option value="2025">2025</option>
+                    <option value="2024">2024</option>
+                </select>
+
+                <select
+                    class="select"
+                    id="filtroSemestreProjetoDiscente"
+                    onchange="filtrarProjetosDiscente()"
+                >
+                    <option value="todos">Semestre</option>
+                    <option value="1">1º Semestre</option>
+                    <option value="2">2º Semestre</option>
+                </select>
+
+
+
+            </div>
+
+
+            <div class="table-container">
+                <table class="global-table">
+                    <thead>
+                        <tr>
+                            <th>Projeto</th>
+                            <th>Tipo</th>
+                            <th>Período</th>
+                            <th>Carga Horária</th>
+                            <th>Status</th>
+                            <th>Professor Líder</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tb-projetos-discente">
+                        <tr>
+                            <td colspan="6" align="center">
+                                Carregando projetos...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <!-- TAB: OPORTUNIDADES -->
+        <div class="tab-content" id="tab-oportunidades">
+
+            <div class="oportunidade-box">
+
+                <h2>Criar Nova Oportunidade</h2>
+                <p class="descricao">
+                    Cadastre uma nova atividade para análise do professor líder.
+                </p>
+
+                <form id="form-oportunidade">
+
+                    <!-- TÍTULO -->
+                    <div class="form-group">
+                        <label>Título da Atividade</label>
+                        <input type="text" placeholder="Ex: Projeto de Inclusão Digital" required>
+                    </div>
+
+                    <!-- DESCRIÇÃO -->
+                    <div class="form-group">
+                        <label>Descrição</label>
+                        <textarea rows="4" placeholder="Descreva a atividade proposta..." required></textarea>
+                    </div>
+
+                    <!-- TIPO -->
+                    <div class="form-group">
+                        <label>Tipo de Atividade</label>
+                        <select required>
+                            <option value="">Selecione</option>
+                            <option>Projeto</option>
+                            <option>Curso</option>
+                            <option>Evento</option>
+                            
+                        </select>
+                    </div>
+
+                    <!-- PROFESSOR -->
+                    <div class="form-group">
+                        <label>Professor Líder</label>
+                        <select required>
+                            <option value="">Selecione o professor</option>
+                            <option>Prof. João Silva</option>
+                            <option>Profa. Maria Oliveira</option>
+                            <option>Prof. Carlos Souza</option>
+                        </select>
+                    </div>
+
+                    <!-- MODALIDADE -->
+                    <div class="form-group">
+                        <label>Formato da Atividade</label>
+                        <select id="tipoParticipacao">
+                            <option value="individual">Individual</option>
+                            <option value="grupo">Grupo de Discentes</option>
+                            <option value="liga">Liga Acadêmica</option>
+                        </select>
+                    </div>
+
+                    <!-- CONVIDAR ALUNOS -->
+                    <div class="form-group hidden" id="campo-convidados">
+                        <label>Convidar Discentes</label>
+                        <input type="text" placeholder="Emails ou matrículas separados por vírgula">
+                    </div>
+
+                    <!-- ARQUIVO -->
+                    <div class="form-group">
+                        <label>Arquivo da Proposta (PDF)</label>
+                        <input type="file" accept=".pdf">
+                    </div>
+
+                    <!-- MODALIDADE DA ATIVIDADE -->
+                    <div class="form-group">
+                        <label>Modalidade da Atividade</label>
+                        <select id="modalidadeAtividade" required>
+                            <option value="">Selecione</option>
+                            <option value="online">Online</option>
+                            <option value="presencial">Presencial</option>
+                        </select>
+                    </div>
+
+                    <!-- LOCAL (APENAS SE PRESENCIAL) -->
+                    <div class="form-group hidden" id="campo-local">
+                        <label>Local da Atividade</label>
+                        <input
+                            type="text"
+                            placeholder="Ex: Campus Central – Sala 203"
+                        >
+                    </div>
+
+                    <!-- BOTÃO -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">
+                            Enviar para Análise
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+        <!-- TAB: INFORMAÇÕES -->
+        <div class="tab-content" id="tab-informacoes">
+            <div class="info-header">
+                <h2>Atividades Criadas</h2>
+                <p>Acompanhe o andamento das oportunidades que você submeteu.</p>
+            </div>
+
+            <!-- Container para os cards: preenchido pelo JS -->
+            <div class="info-cards" id="lista-atividades-criadas">
+                <!-- Cards serão gerados dinamicamente pelo JS -->
+            </div>
+        </div>
+
+        <!-- MODAL UNIVERSAL -->
+        <div id="modal-info" class="hidden modal-overlay">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3></h3>
+                    <button class="modal-close" onclick="fecharModal()">×</button>
+                </div>
+                <div class="modal-body"></div>
+            </div>
+        </div>
+    </div>
+
+</section>

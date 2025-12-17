@@ -1,30 +1,137 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <title>Dashboard - Coordenador de Curso</title>
 
-    <!-- IMPORTANTE: CSS global -->
     <link rel="stylesheet" href="../../assets/css/common/layout.css">
+    <link rel="stylesheet" href="../../assets/css/global/tables.css">
+    <link rel="stylesheet" href="../../assets/css/global/cards.css">
+    <link rel="stylesheet" href="../../assets/css/global/badges.css">
+    <link rel="stylesheet" href="../../assets/css/global/button.css">
+    <link rel="stylesheet" href="../../assets/css/global/forms.css">
+    <link rel="stylesheet" href="../../assets/css/global/modal.css">
+    <link rel="stylesheet" href="../../assets/css/global/alerts.css">
 </head>
 
 <body>
 
-    <!-- Layout é carregado aqui -->
     <div id="layout-area"></div>
 
-    <!-- Script do perfil -->
+    <div id="toast-container"></div>
+
     <script type="module">
         import { carregarLayout } from "../../assets/js/common/layout.js";
 
-        carregarLayout([
-            { label: "Oportunidades", content: "<h2>Oportunidades do Curso</h2>" },
-            { label: "Visão Geral", content: "<h2>Visão Geral do Curso</h2>" },
-            { label: "Validação de Proposta", content: "<h2>Validação de Propostas</h2>" },
-            { label: "Relatórios", content: "<h2>Relatórios do Curso</h2>" },
-            { label: "Gestão de Discentes", content: "<h2>Gestão de Discentes</h2>" }
-        ]);
-    </script>
+        // Importa Módulo Oportunidades
+        import { carregarViewOportunidades, initOportunidades } from "../../assets/js/coordenador/oportunidades.js";
 
+        // Importa Módulo Validação (NOVO)
+        import { carregarViewValidacao, initValidacao } from "../../assets/js/coordenador/validacao.js";
+
+        import { carregarViewDiscentes, initDiscentes } from "../../assets/js/coordenador/discentes.js";
+
+        import { carregarViewRelatorios, initRelatorios } from "../../assets/js/coordenador/relatorios.js";
+
+        import { carregarViewComunicados, initComunicados } from "../../assets/js/coordenador/comunicados.js";
+
+        import { carregarViewVisaoGeral, initVisaoGeral } from "../../assets/js/coordenador/dashboard_home.js";
+
+        import { carregarViewPPC, initPPC } from "../../assets/js/coordenador/ppc.js";
+
+        import { carregarViewGrupos, initGrupos } from "../../assets/js/coordenador/grupos.js";
+        async function init() {
+
+
+            // Coordenador
+            localStorage.setItem("perfil", "coordenador_curso");
+            
+            // 1. Carrega o HTML de todas as views (string)
+            const htmlOportunidades = await carregarViewOportunidades();
+            const htmlValidacao = await carregarViewValidacao();
+            const htmlDiscentes = await carregarViewDiscentes();
+            const htmlRelatorios = await carregarViewRelatorios();
+            const htmlComunicados = await carregarViewComunicados();
+            const htmlVisaoGeral = await carregarViewVisaoGeral();
+            const htmlPPC = await carregarViewPPC();
+            const htmlGrupos = await carregarViewGrupos();
+
+            // 2. Configura o Menu e AS AÇÕES DE INICIALIZAÇÃO (onRender)
+            carregarLayout([
+                {
+                    label: "Visão Geral",
+                    content: htmlVisaoGeral,
+                    title: "Dashboard e KPIs",
+                    description: "Visão sistêmica e indicadores de desempenho.",
+                    onRender: () => initVisaoGeral()
+                },
+                {
+                    label: "Oportunidades",
+                    content: htmlOportunidades,
+                    // Novos campos para o Header:
+                    title: "Gestão de Oportunidades",
+                    description: "Criar, editar e validar atividades de extensão do curso.",
+                    onRender: () => initOportunidades()
+                },
+                {
+                    label: "Validação",
+                    content: htmlValidacao,
+                    title: "Validação de Propostas",
+                    description: " Analise, aprove ou rejeite propostas de extensão submetidas por docentes do curso.",
+                    onRender: () => initValidacao()
+                },
+                {
+                    label: "Relatórios",
+                    content: htmlRelatorios,
+                    title: "Relatórios Gerenciais",
+                    description: "Exportação de dados para UCE e PROEC.",
+                    onRender: () => {
+                        initRelatorios();
+                    }
+                },
+                {
+                    label: "Discentes",
+                    content: htmlDiscentes,
+                    title: "Gestão Acadêmica",
+                    description: "Acompanhamento de alunos e histórico de extensão.",
+                    onRender: () => initDiscentes()
+
+                },
+
+                {
+                    label: "Grupos (Ligas)",
+                    content: htmlGrupos,
+                    title: "Gestão de Grupos e Ligas",
+                    description: "Cadastre e gerencie as entidades de extensão (Ligas, Núcleos, D.A.) e seus responsáveis.",
+                    onRender: () => initGrupos()
+                },
+
+                {
+                    label: "Projeto Pedagogico",
+                    content: htmlPPC,
+                    title: "Projeto Pedagógico (PPC)",
+                    description: "Acompanhamento e definição de carga horária mínima, as regras de validação e o status dos discentes.",
+                    onRender: () => initPPC()
+
+                },
+
+                {
+                    label: "Comunicado",
+                    content: htmlComunicados,
+                    title: "Comunicados Oficiais",
+                    description: "Envie notificações oficias em massa para discentes ou docentes.",
+                    onRender: () => initComunicados()
+                }
+
+            ]);
+
+            // Força a aba "Visão Geral" a abrir primeiro (padrão)
+            // Se quiser testar validação direto, troque a ordem no array acima.
+        }
+
+        init();
+    </script>
 </body>
+
 </html>

@@ -1,18 +1,20 @@
 document.querySelectorAll(".perfil-card").forEach(card => {
     card.addEventListener("click", () => {
-        const perfil = card.getAttribute("data-perfil");
-
-        // salvar perfil escolhido
-        localStorage.setItem("perfil", perfil);
+        const perfil = card.dataset.perfil;
 
         const rotas = {
+            discente: "../discente/dashboard.html",
             docente: "../docente/dashboard.html",
             coordenador_curso: "../coordenador_curso/dashboard.html",
             coordenador_geral: "../coordenador_geral/dashboard.html",
-            discente: "../discente/dashboard.html"
-            
+            discenteOfertante: "../discenteOfertante/dashboard.html"
         };
 
-        window.location.href = rotas[perfil];
+        if (rotas[perfil]) {
+            window.location.href = rotas[perfil];
+        } else {
+            alert("Perfil não implementado.");
+        }
     });
 });
+

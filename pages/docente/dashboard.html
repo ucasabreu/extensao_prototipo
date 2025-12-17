@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Docente</title>
+
+    <link rel="stylesheet" href="../../assets/css/common/layout.css">
+    <link rel="stylesheet" href="../../assets/css/global/cards.css">
+    <link rel="stylesheet" href="../../assets/css/global/tables.css">
+    <link rel="stylesheet" href="../../assets/css/global/badges.css">
+    <link rel="stylesheet" href="../../assets/css/global/button.css">
+    <link rel="stylesheet" href="../../assets/css/global/forms.css">
+    <link rel="stylesheet" href="../../assets/css/global/modal.css">
+    <link rel="stylesheet" href="../../assets/css/global/alerts.css">
+
+
+</head>
+
+<body>
+
+    <div id="layout-area"></div>
+
+    <div id="toast-container"></div>
+
+    <script src="../../assets/js/common/alerts.js"></script>
+
+    <script type="module">
+        import { carregarLayout } from "../../assets/js/common/layout.js";
+
+        // Importações das Views do Docente
+        import { carregarVisaoGeralDocente, initVisaoGeralDocente } from "../../assets/js/docente/visao_geral.js";
+        import { carregarViewMinhasOportunidades, initMinhasOportunidades } from "../../assets/js/docente/oportunidades.js";
+        import { carregarViewInscricoes, initInscricoes } from "../../assets/js/docente/gerenciar_inscricoes.js";
+        import { carregarViewFrequencia, initFrequencia } from "../../assets/js/docente/frequencia.js";
+        import { carregarViewGrupos, initGrupos } from "../../assets/js/docente/grupos.js";
+        import { carregarViewRelatorios, initRelatorios } from "../../assets/js/docente/relatorios.js";
+        import { carregarViewNotificacoes, initNotificacoes } from "../../assets/js/docente/notificacoes.js";
+        import { carregarViewPlanos, initPlanos } from "../../assets/js/docente/plano_atividades.js"; 
+
+
+        async function init() {
+
+
+            localStorage.setItem("perfil", "docente");
+            
+            // Carrega o HTML da Visão Geral
+            const htmlVisaoGeral = await carregarVisaoGeralDocente();
+            const htmlMinhasOportunidades = await carregarViewMinhasOportunidades();
+            const htmlInscricoes = await carregarViewInscricoes();
+            const htmlFrequencia = await carregarViewFrequencia();
+            const htmlGrupos = await carregarViewGrupos();
+            const htmlRelatorios = await carregarViewRelatorios();
+            const htmlNotificacoes = await carregarViewNotificacoes();
+            const htmlPlanos = await carregarViewPlanos();
+
+            // Configura o Menu do Docente
+            carregarLayout([
+                {
+                    label: "Visão Geral",
+                    content: htmlVisaoGeral,
+                    title: "Painel do Docente",
+                    description: "Gestão de projetos e alunos.",
+                    onRender: () => initVisaoGeralDocente() // ESSENCIAL PARA RODAR O JS
+                },
+                {
+                    label: "Minhas Oportunidades",
+                    content: htmlMinhasOportunidades,
+                    title: "Minhas Propostas e Atividades",
+                    description: "Submeta e acompanhe o status de seus projetos.",
+                    onRender: () => initMinhasOportunidades()
+                },
+                {
+                    label: "Gerenciar Inscrições",
+                    content: htmlInscricoes,
+                    title: "Controle de Participantes",
+                    description: "Gerencie inscrições do discentes nas atividades.",
+                    onRender: () => initInscricoes()
+                },
+
+                {
+                    label: "Frequência",
+                    content: htmlFrequencia,
+                    title: "Diário de Frequência",
+                    description: "Controle de carga horária e presença.",
+                    onRender: () => initFrequencia()
+                },
+
+                {
+                    label: "Plano de Atividades", 
+                    content: htmlPlanos,
+                    title: "Planos de Trabalho",
+                    description: "Detalhamento pedagógico e cronograma (RF018).",
+                    onRender: () => initPlanos()
+                },
+
+                {
+                    label: "Meus Grupos",
+                    content: htmlGrupos,
+                    title: "Gestão de Grupos e Ligas", // Título ajustado para contexto pedagógico
+                    description: "Organização de equipes, monitorias e lideranças estudantis.",
+                    onRender: () => initGrupos() // Roda JS ao entrar
+                },
+                {
+                    label: "Relatórios",
+                    content: htmlRelatorios,
+                    title: "Prestação de Contas",
+                    description: "Consolidação de resultados e exportação UCE/PROEC.",
+                    onRender: () => initRelatorios()
+                },
+                {
+                    label: "Notificações",
+                    // Adiciona o span do badge dentro do label para o layout.js renderizar
+                    // Nota: O layout.js precisaria suportar HTML no label, ou ajustamos via CSS depois. 
+                    // Por enquanto vamos usar texto puro e o badge é injetado via JS ou no layout.js
+                    content: htmlNotificacoes,
+                    title: "Central de Notificações",
+                    description: "Alertas e pendências.",
+                    onRender: () => initNotificacoes()
+                }
+
+            ]);
+        }
+
+        /* ============================================================
+           FUNÇÃO DE NAVEGAÇÃO GLOBAL (PONTE ENTRE SEÇÕES)
+           ============================================================ */
+        window.navegarParaInscricoes = (idOportunidade) => {
+            // 1. Armazena o ID em uma variável global temporária
+            window.idOportunidadePreSelecionada = idOportunidade;
+
+            // 2. Encontra a aba "Gerenciar Inscrições" e simula o clique
+            const abas = document.querySelectorAll(".menu-item");
+            const abaInscricoes = Array.from(abas).find(aba => aba.textContent.includes("Inscrições"));
+
+            if (abaInscricoes) {
+                abaInscricoes.click();
+
+                // Feedback visual (Toast) opcional
+                if (window.showToast) window.showToast("info", "Filtrando inscrições da atividade...");
+            } else {
+                console.error("Aba de inscrições não encontrada.");
+            }
+        };
+
+        /* FUNÇÃO DE NAVEGAÇÃO PARA FREQUÊNCIA */
+        window.navegarParaFrequencia = (idAtividade) => {
+            window.idOportunidadeFrequencia = idAtividade;
+
+            const abas = document.querySelectorAll(".menu-item");
+            const abaFrequencia = Array.from(abas).find(aba => aba.textContent.includes("Frequência"));
+
+            if (abaFrequencia) {
+                abaFrequencia.click();
+                if (window.showToast) window.showToast("info", "Carregando diário da atividade...");
+            }
+        };
+
+        // [NOVO] Ponte para navegação vinda de outras telas
+        window.navegarParaRelatorios = (idAtividade) => {
+            window.idOportunidadeRelatorio = idAtividade;
+            const aba = Array.from(document.querySelectorAll(".menu-item")).find(el => el.textContent.includes("Relatórios"));
+            if (aba) aba.click();
+        };
+
+
+
+        init();
+    </script>
+
+</body>
+
+</html>
