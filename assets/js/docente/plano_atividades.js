@@ -81,9 +81,9 @@ function renderizarTabelaPlanos() {
 
         let acao = "";
         if (p.status === "Aprovado" || p.status === "Enviado") {
-            acao = `<button class="btn-small btn-small-info" onclick="abrirEditor(${p.id}, true)">👁️ Visualizar</button>`;
+            acao = `<button class="btn-small btn-small-info" onclick="abrirEditor(${p.id}, true)">Visualizar</button>`;
         } else {
-            acao = `<button class="btn-small btn-small-primary" onclick="abrirEditor(${p.id}, false)">✏️ Editar / Ajustar</button>`;
+            acao = `<button class="btn-small btn-small-primary" onclick="abrirEditor(${p.id}, false)">Editar / Ajustar</button>`;
         }
 
         return `

@@ -1,195 +1,255 @@
 /* ===============================
-   BODY E TIPOGRAFIA
+   HOME PAGE REMODELADA
 =============================== */
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f8efda;
-    color: #333;
+
+/* 1. Ajuste do Corpo Principal */
+main {
+    max-width: 1200px;       /* Limita a largura do conteúdo */
+    margin: 0 auto;          /* Centraliza o bloco na tela */
+    padding: 40px 24px;      /* Adiciona respiro nas laterais (interno) */
+    width: 100%;             /* Garante que ocupe o espaço disponível */
+    box-sizing: border-box;  /* Evita que o padding estoure a largura */
 }
 
-/* HEADER */
+/* HEADER AJUSTADO */
 header.home-header {
+    background: #7a1010; /* Cor sólida institucional */
+    padding: 15px 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* 2. Ajuste do Conteúdo do Header */
+/* O header em si continua com 100% (cor de fundo), 
+   mas o conteúdo interno segue a mesma largura do main */
+.header-content {
+    max-width: 1200px;       /* Mesma largura do main para alinhar */
+    margin: 0 auto;          /* Centraliza */
+    padding: 0 24px;         /* Mesmo padding lateral do main */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 40px;
-    background: linear-gradient(90deg, #7a1010, #a81b1b);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.brand-text h1 {
+    margin: 0;
+    font-size: 1.2rem;
     color: #fff;
+    font-weight: 700;
 }
 
-header.home-header img {
-    filter: brightness(0) invert(1);
+.brand-text span {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.8);
+    font-weight: 300;
 }
 
-header.home-header .btn {
-    font-weight: bold;
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
-/* MAIN */
-main {
-    max-width: 1100px;
-    margin: auto;
-    padding: 60px 40px;
+.a11y-controls button {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 4px 8px;
 }
 
-section {
-    margin-bottom: 60px;
-}
-
-/* HERO */
-.hero {
+/* HERO SECTION */
+.hero-search {
     text-align: center;
     padding: 60px 20px;
-    background: #fff3e0;
-    border-radius: 14px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-    margin-bottom: 60px;
+    background: linear-gradient(135deg, #fffcf5 0%, #f3e5d0 100%);
+    border-radius: 12px;
+    margin-bottom: 40px;
+    border: 1px solid #e3d8c7;
 }
 
-.hero h1 {
-    font-size: 2.4rem;
-    color: #7a1010;
-    margin-bottom: 20px;
-}
-
-.hero p {
-    font-size: 1.1rem;
-    opacity: 0.8;
-    max-width: 700px;
-    margin: 0 auto;
-}
-
-/* KPI GRID */
-.kpi-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px; /* um pouco menor para ficar mais juntinho */
-    justify-content: center;
-}
-
-.kpi-card {
-    width: 260px;
-    min-height: 140px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 22px 26px;
-    border-radius: 14px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.08);
-    border-left: 6px solid #7a1010;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    background: #fff;
-}
-
-.kpi-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 6px 14px rgba(0,0,0,0.15);
-}
-
-.kpi-title {
-    font-size: 14px;
-    color: #7a1010;
-    font-weight: 600;
-    opacity: 0.85;
-}
-
-.kpi-sub {
-    font-size: 13px;
-    opacity: 0.7;
-    color: #555;
-}
-
-/* PROPOSTAS DE EXTENSÃO */
-.propostas-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-}
-
-.proposta-card {
-    width: 300px;
-    min-height: 120px;
-    background: #fff;
-    padding: 20px 25px;
-    border-radius: 14px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.08);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.proposta-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 14px rgba(0,0,0,0.15);
-}
-
-.proposta-title {
-    font-size: 16px;
-    font-weight: 700;
-    color: #7a1010;
-    margin-bottom: 8px;
-}
-
-.proposta-sub {
-    font-size: 14px;
-    color: #555;
+.hero-search h2 {
+    color: #5d0b0b;
+    font-size: 2rem;
     margin-bottom: 10px;
 }
 
-/* BADGES DE PROPOSTAS */
-.proposta-badge {
-    align-self: flex-start;
-    padding: 4px 10px;
+.search-bar-container {
+    max-width: 600px;
+    margin: 30px auto 0;
+    display: flex;
+    gap: 10px;
+}
+
+.hero-input {
+    flex: 1;
+    padding: 12px 20px;
+    border: 2px solid #c9b8a5;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+/* GRID DE OPORTUNIDADES */
+.course-card {
+    background: #fff;
     border-radius: 12px;
+    border: 1px solid #eee;
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+    border-color: #c9b8a5;
+}
+
+.course-header {
+    height: 100px;
+    background: #f4f4f4; /* Placeholder para imagem */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #aaa;
+    font-weight: bold;
+    border-bottom: 1px solid #eee;
+}
+
+.course-body {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.course-meta {
     font-size: 12px;
+    color: #666;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.course-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+/* SERVIÇOS PÚBLICOS */
+.public-services {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.service-card {
+    flex: 1;
+    min-width: 300px;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    border-left: 5px solid #7a1010;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+/* ===============================
+   ESTILOS NOVOS DA SEÇÃO FAQ & DOCS
+=============================== */
+
+.faq-section {
+    background: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    margin-top: 40px;
+}
+
+.faq-grid, .doc-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start; /* Alinhamento à esquerda */
+    margin-top: 20px;
+}
+
+.faq-card, .doc-card {
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    flex: 1 1 300px; /* Flexível, largura base 300px */
+    max-width: 100%; /* Ajuste para mobile */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-left: 4px solid #7a1010;
+    transition: transform 0.2s ease;
+}
+
+.faq-card:hover, .doc-card:hover {
+    transform: translateY(-3px);
+    background: #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.faq-title, .doc-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #7a1010;
+}
+
+.faq-sub, .doc-sub {
+    font-size: 13px;
+    opacity: 0.85;
+    line-height: 1.5;
+    color: #555;
+}
+
+.doc-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 11px;
     font-weight: 600;
     color: #fff;
-}
-
-.badge-publico {
-    background-color: #28a745; /* verde */
-}
-
-.badge-restrito {
-    background-color: #ffc107; /* amarelo */
-}
-
-/* AJUDA */
-.section-ajuda {
-    text-align: center;
-    background: #fff3e0;
-    padding: 40px 20px;
-    border-radius: 14px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-}
-
-.section-ajuda h2 {
-    color: #7a1010;
-    margin-bottom: 15px;
-}
-
-.section-ajuda p {
-    max-width: 600px;
-    margin: 0 auto 25px auto;
-    opacity: 0.8;
-}
-
-/* BOTÃO ACESSO RÁPIDO */
-.btn-acesso-rapido {
-    z-index: 10 !important;
+    text-transform: uppercase;
 }
 
 /* RESPONSIVO */
 @media (max-width: 768px) {
-    .kpi-grid, .propostas-grid {
-        justify-content: center;
+    .header-content {
+        flex-direction: column;
         gap: 15px;
     }
+    .header-actions {
+        width: 100%;
+        justify-content: center;
+    }
+    .search-bar-container {
+        flex-direction: column;
+    }
+    .course-card, .faq-card, .doc-card {
+        width: 100%;
+    }
+}
 
-    .kpi-card, .proposta-card {
-        width: 90%;
+@media (min-width: 1400px) {
+    main, .header-content {
+        max-width: 1320px; /* Permite ficar um pouco mais largo em monitores grandes */
     }
 }

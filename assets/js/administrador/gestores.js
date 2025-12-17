@@ -69,8 +69,8 @@ function renderizarTabela(lista = gestoresDB) {
                 : '<span class="badge badge-warning">Pendente</span>'}
             </td>
             <td class="actions">
-                <button class="btn-small btn-small-info" onclick="editarGestor(${g.id})">✏️</button>
-                <button class="btn-small btn-small-danger" onclick="removerGestor(${g.id})">🗑️</button>
+                <button class="btn-small btn-small-info" onclick="editarGestor(${g.id})">editar</button>
+                <button class="btn-small btn-small-danger" onclick="removerGestor(${g.id})">excluir</button>
             </td>
         </tr>
     `).join("");

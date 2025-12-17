@@ -106,7 +106,7 @@ function renderizarHistorico() {
                 <td>${p.alunosVinculados}</td>
                 <td><span class="badge ${badge}">${p.status.toUpperCase()}</span></td>
                 <td class="actions">
-                    <button class="btn-small btn-small-info" onclick="verDetalhesPPC(${p.id})">🔍 Ver</button>
+                    <button class="btn-small btn-small-info" onclick="verDetalhesPPC(${p.id})">Ver</button>
                 </td>
             </tr>
         `;
@@ -155,7 +155,7 @@ window.verDetalhesPPC = (id) => {
 
         <div style="background:#fff; border: 1px solid #e3d8c7; border-radius:8px; padding:15px; margin-bottom:25px;">
             <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:15px;">
-                <h4 style="margin:0; font-size:14px; color:#5d0b0b;">📜 Arquivo e Regras</h4>
+                <h4 style="margin:0; font-size:14px; color:#5d0b0b;">Arquivo e Regras</h4>
                 <button class="btn-small btn-small-secondary" onclick="alert('Baixando ${p.arquivo}...')">
                     📄 Baixar PDF Original
                 </button>
@@ -169,7 +169,7 @@ window.verDetalhesPPC = (id) => {
             </div>
         </div>
 
-        <h4 style="font-size:14px; color:#333; margin-bottom:10px;">👥 Discentes Vinculados</h4>
+        <h4 style="font-size:14px; color:#333; margin-bottom:10px;">Discentes Vinculados</h4>
         <div style="max-height:250px; overflow-y:auto; border:1px solid #eee; border-radius:8px;">
             <table class="global-table">
                 <thead><tr><th>Matrícula</th><th>Nome</th><th>Progresso</th><th>Situação</th></tr></thead>

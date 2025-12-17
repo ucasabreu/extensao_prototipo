@@ -117,12 +117,12 @@ window.carregarDadosFrequencia = () => {
     } else {
         btnSalvar.disabled = false;
         btnEncerrar.disabled = false;
-        btnEncerrar.textContent = "🔒 Encerrar Turma";
+        btnEncerrar.textContent = "Encerrar Turma";
         horasInputEl.disabled = false;
     }
 
     if (dataSelecionada < atividade.inicio || dataSelecionada > atividade.fim) {
-        mostrarAlerta("danger", `⛔ <strong>Data Inválida:</strong> Selecione uma data entre ${formatarData(atividade.inicio)} e ${formatarData(atividade.fim)}.`);
+        mostrarAlerta("danger", `<strong>Data Inválida:</strong> Selecione uma data entre ${formatarData(atividade.inicio)} e ${formatarData(atividade.fim)}.`);
         tbody.innerHTML = `<tr><td colspan="5" align="center" style="color:#b01313">Data fora do período de execução.</td></tr>`;
         btnSalvar.disabled = true;
         return;
@@ -243,7 +243,7 @@ window.abrirConsolidacao = () => {
             : 'color: #721c24; background-color: #f8d7da; font-weight: bold;';
         
         const statusLabel = isApto ? "APTO (Aprovado)" : "INAPTO (Reprovado)";
-        const icon = isApto ? "✅" : "❌";
+        const icon = isApto ? "aprovador" : "reprovado";
 
         return `
             <tr>
