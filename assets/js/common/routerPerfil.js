@@ -15,10 +15,12 @@ document.querySelectorAll(".perfil-card").forEach(card => {
     card.addEventListener("click", () => {
         const perfil = card.dataset.perfil;
 
-        // define perfil normalmente
-        localStorage.setItem("perfil", perfil);
+        // 1. Limpa dados de sessões anteriores (CORREÇÃO AQUI)
+        localStorage.removeItem("nome");
+        localStorage.removeItem("email");
 
-        // REMOVE flag de protótipo (importante)
+        // 2. Define o novo perfil
+        localStorage.setItem("perfil", perfil);
         localStorage.removeItem("modo_prototipo");
 
         const rotas = {

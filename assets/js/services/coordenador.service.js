@@ -60,7 +60,7 @@ const comunicadosDB = [
 const ppcDB = [
     {
         id: 1,
-        codigo: "BCC-2023",
+        codigo: "PCC-2023",
         curso: "Ciência da Computação",
         inicio: "2023.1",
         fim: "2027.2",
@@ -70,7 +70,7 @@ const ppcDB = [
         concluintes: 32,
         responsavel: "Prof. Carlos (Coord)",
         dataCadastro: "10/01/2023",
-        arquivo: "PPC_BCC_2023_VersaoFinal.pdf",
+        arquivo: "PPC_2023_VersaoFinal.pdf",
         tamanho: "2.4 MB",
         listaAlunos: [
             { matricula: "2023001", nome: "Ana Clara Souza", situacao: "Regular", progresso: "33%" },
@@ -80,7 +80,7 @@ const ppcDB = [
     },
     {
         id: 2,
-        codigo: "BCC-2018",
+        codigo: "PCC-2018",
         curso: "Ciência da Computação",
         inicio: "2018.1",
         fim: "2022.2",
