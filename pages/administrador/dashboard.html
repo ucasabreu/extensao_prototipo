@@ -24,11 +24,11 @@
 
         // Importa Módulos Específicos do Administrador
         // (Nota: Você deve criar esses arquivos JS correspondentes na pasta assets)
-       // import { carregarViewVisaoGeral, initVisaoGeral } from "../../assets/js/administrador/dashboard_home.js";
+       import { carregarViewVisaoGeral, initVisaoGeral } from "../../assets/js/administrador/dashboard_home.js";
         import { carregarViewGestores, initGestores } from "../../assets/js/administrador/gestores.js";
-      //  import { carregarViewPermissoes, initPermissoes } from "../../assets/js/administrador/permissoes.js";
-      //  import { carregarViewConteudo, initConteudo } from "../../assets/js/administrador/conteudo.js";
-
+        import { carregarViewPermissoes, initPermissoes } from "../../assets/js/administrador/permissoes.js";
+        import { carregarViewConteudo, initConteudo } from "../../assets/js/administrador/conteudo.js";
+        
         async function init() {
             // Define o contexto de sessão
             localStorage.setItem("perfil", "administrador");
@@ -54,25 +54,26 @@
                 {
                     label: "Gestores e Usuários",
                     content: htmlGestores,
-                    title: "Gestão de Usuários (RF 003)",
+                    title: "Gestão de Usuários ",
                     description: "Cadastrar Docentes, Coordenadores e Secretários.",
                     onRender: () => initGestores()
                 },
                 {
                     label: "Permissões",
                     content: htmlPermissoes,
-                    title: "Matriz de Acessos (RF 004)",
+                    title: "Matriz de Acessos ",
                     description: "Configurar permissões por perfil e módulo.",
                     onRender: () => initPermissoes()
                 },
                 {
                     label: "Conteúdo e FAQ",
                     content: htmlConteudo,
-                    title: "Central de Ajuda (RF 044)",
+                    title: "Central de Ajuda ",
                     description: "Gerenciar perguntas frequentes e documentos institucionais.",
                     onRender: () => initConteudo()
                 }
             ]);
+
         }
 
         init();

@@ -3,6 +3,7 @@
    Arquivo: assets/js/administrador/gestores.js
    Referência: RF 003 - Cadastro de Perfis de Gestão
    ==================================================================== */
+let gestorEditandoId = null;
 
 // Mock de Dados
 let gestoresDB = [
@@ -26,20 +27,47 @@ export async function carregarViewGestores() {
 export function initGestores() {
     console.log("Iniciando Módulo Gestores...");
     renderizarTabela();
+
+    const inputBusca = document.getElementById("busca-gestor");
+    if (!inputBusca) return;
+
+    inputBusca.addEventListener("input", () => {
+        const termo = inputBusca.value.toLowerCase();
+
+        const filtrados = gestoresDB.filter(g =>
+            g.nome.toLowerCase().includes(termo) ||
+            g.matricula.toLowerCase().includes(termo)
+        );
+
+        renderizarTabela(filtrados);
+    });
 }
 
+
 // Funções Internas
-function renderizarTabela() {
+function renderizarTabela(lista = gestoresDB) {
     const tbody = document.getElementById("tabela-gestores-corpo");
     if (!tbody) return;
 
-    tbody.innerHTML = gestoresDB.map(g => `
+    if (lista.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="6" style="text-align:center">Nenhum gestor encontrado</td>
+            </tr>
+        `;
+        return;
+    }
+
+    tbody.innerHTML = lista.map(g => `
         <tr>
             <td>${g.nome}</td>
             <td>${g.email}</td>
             <td>${g.matricula}</td>
             <td><span class="badge badge-neutral">${g.perfil}</span></td>
-            <td>${g.status === 'Ativo' ? '<span class="badge badge-success">Ativo</span>' : '<span class="badge badge-warning">Pendente</span>'}</td>
+            <td>${g.status === 'Ativo'
+                ? '<span class="badge badge-success">Ativo</span>'
+                : '<span class="badge badge-warning">Pendente</span>'}
+            </td>
             <td class="actions">
                 <button class="btn-small btn-small-info" onclick="editarGestor(${g.id})">✏️</button>
                 <button class="btn-small btn-small-danger" onclick="removerGestor(${g.id})">🗑️</button>
@@ -50,13 +78,87 @@ function renderizarTabela() {
 
 // Tornando funções globais para o onclick do HTML funcionar
 window.novoGestor = () => {
-    alert("Abrir modal de cadastro (Implementar Form)");
+    gestorEditandoId = null;
+    document.getElementById("modal-titulo").innerText = "Novo Gestor";
+    limparFormulario();
+    abrirModal();
 };
+
 
 window.editarGestor = (id) => {
     const gestor = gestoresDB.find(g => g.id === id);
-    alert(`Editando: ${gestor.nome}`);
+    if (!gestor) return;
+
+    gestorEditandoId = id;
+    document.getElementById("modal-titulo").innerText = "Editar Gestor";
+
+    document.getElementById("gestor-nome").value = gestor.nome;
+    document.getElementById("gestor-email").value = gestor.email;
+    document.getElementById("gestor-matricula").value = gestor.matricula;
+    document.getElementById("gestor-perfil").value = gestor.perfil;
+    document.getElementById("gestor-status").value = gestor.status;
+
+    abrirModal();
 };
+
+window.salvarGestor = () => {
+    const nome = gestorNome().value.trim();
+    const email = gestorEmail().value.trim();
+    const matricula = gestorMatricula().value.trim();
+    const perfil = gestorPerfil().value;
+    const status = gestorStatus().value;
+
+    if (!nome || !email || !matricula) {
+        alert("Preencha todos os campos obrigatórios.");
+        return;
+    }
+
+    if (gestorEditandoId) {
+        const gestor = gestoresDB.find(g => g.id === gestorEditandoId);
+        gestor.nome = nome;
+        gestor.email = email;
+        gestor.matricula = matricula;
+        gestor.perfil = perfil;
+        gestor.status = status;
+    } else {
+        gestoresDB.push({
+            id: Date.now(),
+            nome,
+            email,
+            matricula,
+            perfil,
+            status
+        });
+    }
+
+    fecharModalGestor();
+    renderizarTabela();
+};
+
+function abrirModal() {
+    document.getElementById("modal-gestor").style.display = "flex";
+}
+
+window.fecharModalGestor = () => {
+    document.getElementById("modal-gestor").style.display = "none";
+};
+
+function limparFormulario() {
+    gestorNome().value = "";
+    gestorEmail().value = "";
+    gestorMatricula().value = "";
+    gestorPerfil().value = "Docente";
+    gestorStatus().value = "Ativo";
+}
+
+// shortcuts
+const gestorNome = () => document.getElementById("gestor-nome");
+const gestorEmail = () => document.getElementById("gestor-email");
+const gestorMatricula = () => document.getElementById("gestor-matricula");
+const gestorPerfil = () => document.getElementById("gestor-perfil");
+const gestorStatus = () => document.getElementById("gestor-status");
+
+
 
 window.removerGestor = (id) => {
     if(confirm("Deseja remover este acesso?")) {

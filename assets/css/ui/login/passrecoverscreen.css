@@ -22,7 +22,7 @@ body {
   align-items: center;
   width: 25%;
   min-height: 54%;
-  background: #853d27;
+  background: #5d0b0b;
   border-radius: 1.2rem;
   padding: 2rem;
 }
@@ -66,7 +66,7 @@ body {
   border: none;
   background-color: #fff0c4;
   font-weight: bold;
-  color: #853d27;
+  color: #5d0b0b;
 }
 
 .buttom-form:hover {
@@ -87,7 +87,7 @@ body {
 }
 
 .popup {
-  background-color: #853d27;
+  background-color: #5d0b0b;
   width: 300px;
   color: #fff;
   padding: 2rem 2rem;

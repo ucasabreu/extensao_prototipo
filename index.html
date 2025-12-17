@@ -1,71 +1,12 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Extensão Acadêmica</title>
+<main id="main-content"></main>
 
-    <!-- Importa os botões globais -->
-    <link rel="stylesheet" href="./assets/css/global/button.css" />
+<script type="module">
+import { initHomeJS } from '../../assets/js/home/home.js';
 
-    <style>
-      body {
-        background: #f8efda;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        font-family: Arial, sans-serif;
-        margin: 0;
-      }
-
-      .container {
-        text-align: center;
-      }
-
-      .btn-wrapper {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-        margin-top: 20px;
-      }
-
-      .title {
-        font-size: 26px;
-        font-weight: bold;
-        color: #5d0b0b;
-        margin-bottom: 25px;
-      }
-    </style>
-  </head>
-
-  <body>
-    <div class="container">
-      <div class="title">Portal de Extensão Acadêmica</div>
-
-      <div class="btn-wrapper">
-        <!-- Botão: Login -->
-        <button
-          class="btn btn-primary"
-          onclick="window.location.href='./pages/common/routerPerfil.html'"
-        >
-          🔐 Entrar no Sistema
-        </button>
-
-        <button
-          class="btn btn-primary"
-          onclick="window.location.href='./pages/login/loginscreen.html'"
-        >
-          Login
-        </button>
-
-        <!-- Botão: UI Preview -->
-        <button
-          class="btn btn-secondary"
-          onclick="window.location.href='./pages/common/ui_preview.html'"
-        >
-          🔧 UI Preview – Componentes Globais
-        </button>
-      </div>
-    </div>
-  </body>
-</html>
+fetch('./pages/home/home.html')
+  .then(res => res.text())
+  .then(html => {
+    document.getElementById('main-content').innerHTML = html;
+    initHomeJS(); // inicializa o JS após inserir o HTML
+  });
+</script>
