@@ -1,12 +1,12 @@
 /* ===================================================
-   CONTEÚDO - FAQ & DOCUMENTAÇÃO
+   CONTEÚDO - FAQ & DOCUMENTAÇÃO (ADMINISTRADOR)
+   Atualizado para CRUD (Create, Read, Update, Delete)
 =================================================== */
 
 // ===============================
-// MOCK - FAQ
+// MOCK - FAQ (Adicionado IDs para gestão)
 // ===============================
-
-const faqDB = [
+ const faqDB = [
     {
         pergunta: "O que é um projeto de extensão?",
         resposta:
@@ -59,12 +59,10 @@ const faqDB = [
     }
 ];
 
-
 // ===============================
 // MOCK - DOCUMENTAÇÃO
 // ===============================
-
-const docsDB = [
+let docsDB = [
     {
         id: 1,
         titulo: "Guia do Discente",
@@ -89,9 +87,8 @@ const docsDB = [
 ];
 
 // ===============================
-// CARREGA VIEW (OBRIGATÓRIO)
+// CARREGA VIEW
 // ===============================
-
 export async function carregarViewConteudo() {
     const response = await fetch("../../pages/administrador/conteudo.html");
     return await response.text();
@@ -100,59 +97,195 @@ export async function carregarViewConteudo() {
 // ===============================
 // INIT
 // ===============================
-
 export function initConteudo() {
-    console.log("[ADMIN] Conteúdo & FAQ carregado");
+    console.log("[ADMIN] Conteúdo & FAQ carregado com funções de gestão");
     renderFAQ();
     renderDocs();
 }
 
 // ===============================
-// RENDER FAQ
+// LÓGICA DE FAQ (RENDER + CRUD)
 // ===============================
 
 function renderFAQ() {
     const container = document.getElementById("faq-container");
     if (!container) return;
 
+    if (faqDB.length === 0) {
+        container.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;">Nenhuma pergunta cadastrada.</div>';
+        return;
+    }
+
     container.innerHTML = faqDB.map(f => `
-        <div class="faq-item" style="margin-bottom:16px;">
-            <strong>${f.pergunta}</strong>
-            <p style="margin-top:6px; color:#555;">
-                ${f.resposta}
-            </p>
+        <div class="faq-item" style="margin-bottom:15px; background: #fff; padding: 15px; border: 1px solid #eee; border-radius: 6px; display: flex; justify-content: space-between; align-items: flex-start;">
+            <div style="flex: 1; padding-right: 15px;">
+                <strong style="color: #5d0b0b; display: block; margin-bottom: 5px;">${f.pergunta}</strong>
+                <p style="margin:0; color:#555; font-size: 14px; line-height: 1.5;">${f.resposta}</p>
+            </div>
+            <div style="display: flex; gap: 8px; min-width: 70px;">
+                <button class="btn-small btn-small-info" title="Editar" onclick="abrirModalFaq(${f.id})">editar</button>
+                <button class="btn-small btn-small-danger" title="Excluir" onclick="deletarFAQ(${f.id})">excluir</button>
+            </div>
         </div>
     `).join("");
 }
 
+// Expor funções para o HTML
+window.abrirModalFaq = (id = null) => {
+    document.getElementById("modalFaq").style.display = "flex";
+    const titulo = document.getElementById("tituloModalFaq");
+    
+    if (id) {
+        // Modo Edição
+        const item = faqDB.find(f => f.id === id);
+        if (item) {
+            titulo.innerText = "Editar Pergunta";
+            document.getElementById("faqId").value = item.id;
+            document.getElementById("faqPergunta").value = item.pergunta;
+            document.getElementById("faqResposta").value = item.resposta;
+        }
+    } else {
+        // Modo Criação
+        titulo.innerText = "Nova Pergunta";
+        document.getElementById("faqId").value = "";
+        document.getElementById("faqPergunta").value = "";
+        document.getElementById("faqResposta").value = "";
+    }
+};
+
+window.salvarFAQ = () => {
+    const id = document.getElementById("faqId").value;
+    const pergunta = document.getElementById("faqPergunta").value;
+    const resposta = document.getElementById("faqResposta").value;
+
+    if (!pergunta || !resposta) return alert("Preencha todos os campos.");
+
+    if (id) {
+        // Atualizar existente
+        const index = faqDB.findIndex(f => f.id == id);
+        if (index !== -1) {
+            faqDB[index] = { ...faqDB[index], pergunta, resposta };
+            if (window.showToast) window.showToast("success", "Pergunta atualizada com sucesso!");
+        }
+    } else {
+        // Criar nova
+        const novoId = faqDB.length > 0 ? Math.max(...faqDB.map(f => f.id)) + 1 : 1;
+        faqDB.push({ id: novoId, pergunta, resposta });
+        if (window.showToast) window.showToast("success", "Pergunta criada com sucesso!");
+    }
+
+    window.fecharModalCont('modalFaq');
+    renderFAQ();
+};
+
+window.deletarFAQ = (id) => {
+    if (confirm("Tem certeza que deseja excluir esta pergunta?")) {
+        faqDB = faqDB.filter(f => f.id !== id);
+        renderFAQ();
+        if (window.showToast) window.showToast("success", "Item removido.");
+    }
+};
+
+
 // ===============================
-// RENDER DOCUMENTAÇÃO
+// LÓGICA DE DOCUMENTOS (RENDER + CRUD)
 // ===============================
 
 function renderDocs() {
     const tbody = document.getElementById("tabela-docs");
     if (!tbody) return;
 
+    if (docsDB.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 20px;">Nenhum documento disponível.</td></tr>';
+        return;
+    }
+
     tbody.innerHTML = docsDB.map(d => `
         <tr>
-            <td>${d.titulo}</td>
-            <td>${d.categoria}</td>
             <td>
-                <span class="badge ${
-                    d.acesso === "Público"
-                        ? "badge-success"
-                        : "badge-warning"
-                }">
+                <span style="font-weight: 500;">${d.titulo}</span>
+                <div style="font-size: 11px; color: #888;">PDF • 250kb</div>
+            </td>
+            <td>${d.categoria}</td>
+            <td style="text-align: center;">
+                <span class="badge ${d.acesso === "Público" ? "badge-success" : "badge-warning"}">
                     ${d.acesso}
                 </span>
             </td>
-            <td>
-                <a href="${d.link}"
-                   class="btn-small btn-small-info"
-                   target="_blank">
-                    Abrir
-                </a>
+            <td style="text-align: center;">
+                <button class="btn-small btn-small-info" title="Editar" onclick="abrirModalDoc(${d.id})">editar</button>
+                <button class="btn-small btn-small-danger" title="Excluir" onclick="deletarDoc(${d.id})">excluir</button>
             </td>
         </tr>
     `).join("");
 }
+
+window.abrirModalDoc = (id = null) => {
+    document.getElementById("modalDoc").style.display = "flex";
+    const titulo = document.getElementById("tituloModalDoc");
+    
+    if (id) {
+        const item = docsDB.find(d => d.id === id);
+        if (item) {
+            titulo.innerText = "Editar Documento";
+            document.getElementById("docId").value = item.id;
+            document.getElementById("docTitulo").value = item.titulo;
+            document.getElementById("docCategoria").value = item.categoria;
+            document.getElementById("docAcesso").value = item.acesso;
+        }
+    } else {
+        titulo.innerText = "Upload de Documento";
+        document.getElementById("docId").value = "";
+        document.getElementById("docTitulo").value = "";
+        document.getElementById("docCategoria").value = "Usuário";
+        document.getElementById("docAcesso").value = "Público";
+        document.getElementById("docArquivo").value = ""; // Limpa input file
+    }
+};
+
+window.salvarDoc = () => {
+    const id = document.getElementById("docId").value;
+    const titulo = document.getElementById("docTitulo").value;
+    const categoria = document.getElementById("docCategoria").value;
+    const acesso = document.getElementById("docAcesso").value;
+
+    if (!titulo) return alert("Informe o título do documento.");
+
+    if (id) {
+        // Atualizar
+        const index = docsDB.findIndex(d => d.id == id);
+        if (index !== -1) {
+            docsDB[index] = { ...docsDB[index], titulo, categoria, acesso };
+            if (window.showToast) window.showToast("success", "Metadados atualizados!");
+        }
+    } else {
+        // Novo Upload (Simulado)
+        const novoId = docsDB.length > 0 ? Math.max(...docsDB.map(d => d.id)) + 1 : 1;
+        docsDB.push({ 
+            id: novoId, 
+            titulo, 
+            categoria, 
+            acesso, 
+            link: "#" 
+        });
+        if (window.showToast) window.showToast("success", "Documento enviado com sucesso!");
+    }
+
+    window.fecharModalCont('modalDoc');
+    renderDocs();
+};
+
+window.deletarDoc = (id) => {
+    if (confirm("Deseja remover este documento? Esta ação não pode ser desfeita.")) {
+        docsDB = docsDB.filter(d => d.id !== id);
+        renderDocs();
+        if (window.showToast) window.showToast("success", "Documento removido.");
+    }
+};
+
+// ===============================
+// UTILITÁRIOS
+// ===============================
+window.fecharModalCont = (idModal) => {
+    document.getElementById(idModal).style.display = "none";
+};

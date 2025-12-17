@@ -1,11 +1,12 @@
-<!-- ===============================
-     FAQ
-================================ -->
-
 <div class="table-container" style="margin-bottom: 32px;">
-    <div class="table-title">Perguntas Frequentes (FAQ)</div>
-    <div class="table-subtitle">
-        Dúvidas comuns sobre o uso da plataforma.
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+        <div>
+            <div class="table-title">Perguntas Frequentes (FAQ)</div>
+            <div class="table-subtitle">Gerencie as dúvidas comuns exibidas aos usuários.</div>
+        </div>
+        <button class="btn btn-primary" onclick="abrirModalFaq()">
+            + Nova Pergunta
+        </button>
     </div>
 
     <div id="faq-container">
@@ -15,14 +16,15 @@
     </div>
 </div>
 
-<!-- ===============================
-     DOCUMENTAÇÃO
-================================ -->
-
 <div class="table-container">
-    <div class="table-title">Documentação</div>
-    <div class="table-subtitle">
-        Guias e documentos de apoio ao uso do sistema.
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <div>
+            <div class="table-title">Documentação Institucional</div>
+            <div class="table-subtitle">Gerencie guias, normas e templates para download.</div>
+        </div>
+        <button class="btn btn-primary" onclick="abrirModalDoc()">
+            ⬆ Upload Documento
+        </button>
     </div>
 
     <table class="global-table">
@@ -30,8 +32,8 @@
             <tr>
                 <th>Título</th>
                 <th>Categoria</th>
-                <th>Acesso</th>
-                <th>Ação</th>
+                <th style="text-align: center;">Acesso</th>
+                <th style="width: 120px; text-align: center;">Ações</th>
             </tr>
         </thead>
         <tbody id="tabela-docs">
@@ -42,4 +44,72 @@
             </tr>
         </tbody>
     </table>
+</div>
+
+<div id="modalFaq" class="modal-overlay" style="display: none;">
+    <div class="modal" style="width: 600px;">
+        <div class="modal-header">
+            <h2 id="tituloModalFaq">Nova Pergunta</h2>
+            <span class="modal-close" onclick="fecharModalCont('modalFaq')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="faqId"> <div class="form-group">
+                <label class="form-label">Pergunta</label>
+                <input type="text" id="faqPergunta" class="input-text" style="width: 100%;" placeholder="Ex: Como recuperar senha?">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Resposta</label>
+                <textarea id="faqResposta" class="input-text" style="width: 100%; height: 100px;" placeholder="Digite a resposta detalhada..."></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="fecharModalCont('modalFaq')">Cancelar</button>
+            <button class="btn btn-primary" onclick="salvarFAQ()">Salvar</button>
+        </div>
+    </div>
+</div>
+
+<div id="modalDoc" class="modal-overlay" style="display: none;">
+    <div class="modal" style="width: 500px;">
+        <div class="modal-header">
+            <h2 id="tituloModalDoc">Novo Documento</h2>
+            <span class="modal-close" onclick="fecharModalCont('modalDoc')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="docId">
+            
+            <div class="form-group">
+                <label class="form-label">Título do Documento</label>
+                <input type="text" id="docTitulo" class="input-text" style="width: 100%;">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Categoria</label>
+                <select id="docCategoria" class="select" style="width: 100%;">
+                    <option value="Usuário">Usuário</option>
+                    <option value="Projetos">Projetos</option>
+                    <option value="Institucional">Institucional</option>
+                    <option value="Modelos">Modelos/Templates</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Nível de Acesso</label>
+                <select id="docAcesso" class="select" style="width: 100%;">
+                    <option value="Público">Público (Todos)</option>
+                    <option value="Restrito">Restrito (Logado)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Arquivo (PDF/DOCX)</label>
+                <input type="file" id="docArquivo" class="input-text" style="width: 100%; padding: 5px;">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="fecharModalCont('modalDoc')">Cancelar</button>
+            <button class="btn btn-primary" onclick="salvarDoc()">Salvar Documento</button>
+        </div>
+    </div>
 </div>

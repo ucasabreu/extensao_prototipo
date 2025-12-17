@@ -2,9 +2,9 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Sistema de Extensão Universitária</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Extensão - UFMA</title>
 
-    <!-- CSS Globais -->
     <link rel="stylesheet" href="/assets/css/common/layout.css">
     <link rel="stylesheet" href="/assets/css/global/cards.css">
     <link rel="stylesheet" href="/assets/css/global/button.css">
@@ -12,73 +12,114 @@
     <link rel="stylesheet" href="/assets/css/global/alerts.css">
     <link rel="stylesheet" href="/assets/css/global/forms.css">
     <link rel="stylesheet" href="/assets/css/global/modal.css">
-    <!-- CSS específico da Home -->
     <link rel="stylesheet" href="/assets/css/ui/home/home.css">
 </head>
 <body>
 
-    <!-- HEADER -->
     <header class="home-header">
-        <img src="/assets/img/png-logo-ufma-colorido.png" alt="Logo Institucional" height="50">
-        <div style="display:flex; gap:10px;">
-            <button class="btn btn-acesso-rapido" id="btn-acesso-rapido">⚡ Acesso Rápido</button>
-            <button class="btn btn-primary" id="btn-login">🔐 Acessar o Sistema</button>
+        <div class="header-content">
+            <div class="brand">
+                <img src="../../assets/img/png-logo-ufma-colorido.png" alt="Logo UFMA" height="50">
+                <div class="brand-text">
+                    <h1>Portal de Extensão</h1>
+                    <span>Universidade Federal do Maranhão</span>
+                </div>
+            </div>
+            
+            <div class="header-actions">
+                <div class="a11y-controls">
+                    <button class="btn-icon" title="Aumentar Fonte">A+</button>
+                    <button class="btn-icon" title="Alto Contraste">Contrast</button>
+                </div>
+
+                <div class="auth-buttons">
+                    <button class="btn btn-acesso-rapido" id="btn-acesso-rapido">Admin</button>
+                    <button class="btn btn-primary" id="btn-login" style="background: #fff; color: #7a1010;">Entrar</button>
+                    <button class="btn btn-ghost" style="color: white; border: 1px solid rgba(255,255,255,0.3);" onclick="location.href='/pages/cadastro/cadastro.html'">Criar Conta</button>
+                </div>
+            </div>
         </div>
     </header>
 
-    <!-- CONTEÚDO PRINCIPAL -->
     <main>
-        <!-- HERO -->
-        <section class="hero">
-            <h1>Sistema de Gestão de Extensão Universitária</h1>
-            <p>Plataforma institucional para cadastro, validação e acompanhamento das atividades de extensão acadêmica.</p>
-        </section>
-
-        <!-- PERFIS -->
-        <section>
-            <h2 style="text-align:center;color:#7a1010;margin-bottom:25px;">Perfis Atendidos</h2>
-            <div class="kpi-grid">
-                <div class="kpi-card">
-                    <div class="kpi-title">Discentes</div>
-                    <p class="kpi-sub">Inscrição, acompanhamento e certificação.</p>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-title">Discentes Ofertantes</div>
-                    <p class="kpi-sub">Submissão e gestão de projetos.</p>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-title">Docentes</div>
-                    <p class="kpi-sub">Gestão de oportunidades e alunos.</p>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-title">Coordenação</div>
-                    <p class="kpi-sub">Validação, relatórios e indicadores.</p>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-title">Administração</div>
-                    <p class="kpi-sub">Usuários, permissões e conteúdo.</p>
-                </div>
+        <section class="hero-search">
+            <h2>Encontre sua próxima atividade de extensão</h2>
+            <p>Cursos, projetos e eventos abertos à comunidade acadêmica e externa.</p>
+            
+            <div class="search-bar-container">
+                <input type="text" id="input-busca" class="hero-input" placeholder="Buscar por nome, área ou professor...">
+                <button class="btn btn-primary" onclick="filtrarOportunidades()">Buscar</button>
             </div>
         </section>
 
-        <!-- PROPOSTAS DE EXTENSÃO -->
-        <section style="margin-top:50px;">
-            <h2 style="text-align:center;color:#7a1010;margin-bottom:25px;">Propostas de Extensão</h2>
-            <div id="propostas-admin-container" class="propostas-grid">
-                <div style="text-align:center; color:#777; width:100%;">Carregando propostas...</div>
+        <section class="opportunities-section">
+            <div class="filters-bar form-group" style="flex-direction: row; gap: 15px; flex-wrap: wrap;">
+                <select class="select" id="filtro-modalidade">
+                    <option value="">Todas as Modalidades</option>
+                    <option value="Curso">Cursos</option>
+                    <option value="Projeto">Projetos</option>
+                    <option value="Evento">Eventos</option>
+                </select>
+                
+                <select class="select" id="filtro-status">
+                    <option value="">Todos os Status</option>
+                    <option value="Abertas">Inscrições Abertas</option>
+                    <option value="Em Breve">Em Breve</option>
+                </select>
+            </div>
+
+            <h3 style="color: #5d0b0b; margin-bottom: 20px;">Oportunidades em Destaque</h3>
+            
+            <div id="opportunities-grid" class="kpi-grid" style="justify-content: flex-start;">
+                <div style="width:100%; text-align:center; padding: 40px;">Carregando oportunidades...</div>
             </div>
         </section>
 
+        <hr style="border: 0; border-top: 1px solid #e0c9a6; margin: 40px 0;">
 
-        <!-- AJUDA -->
-        <section class="section-ajuda">
-            <h2>Ajuda e Documentação</h2>
-            <p>Consulte perguntas frequentes e documentos institucionais.</p>
-            <button class="btn btn-secondary" id="btn-ajuda">📘 Central de Ajuda</button>
+        <section class="public-services">
+            <div class="service-card">
+                <h3>Validar Certificado</h3>
+                <p>Verifique a autenticidade de um certificado emitido pela plataforma.</p>
+                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                    <input type="text" class="input-text" placeholder="Código de Autenticidade (Hash)" style="flex: 1;">
+                    <button class="btn btn-secondary">Validar</button>
+                </div>
+                <small style="display: block; margin-top: 8px; color: #666;">Ex: A1B2-C3D4-E5F6</small>
+            </div>
+
+            <div class="service-card">
+                <h3>Dúvidas Frequentes</h3>
+                <p>Precisa de ajuda? Acesse nossos manuais e perguntas frequentes logo abaixo.</p>
+                <ul style="margin-top: 10px; padding-left: 20px; color: #555;">
+                    <li>Como me inscrever em cursos?</li>
+                    <li>Como emitir meu certificado?</li>
+                    <li>Recuperar senha de acesso.</li>
+                </ul>
+                <button class="btn btn-ghost" id="btn-ajuda-scroll" style="margin-top: 10px; padding-left: 0; font-weight: bold;">
+                    Ver Central de Ajuda Completa ↓
+                </button>
+            </div>
+        </section>
+
+        <section id="secao-faq" class="faq-section">
+            <h2 style="color: #5d0b0b; margin-bottom: 10px;">Central de Ajuda</h2>
+            <p style="opacity: 0.8; margin-bottom: 30px;">Dúvidas comuns e documentos para download.</p>
+            
+            <h3 style="font-size: 18px; border-bottom: 1px solid #ddd; padding-bottom: 10px;">Perguntas Frequentes</h3>
+            <div id="faq-container" class="faq-grid">
+                </div>
+
+            <h3 style="font-size: 18px; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-top: 40px;">Documentação Oficial</h3>
+            <div id="docs-container" class="doc-grid">
+                </div>
         </section>
     </main>
 
-    <!-- MODAL – ACESSO RÁPIDO -->
+    <footer style="background: #5d0b0b; color: white; padding: 20px; text-align: center; margin-top: 40px;">
+        <p>&copy; 2025 Universidade Federal do Maranhão - Sistema de Extensão.</p>
+    </footer>
+
     <div id="modal-acesso" class="modal-overlay">
         <div class="modal">
             <div class="modal-header">
@@ -90,7 +131,6 @@
                     <label class="form-label">Senha de Acesso Rápido</label>
                     <input type="password" id="senha-acesso" class="input-text" placeholder="Digite a senha">
                 </div>
-                <div class="alert alert-warning">⚠️ Uso exclusivo para testes e demonstrações.</div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="fecharAcessoRapido()">Cancelar</button>
@@ -99,11 +139,9 @@
         </div>
     </div>
 
-    <!-- JS -->
     <script type="module">
-    import { initHomeJS } from '/assets/js/home/home.js';
-    initHomeJS();
-</script>
-
+        import { initHomeJS } from '/assets/js/home/home.js';
+        initHomeJS();
+    </script>
 </body>
 </html>
