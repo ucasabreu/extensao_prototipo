@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema de Extensão Universitária</title>
+
+    <!-- CSS Globais -->
+    <link rel="stylesheet" href="/assets/css/common/layout.css">
+    <link rel="stylesheet" href="/assets/css/global/cards.css">
+    <link rel="stylesheet" href="/assets/css/global/button.css">
+    <link rel="stylesheet" href="/assets/css/global/badges.css">
+    <link rel="stylesheet" href="/assets/css/global/alerts.css">
+    <link rel="stylesheet" href="/assets/css/global/forms.css">
+    <link rel="stylesheet" href="/assets/css/global/modal.css">
+    <!-- CSS específico da Home -->
+    <link rel="stylesheet" href="/assets/css/ui/home/home.css">
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="home-header">
+        <img src="/assets/img/png-logo-ufma-colorido.png" alt="Logo Institucional" height="50">
+        <div style="display:flex; gap:10px;">
+            <button class="btn btn-acesso-rapido" id="btn-acesso-rapido">⚡ Acesso Rápido</button>
+            <button class="btn btn-primary" id="btn-login">🔐 Acessar o Sistema</button>
+        </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main>
+        <!-- HERO -->
+        <section class="hero">
+            <h1>Sistema de Gestão de Extensão Universitária</h1>
+            <p>Plataforma institucional para cadastro, validação e acompanhamento das atividades de extensão acadêmica.</p>
+        </section>
+
+        <!-- PERFIS -->
+        <section>
+            <h2 style="text-align:center;color:#7a1010;margin-bottom:25px;">Perfis Atendidos</h2>
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-title">Discentes</div>
+                    <p class="kpi-sub">Inscrição, acompanhamento e certificação.</p>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title">Discentes Ofertantes</div>
+                    <p class="kpi-sub">Submissão e gestão de projetos.</p>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title">Docentes</div>
+                    <p class="kpi-sub">Gestão de oportunidades e alunos.</p>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title">Coordenação</div>
+                    <p class="kpi-sub">Validação, relatórios e indicadores.</p>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title">Administração</div>
+                    <p class="kpi-sub">Usuários, permissões e conteúdo.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROPOSTAS DE EXTENSÃO -->
+        <section style="margin-top:50px;">
+            <h2 style="text-align:center;color:#7a1010;margin-bottom:25px;">Propostas de Extensão</h2>
+            <div id="propostas-admin-container" class="propostas-grid">
+                <div style="text-align:center; color:#777; width:100%;">Carregando propostas...</div>
+            </div>
+        </section>
+
+
+        <!-- AJUDA -->
+        <section class="section-ajuda">
+            <h2>Ajuda e Documentação</h2>
+            <p>Consulte perguntas frequentes e documentos institucionais.</p>
+            <button class="btn btn-secondary" id="btn-ajuda">📘 Central de Ajuda</button>
+        </section>
+    </main>
+
+    <!-- MODAL – ACESSO RÁPIDO -->
+    <div id="modal-acesso" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Acesso Administrativo</h2>
+                <span class="modal-close" onclick="fecharAcessoRapido()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Senha de Acesso Rápido</label>
+                    <input type="password" id="senha-acesso" class="input-text" placeholder="Digite a senha">
+                </div>
+                <div class="alert alert-warning">⚠️ Uso exclusivo para testes e demonstrações.</div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="fecharAcessoRapido()">Cancelar</button>
+                <button class="btn btn-primary" onclick="validarAcessoRapido()">Entrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script type="module">
+    import { initHomeJS } from '/assets/js/home/home.js';
+    initHomeJS();
+</script>
+
+</body>
+</html>

@@ -1,24 +1,14 @@
 /* ====================================================================
    LÓGICA DA VISÃO GERAL (DASHBOARD)
    Arquivo: assets/js/coordenador/dashboard_home.js
+   Refatorado para usar: coordenador.service.js
    ==================================================================== */
 
-// MOCK: Dados consolidados do sistema
-const dadosDashboard = {
-    validacaoPendente: 3,
-    discentesRisco: 5,
-    atividadesAtivas: 12,
-    solicitacoesAtrasadas: 2,
-    
-    // [NOVO] Dados Operacionais do Coordenador
-    resumoCoordenador: {
-        propostasPendentes: 3,      // Sincronizado com validacaoPendente
-        solicitacoesExternas: 4,    // Fila total de solicitações
-        ultimaAcao: "10/05/2025",   // Registro de log
-        status: "Dentro do prazo",  // SLA calculado
-        analisadasMes: 15           // Indicador de produtividade
-    }
-};
+// 1. IMPORTAÇÃO DO SERVICE
+import { getDashboardStats } from "../services/coordenador.service.js";
+
+// 2. ESTADO LOCAL (Inicialmente vazio, será preenchido pelo Service)
+let dadosDashboard = {};
 
 export async function carregarViewVisaoGeral() {
     try {
@@ -30,10 +20,19 @@ export async function carregarViewVisaoGeral() {
     }
 }
 
-export function initVisaoGeral() {
-    renderizarKPIsHome();
-    renderizarResumoCoordenador(); // [NOVO]
-    renderizarAlertas();
+// 3. INIT AGORA É ASYNC
+export async function initVisaoGeral() {
+    try {
+        // Busca os dados consolidados do Service
+        dadosDashboard = await getDashboardStats();
+        
+        // Renderiza apenas após ter os dados
+        renderizarKPIsHome();
+        renderizarResumoCoordenador();
+        renderizarAlertas();
+    } catch (error) {
+        console.error("Falha ao carregar dados do dashboard:", error);
+    }
 }
 
 /* =======================
@@ -41,34 +40,45 @@ export function initVisaoGeral() {
    ======================= */
 
 function renderizarKPIsHome() {
+    // Verifica se os elementos existem antes de tentar preencher
     const elValidacao = document.getElementById("dash-validacao");
     const elRisco = document.getElementById("dash-risco");
     const elAtivas = document.getElementById("dash-ativas");
 
-    if(elValidacao) elValidacao.textContent = dadosDashboard.validacaoPendente;
-    if(elRisco) elRisco.textContent = dadosDashboard.discentesRisco;
-    if(elAtivas) elAtivas.textContent = dadosDashboard.atividadesAtivas;
+    // Usa os dados vindos do Service
+    if(elValidacao) elValidacao.textContent = dadosDashboard.validacaoPendente || 0;
+    if(elRisco) elRisco.textContent = dadosDashboard.discentesRisco || 0;
+    if(elAtivas) elAtivas.textContent = dadosDashboard.atividadesAtivas || 0;
 }
 
-// [NOVO] Renderiza o Bloco "Minha Atuação"
 function renderizarResumoCoordenador() {
     const dados = dadosDashboard.resumoCoordenador;
     
+    // Proteção caso o objeto venha vazio
+    if (!dados) return;
+
     // Preenche valores
-    document.getElementById("resumo-propostas-pend").textContent = dados.propostasPendentes;
-    document.getElementById("resumo-solicitacoes-ext").textContent = dados.solicitacoesExternas;
-    document.getElementById("resumo-ultima-acao").textContent = dados.ultimaAcao;
-    document.getElementById("resumo-analisadas").textContent = dados.analisadasMes;
+    const elProp = document.getElementById("resumo-propostas-pend");
+    const elSolic = document.getElementById("resumo-solicitacoes-ext");
+    const elAcao = document.getElementById("resumo-ultima-acao");
+    const elAnalise = document.getElementById("resumo-analisadas");
+
+    if(elProp) elProp.textContent = dados.propostasPendentes;
+    if(elSolic) elSolic.textContent = dados.solicitacoesExternas;
+    if(elAcao) elAcao.textContent = dados.ultimaAcao;
+    if(elAnalise) elAnalise.textContent = dados.analisadasMes;
     
     // Configura Badge de Status
     const elStatus = document.getElementById("resumo-status");
-    elStatus.textContent = dados.status;
-    
-    // Lógica visual simples para o status
-    if (dados.status === "Dentro do prazo") {
-        elStatus.className = "badge badge-success";
-    } else {
-        elStatus.className = "badge badge-warning";
+    if (elStatus) {
+        elStatus.textContent = dados.status;
+        
+        // Lógica visual simples para o status
+        if (dados.status === "Dentro do prazo") {
+            elStatus.className = "badge badge-success";
+        } else {
+            elStatus.className = "badge badge-warning";
+        }
     }
 }
 
@@ -78,6 +88,7 @@ function renderizarAlertas() {
 
     let htmlAlertas = "";
 
+    // Usa dadosDashboard para decidir se mostra alertas
     if (dadosDashboard.validacaoPendente > 0) {
         htmlAlertas += `
             <div class="alert alert-warning" style="margin-bottom: 10px; font-size: 12px; padding: 10px;">
@@ -99,7 +110,7 @@ function renderizarAlertas() {
     container.innerHTML = htmlAlertas;
 }
 
-// Navegação rápida
+// Navegação rápida (Mantida inalterada pois é lógica de UI)
 window.irParaAba = (labelAba) => {
     const botoesMenu = document.querySelectorAll(".menu-item");
     botoesMenu.forEach(btn => {

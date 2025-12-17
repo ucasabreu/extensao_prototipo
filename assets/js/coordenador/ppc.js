@@ -1,50 +1,14 @@
 /* ====================================================================
    MÓDULO DE PROJETO PEDAGÓGICO (PPC)
    Arquivo: assets/js/coordenador/ppc.js
+   Refatorado para usar: coordenador.service.js
    ==================================================================== */
 
-// MOCK: Banco de Dados de PPCs (Agora com nome do arquivo)
-let ppcDB = [
-    {
-        id: 1,
-        codigo: "BCC-2023",
-        curso: "Ciência da Computação",
-        inicio: "2023.1",
-        fim: "2027.2",
-        horasMinimas: 360,
-        status: "Vigente",
-        alunosVinculados: 120,
-        concluintes: 32,
-        responsavel: "Prof. Carlos (Coord)",
-        dataCadastro: "10/01/2023",
-        arquivo: "PPC_BCC_2023_VersaoFinal.pdf", // [NOVO]
-        tamanho: "2.4 MB",
-        listaAlunos: [
-            { matricula: "2023001", nome: "Ana Clara Souza", situacao: "Regular", progresso: "33%" },
-            { matricula: "2023002", nome: "Bruno Lima", situacao: "Regular", progresso: "45%" },
-            { matricula: "2023005", nome: "Carlos Eduardo", situacao: "Em Risco", progresso: "10%" }
-        ]
-    },
-    {
-        id: 2,
-        codigo: "BCC-2018",
-        curso: "Ciência da Computação",
-        inicio: "2018.1",
-        fim: "2022.2",
-        horasMinimas: 300,
-        status: "Encerrado",
-        alunosVinculados: 18,
-        concluintes: 15,
-        responsavel: "Profa. Ana (Ex-Coord)",
-        dataCadastro: "15/02/2018",
-        arquivo: "PPC_Antigo_2018.pdf", // [NOVO]
-        tamanho: "1.8 MB",
-        listaAlunos: [
-            { matricula: "2018099", nome: "João Pedro Alves", situacao: "Formando", progresso: "95%" },
-            { matricula: "2019100", nome: "Maria Helena", situacao: "Concluído", progresso: "100%" }
-        ]
-    }
-];
+// 1. IMPORTAÇÃO DO SERVICE
+import { getPPCs, criarPPC } from "../services/coordenador.service.js";
+
+// 2. ESTADO LOCAL
+let listaPPCs = [];
 
 export async function carregarViewPPC() {
     try {
@@ -56,9 +20,14 @@ export async function carregarViewPPC() {
     }
 }
 
-export function initPPC() {
+// 3. INIT ASYNC
+export async function initPPC() {
+    // Busca os dados do Service
+    listaPPCs = await getPPCs();
+
+    // Renderiza a tela com os dados atualizados
     renderizarPPCVigente();
-    renderizarArquivoVigente(); // [NOVO]
+    renderizarArquivoVigente();
     renderizarHistorico();
     renderizarImpacto();
 }
@@ -71,7 +40,8 @@ function renderizarPPCVigente() {
     const container = document.getElementById("container-ppc-vigente");
     if(!container) return;
 
-    const vigente = ppcDB.find(p => p.status === "Vigente");
+    // Usa a lista local
+    const vigente = listaPPCs.find(p => p.status === "Vigente");
 
     if (vigente) {
         container.innerHTML = `
@@ -89,25 +59,25 @@ function renderizarPPCVigente() {
                 Cadastro: ${vigente.dataCadastro} (${vigente.responsavel})
             </div>
         `;
-        document.getElementById("ppc-meta-horas").textContent = vigente.horasMinimas + "h";
+        const elMeta = document.getElementById("ppc-meta-horas");
+        if(elMeta) elMeta.textContent = vigente.horasMinimas + "h";
     } else {
         container.innerHTML = `<div class="alert alert-danger">Nenhum PPC Vigente!</div>`;
     }
 }
 
-// [NOVO] Renderiza o Card de Arquivo
 function renderizarArquivoVigente() {
     const container = document.getElementById("container-arquivo-vigente");
     if(!container) return;
 
-    const vigente = ppcDB.find(p => p.status === "Vigente");
+    const vigente = listaPPCs.find(p => p.status === "Vigente");
 
-    if (vigente) {
+    if (vigente && vigente.arquivo) {
         container.innerHTML = `
             <div style="font-size: 30px;">📄</div>
             <div style="flex: 1; overflow: hidden;">
                 <div style="font-weight: bold; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${vigente.arquivo}</div>
-                <div style="font-size: 11px; color: #888;">PDF • ${vigente.tamanho}</div>
+                <div style="font-size: 11px; color: #888;">PDF • ${vigente.tamanho || 'Unknown'}</div>
             </div>
             <button class="btn-small btn-small-info" onclick="alert('Baixando ${vigente.arquivo}...')">⬇ Baixar</button>
         `;
@@ -120,9 +90,10 @@ function renderizarHistorico() {
     const tbody = document.getElementById("tb-historico-ppc");
     if(!tbody) return;
 
-    const lista = ppcDB.sort((a,b) => b.id - a.id);
+    // Ordena visualmente (ID decrescente)
+    const listaOrdenada = [...listaPPCs].sort((a,b) => b.id - a.id);
 
-    tbody.innerHTML = lista.map(p => {
+    tbody.innerHTML = listaOrdenada.map(p => {
         let badge = "badge-neutral";
         if (p.status === "Vigente") badge = "badge-success";
         if (p.status === "Encerrado") badge = "badge-danger";
@@ -143,24 +114,28 @@ function renderizarHistorico() {
 }
 
 function renderizarImpacto() {
-    const vigente = ppcDB.find(p => p.status === "Vigente");
-    const antigos = ppcDB.filter(p => p.status !== "Vigente");
+    const vigente = listaPPCs.find(p => p.status === "Vigente");
+    const antigos = listaPPCs.filter(p => p.status !== "Vigente");
     
     const totalAntigos = antigos.reduce((acc, curr) => acc + curr.alunosVinculados, 0);
-    const totalConcluintes = ppcDB.reduce((acc, curr) => acc + (curr.concluintes || 0), 0);
+    const totalConcluintes = listaPPCs.reduce((acc, curr) => acc + (curr.concluintes || 0), 0);
 
-    document.getElementById("ppc-impacto-atual").textContent = vigente ? vigente.alunosVinculados : 0;
-    document.getElementById("ppc-impacto-antigo").textContent = totalAntigos;
-    document.getElementById("ppc-concluintes").textContent = totalConcluintes;
+    const elAtual = document.getElementById("ppc-impacto-atual");
+    const elAntigo = document.getElementById("ppc-impacto-antigo");
+    const elConcluintes = document.getElementById("ppc-concluintes");
+
+    if(elAtual) elAtual.textContent = vigente ? vigente.alunosVinculados : 0;
+    if(elAntigo) elAntigo.textContent = totalAntigos;
+    if(elConcluintes) elConcluintes.textContent = totalConcluintes;
 }
 
 /* =======================
    AÇÕES
    ======================= */
 
-// [ATUALIZADO] Visualizar Detalhes com Download de Arquivo Antigo
 window.verDetalhesPPC = (id) => {
-    const p = ppcDB.find(item => item.id === id);
+    // Busca na lista local atualizada
+    const p = listaPPCs.find(item => item.id === id);
     if (!p) return;
 
     const linhasAlunos = (p.listaAlunos || []).map(a => `
@@ -207,8 +182,8 @@ window.verDetalhesPPC = (id) => {
     document.getElementById("modalDetalhesPPC").style.display = "flex";
 };
 
-// [ATUALIZADO] Salvar com "Upload"
-window.salvarNovoPPC = () => {
+// [ATUALIZADO] Salvar usando o Service
+window.salvarNovoPPC = async () => {
     const codigo = document.getElementById("ppcCodigo").value;
     const inicio = document.getElementById("ppcInicio").value;
     const horas = document.getElementById("ppcHoras").value;
@@ -221,30 +196,36 @@ window.salvarNovoPPC = () => {
 
     const nomeArquivo = arquivoInput.files[0].name;
 
-    if (confirm("Confirmar cadastro e upload?\nO PPC atual será encerrado.")) {
-        const atual = ppcDB.find(p => p.status === "Vigente");
-        if (atual) atual.status = "Encerrado";
-
-        ppcDB.unshift({
-            id: Date.now(),
+    if (confirm("Confirmar cadastro e upload?\nO PPC atual será encerrado automaticamente.")) {
+        
+        // Objeto a ser enviado (Status será tratado pelo Service)
+        const novoPPC = {
             codigo: codigo,
             curso: "Ciência da Computação",
             inicio: inicio,
             fim: document.getElementById("ppcFim").value || "Indefinido",
             horasMinimas: parseInt(horas),
-            status: "Vigente",
             alunosVinculados: 0,
             concluintes: 0,
             responsavel: "Coordenação Atual",
-            dataCadastro: new Date().toLocaleDateString(),
-            arquivo: nomeArquivo, // Nome real do arquivo selecionado
-            tamanho: "1.2 MB", // Simulação
+            arquivo: nomeArquivo,
+            tamanho: "1.2 MB", // Simulação de backend
             listaAlunos: []
-        });
+        };
 
-        window.fecharModalPPC();
-        initPPC();
-        if(window.showToast) showToast("success", "Novo PPC e arquivo cadastrados com sucesso!");
+        try {
+            // 4. CHAMA O SERVICE
+            await criarPPC(novoPPC);
+
+            // Atualiza dados locais e re-renderiza
+            window.fecharModalPPC();
+            await initPPC(); // Recarrega tudo (vigente, histórico, impacto)
+
+            if(window.showToast) showToast("success", "Novo PPC e arquivo cadastrados com sucesso!");
+        } catch (e) {
+            console.error(e);
+            alert("Erro ao salvar PPC.");
+        }
     }
 };
 

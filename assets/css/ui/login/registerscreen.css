@@ -16,7 +16,7 @@ body {
 }
 
 .registerform-container {
-  background-color: #853d27;
+  background-color: #5d0b0b;
   width: 70%;
   border-radius: 20px;
 }
@@ -77,7 +77,7 @@ body {
   padding: 1rem;
   border-radius: 40px;
   background-color: #fff0c4;
-  color: #853d27;
+  color: #5d0b0b;
   font-size: 1.5rem;
   font-weight: bold;
   cursor: pointer;

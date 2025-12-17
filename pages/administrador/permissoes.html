@@ -1,0 +1,145 @@
+<!-- ===============================
+     USUÁRIOS ADMINISTRATIVOS
+================================ -->
+
+<div class="table-container" style="margin-bottom: 32px;">
+    <div class="table-title">Usuários Administrativos</div>
+    <div class="table-subtitle">
+        Professores, coordenadores e seus acessos aos módulos do sistema.
+    </div>
+
+    <table class="global-table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Cargo</th>
+                <th>Módulo</th>
+                <th>Acesso</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+         <tbody id="tabela-perfis">
+    </table>
+</div>
+
+<!-- ===============================
+     DIScentes e ACESSOS
+================================ -->
+
+<div class="table-container" style="margin-bottom: 32px;">
+    <div class="table-title">Discentes</div>
+    <div class="table-subtitle">
+        Alunos cadastrados e seus níveis de acesso no sistema.
+    </div>
+
+    <table class="global-table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Matrícula</th>
+                <th>Tipo de Conta</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="tabela-discentes">
+            <tr>
+                <td>Ana Oliveira</td>
+                <td>202312345</td>
+                <td>Discente Ofertante</td>
+                <td>
+                    <span class="badge badge-success">Ativo</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- ===============================
+     SOLICITAÇÕES DISCENTE OFERTANTE
+================================ -->
+
+<div class="table-container">
+    <div class="table-title">Solicitações de Discente Ofertante</div>
+    <div class="table-subtitle">
+        Alunos solicitando acesso para ofertar projetos de extensão.
+    </div>
+
+    <table class="global-table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Matrícula</th>
+                <th>Curso</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody id="tabela-solicitacoes">
+            <tr>
+                <td colspan="5" style="text-align:center">
+                    Carregando solicitações...
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- ===============================
+     LOG DE DECISÕES
+================================ -->
+
+<div class="table-container" style="margin-top: 32px;">
+    <div class="table-title">Histórico de Decisões</div>
+    <div class="table-subtitle">
+        Registro das aprovações e recusas de solicitações.
+    </div>
+
+    <table class="global-table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Matrícula</th>
+                <th>Decisão</th>
+            </tr>
+        </thead>
+        <tbody id="tabela-log">
+            <tr>
+                <td colspan="3" style="text-align:center">
+                    Nenhuma decisão registrada
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- ===============================
+     MODAL EDITAR PERMISSÃO
+================================ -->
+
+<div id="modal-editar-permissao" class="modal-overlay" style="display:none;">
+    <div class="modal">
+        <h3>Editar Permissão</h3>
+
+        <label>Perfil</label>
+        <input id="edit-perfil" type="text">
+
+        <label>Módulo</label>
+        <input id="edit-modulo" type="text">
+
+        <label>Acesso</label>
+        <select id="edit-acesso">
+            <option value="Permitido">Permitido</option>
+            <option value="Bloqueado">Bloqueado</option>
+        </select>
+
+        <div class="modal-actions">
+            <button class="btn-small btn-small-secondary"
+                    onclick="window.fecharModalPermissao()">
+                Cancelar
+            </button>
+            <button class="btn-small btn-small-success"
+                    onclick="window.salvarPermissao()">
+                Salvar
+            </button>
+        </div>
+    </div>
+</div>

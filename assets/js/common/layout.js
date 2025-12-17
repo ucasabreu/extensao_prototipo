@@ -35,17 +35,27 @@ export async function carregarLayout(configMenu = []) {
     // ====================================================
     // DADOS DO USUÁRIO (COM SUPORTE A DISCENTE OFERTANTE)
     // ====================================================
-    const perfil = localStorage.getItem("perfil") || "usuario";
+    
 
-    const dadosUsuario = {
-        docente: { nome: "Docente", email: "docente@teste.com" },
-        coordenador_curso: { nome: "Coordenador do Curso", email: "coord.curso@teste.com" },
-        coordenador_geral: { nome: "Coordenador Geral", email: "coord.geral@teste.com" },
-        discente: { nome: "Discente", email: "discente@aluno.ufma.br" },
-        discenteOfertante: { nome: "Discente Ofertante", email: "discente.ofertante@aluno.ufma.br" }
+    const perfil = localStorage.getItem("perfil") || "usuario";
+    const emailSalvo = localStorage.getItem("email");
+    const nomeSalvo = localStorage.getItem("nome");
+
+    // Fallback institucional (caso não venha do login)
+    const dadosPadrao = {
+        docente: "Docente",
+        coordenador_curso: "Coordenador do Curso",
+        coordenador_geral: "Coordenador Geral",
+        discente: "Discente",
+        discenteOfertante: "Discente Ofertante",
+        administrador: "Administrador"
     };
 
-    const usuarioAtual = dadosUsuario[perfil] || { nome: "Usuário", email: "usuario@teste.com" };
+    const usuarioAtual = {
+        nome: nomeSalvo || dadosPadrao[perfil] || "Usuário",
+        email: emailSalvo || "usuario@teste.com"
+    };
+
 
     const elNome = document.getElementById("layout-nome");
     const elEmail = document.getElementById("layout-email");
@@ -125,7 +135,11 @@ async function abrirPaginaPerfil() {
         }
         else if (tipoPerfil === "discenteOfertante") {
             strategyModule = await import('../strategies/perfil_discente_ofertante.js');
+        }   
+        else if (tipoPerfil === "administrador") {
+        strategyModule = await import('../strategies/perfil_administrador.js');
         }
+
 
         const strategy = Object.values(strategyModule)[0];
         const { carregarViewPerfil, initPerfil } = await import('./perfil.js');

@@ -114,3 +114,22 @@
 .btn-small:hover {
     opacity: 0.85;
 }
+
+/* assets/css/global/button-acesso.css */
+
+.btn-acesso-rapido {
+    background-color: #ffd966; /* amarelo suave */
+    color: #333;
+    border: 2px solid #f2c94c;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+.btn-acesso-rapido:hover {
+    background-color: #f2c94c;
+    color: #fff;
+    cursor: pointer;
+    transform: scale(1.05);
+}
