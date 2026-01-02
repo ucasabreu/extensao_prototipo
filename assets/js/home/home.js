@@ -189,7 +189,7 @@ function renderDocs() {
 function setupBotoesNavegacao() {
     // Redirecionamento para Login
     document.getElementById("btn-login")?.addEventListener("click", () => {
-        window.location.href = "/pages/login/loginscreen.html";
+        window.location.href = "pages/login/loginscreen.html";
     });
 
     // SCROLL SUAVE PARA FAQ
@@ -221,7 +221,7 @@ function setupAcessoRapido() {
     window.validarAcessoRapido = () => {
         if (inputSenha.value.trim() === SENHA_ACESSO_RAPIDO) {
             localStorage.setItem("modo_prototipo", "true");
-            window.location.href = "/pages/common/routerPerfil.html";
+            window.location.href = "pages/common/routerPerfil.html";
         } else {
             alert("Senha inválida.");
         }
