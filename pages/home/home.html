@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,13 +8,14 @@
 
     <link rel="stylesheet" href="../../assets/css/common/layout.css">
     <link rel="stylesheet" href="../../assets/css/global/cards.css">
-    <link rel="stylesheet" href="../../assets/css/global/tables.css">
-    <link rel="stylesheet" href="../../assets/css/global/badges.css">
     <link rel="stylesheet" href="../../assets/css/global/button.css">
+    <link rel="stylesheet" href="../../assets/css/global/badges.css">
+    <link rel="stylesheet" href="../../assets/css/global/alerts.css">
     <link rel="stylesheet" href="../../assets/css/global/forms.css">
     <link rel="stylesheet" href="../../assets/css/global/modal.css">
-    <link rel="stylesheet" href="../../assets/css/global/alerts.css">
+    <link rel="stylesheet" href="../../assets/css/ui/home/home.css">
 </head>
+
 <body>
 
     <header class="home-header">
@@ -25,7 +27,7 @@
                     <span>Universidade Federal do Maranhão</span>
                 </div>
             </div>
-            
+
             <div class="header-actions">
                 <div class="a11y-controls">
                     <button class="btn-icon" title="Aumentar Fonte">A+</button>
@@ -34,8 +36,10 @@
 
                 <div class="auth-buttons">
                     <button class="btn btn-acesso-rapido" id="btn-acesso-rapido">Admin</button>
-                    <button class="btn btn-primary" id="btn-login" style="background: #fff; color: #7a1010;">Entrar</button>
-                    <button class="btn btn-ghost" style="color: white; border: 1px solid rgba(255,255,255,0.3);" onclick="location.href='/pages/login/registerscreen.html'">Criar Conta</button>
+                    <button class="btn btn-primary" id="btn-login"
+                        style="background: #fff; color: #7a1010;">Entrar</button>
+                    <button class="btn btn-ghost" style="color: white; border: 1px solid rgba(255,255,255,0.3);"
+                        onclick="location.href='../login/registerscreen.html'">Criar Conta</button>
                 </div>
             </div>
         </div>
@@ -45,9 +49,10 @@
         <section class="hero-search">
             <h2>Encontre sua próxima atividade de extensão</h2>
             <p>Cursos, projetos e eventos abertos à comunidade acadêmica e externa.</p>
-            
+
             <div class="search-bar-container">
-                <input type="text" id="input-busca" class="hero-input" placeholder="Buscar por nome, área ou professor...">
+                <input type="text" id="input-busca" class="hero-input"
+                    placeholder="Buscar por nome, área ou professor...">
                 <button class="btn btn-primary" onclick="filtrarOportunidades()">Buscar</button>
             </div>
         </section>
@@ -60,7 +65,7 @@
                     <option value="Projeto">Projetos</option>
                     <option value="Evento">Eventos</option>
                 </select>
-                
+
                 <select class="select" id="filtro-status">
                     <option value="">Todos os Status</option>
                     <option value="Abertas">Inscrições Abertas</option>
@@ -69,7 +74,7 @@
             </div>
 
             <h3 style="color: #5d0b0b; margin-bottom: 20px;">Oportunidades em Destaque</h3>
-            
+
             <div id="opportunities-grid" class="kpi-grid" style="justify-content: flex-start;">
                 <div style="width:100%; text-align:center; padding: 40px;">Carregando oportunidades...</div>
             </div>
@@ -96,7 +101,8 @@
                     <li>Como emitir meu certificado?</li>
                     <li>Recuperar senha de acesso.</li>
                 </ul>
-                <button class="btn btn-ghost" id="btn-ajuda-scroll" style="margin-top: 10px; padding-left: 0; font-weight: bold;">
+                <button class="btn btn-ghost" id="btn-ajuda-scroll"
+                    style="margin-top: 10px; padding-left: 0; font-weight: bold;">
                     Ver Central de Ajuda Completa ↓
                 </button>
             </div>
@@ -105,14 +111,15 @@
         <section id="secao-faq" class="faq-section">
             <h2 style="color: #5d0b0b; margin-bottom: 10px;">Central de Ajuda</h2>
             <p style="opacity: 0.8; margin-bottom: 30px;">Dúvidas comuns e documentos para download.</p>
-            
+
             <h3 style="font-size: 18px; border-bottom: 1px solid #ddd; padding-bottom: 10px;">Perguntas Frequentes</h3>
             <div id="faq-container" class="faq-grid">
-                </div>
+            </div>
 
-            <h3 style="font-size: 18px; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-top: 40px;">Documentação Oficial</h3>
+            <h3 style="font-size: 18px; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-top: 40px;">
+                Documentação Oficial</h3>
             <div id="docs-container" class="doc-grid">
-                </div>
+            </div>
         </section>
     </main>
 
@@ -144,4 +151,5 @@
         initHomeJS();
     </script>
 </body>
+
 </html>

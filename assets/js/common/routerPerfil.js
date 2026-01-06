@@ -8,7 +8,7 @@ const perfilLogado = localStorage.getItem("perfil");
 // se não veio do login nem do acesso rápido
 if (!modoPrototipo && !perfilLogado) {
     alert("Acesso não autorizado.");
-    window.location.href = "/index.html";
+    window.location.href = "../../index.html";
 }
 
 document.querySelectorAll(".perfil-card").forEach(card => {

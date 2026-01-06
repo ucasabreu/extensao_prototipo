@@ -1,12 +1,38 @@
-<main id="main-content"></main>
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-<script type="module">
-import { initHomeJS } from '../../assets/js/home/home.js';
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal de Extensão - UFMA</title>
 
-fetch('./pages/home/home.html')
-  .then(res => res.text())
-  .then(html => {
-    document.getElementById('main-content').innerHTML = html;
-    initHomeJS(); // inicializa o JS após inserir o HTML
-  });
-</script>
+  <!-- CSS Global -->
+  <link rel="stylesheet" href="./assets/css/common/layout.css">
+  <link rel="stylesheet" href="./assets/css/global/cards.css">
+  <link rel="stylesheet" href="./assets/css/global/button.css">
+  <link rel="stylesheet" href="./assets/css/global/badges.css">
+  <link rel="stylesheet" href="./assets/css/global/alerts.css">
+  <link rel="stylesheet" href="./assets/css/global/forms.css">
+  <link rel="stylesheet" href="./assets/css/global/modal.css">
+  <link rel="stylesheet" href="./assets/css/ui/home/home.css">
+</head>
+
+<body>
+  <main id="main-content"></main>
+
+  <script type="module">
+    import { initHomeJS } from './assets/js/home/home.js';
+
+    fetch('./pages/home/home.html')
+      .then(res => res.text())
+      .then(html => {
+        // Extrai apenas o conteúdo do body para evitar duplicação de estrutura
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        document.getElementById('main-content').innerHTML = doc.body.innerHTML;
+        initHomeJS();
+      });
+  </script>
+</body>
+
+</html>

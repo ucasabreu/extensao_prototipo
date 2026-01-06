@@ -60,16 +60,16 @@ const faqDB = [
 // MOCK - DOCUMENTAÇÃO (INTEGRADO)
 // ===============================
 const docsDB = [
-    { id:1, titulo:"Guia do Discente", categoria:"Usuário", acesso:"Público", link:"#"},
-    { id:2, titulo:"Manual do Discente Ofertante", categoria:"Projetos", acesso:"Público", link:"#"},
-    { id:3, titulo:"Política de Uso do Sistema", categoria:"Institucional", acesso:"Público", link:"#"}
+    { id: 1, titulo: "Guia do Discente", categoria: "Usuário", acesso: "Público", link: "#" },
+    { id: 2, titulo: "Manual do Discente Ofertante", categoria: "Projetos", acesso: "Público", link: "#" },
+    { id: 3, titulo: "Política de Uso do Sistema", categoria: "Institucional", acesso: "Público", link: "#" }
 ];
 
 // ===============================
 // INICIALIZAÇÃO
 // ===============================
 export function initHomeJS() {
-    
+
     // 1. RENDERIZAÇÃO INICIAL DAS SEÇÕES
     renderizarOportunidades(oportunidadesDB);
     renderFAQ();
@@ -189,7 +189,7 @@ function renderDocs() {
 function setupBotoesNavegacao() {
     // Redirecionamento para Login
     document.getElementById("btn-login")?.addEventListener("click", () => {
-        window.location.href = "pages/login/loginscreen.html";
+        window.location.href = "./pages/login/loginscreen.html";
     });
 
     // SCROLL SUAVE PARA FAQ
@@ -221,7 +221,7 @@ function setupAcessoRapido() {
     window.validarAcessoRapido = () => {
         if (inputSenha.value.trim() === SENHA_ACESSO_RAPIDO) {
             localStorage.setItem("modo_prototipo", "true");
-            window.location.href = "pages/common/routerPerfil.html";
+            window.location.href = "./pages/common/routerPerfil.html";
         } else {
             alert("Senha inválida.");
         }
