@@ -5,146 +5,137 @@
 | Cenário | Status | Notas |
 |---------|--------|-------|
 | Abrir `file://` direto | ❌ Não funciona | CORS bloqueia fetch() e módulos ES6 |
-| GitHub Pages (raiz) | ✅ **Funciona** | Correções aplicadas |
-| GitHub Pages (subpasta) | ✅ **Funciona** | Todos os caminhos agora são relativos |
+| GitHub Pages | ✅ **Funciona** | Todas as correções aplicadas |
 
 ---
 
-## Problemas e Soluções
+## Problemas Identificados e Soluções
 
-### 1. [CORRIGIDO] Caminhos em `loginscreen.js`
+### 1. Caminhos Absolutos em `loginscreen.js`
 
-**Problema:** Caminhos absolutos `/pages/...` quebravam no GitHub Pages.
+**Problema:** Caminhos `/pages/...` quebram no GitHub Pages.
 
 **Solução:**
 ```javascript
-// ANTES (ERRO)
+// ANTES
 discente: "/pages/discente/dashboard.html"
-
-// DEPOIS (CORRIGIDO)
+// DEPOIS
 discente: "../discente/dashboard.html"
 ```
 
 ---
 
-### 2. [CORRIGIDO] Case-Sensitivity no Git
+### 2. Case-Sensitivity no Git
 
-**Problema:** No Windows, renomear uma pasta de `DiscenteOfertante` para `discenteOfertante` não é detectado pelo Git porque Windows é **case-insensitive**. 
+**Problema:** Windows é case-insensitive, Git e GitHub Pages são case-sensitive. Renomear pasta de `DiscenteOfertante` para `discenteOfertante` não era detectado.
 
-Quando o código é publicado no GitHub Pages (Linux, **case-sensitive**), a pasta mantém o nome original `DiscenteOfertante`, mas o HTML referencia `discenteOfertante` (d minúsculo), causando **404**.
-
-```
-📁 Git rastreia:     DiscenteOfertante/dashboard.css
-📄 HTML referencia:  discenteOfertante/dashboard.css
-❌ Resultado:        404 Not Found
-```
-
-**Solução:** Usar `git mv` para renomear em duas etapas:
-
+**Solução:**
 ```bash
-git mv "assets/css/ui/DiscenteOfertante" "assets/css/ui/temp"
-git mv "assets/css/ui/temp" "assets/css/ui/discenteOfertante"
+git mv DiscenteOfertante temp
+git mv temp discenteOfertante
 ```
 
 ---
 
-### 3. [CORRIGIDO] Caminhos de fetch() em JavaScript
+### 3. Caminhos de fetch() em JavaScript
 
-**Problema:** Os arquivos JS usavam caminhos que eram relativos ao arquivo JS, mas o `fetch()` resolve caminhos relativos ao **contexto da página HTML**.
+**Problema:** O `fetch()` resolve caminhos a partir da **página HTML**, não do arquivo JS.
 
 ```javascript
-// ANTES (ERRO) - em assets/js/discenteOfertante/dashboard.js
+// ANTES (em assets/js/.../dashboard.js)
 fetch("../../pages/discenteOfertante/dashboard_view.html")
-// Isso tenta acessar: assets/pages/discenteOfertante/... (NÃO EXISTE)
+// Resulta em: assets/pages/... (ERRADO)
+
+// DEPOIS
+fetch("./dashboard_view.html")  
+// Resulta em: pages/discenteOfertante/... (CORRETO)
+```
+
+---
+
+### 4. Arquitetura Incorreta no DiscenteOfertante
+
+**Problema:** O `discenteOfertante` usava uma arquitetura diferente e incompatível:
+
+| Aspecto | Docente (FUNCIONA) | DiscenteOfertante (QUEBRAVA) |
+|---------|-------------------|------------------------------|
+| HTML carregado | **ANTES** de `carregarLayout()` | DENTRO de `onRender()` |
+| `content` passado | HTML string completo | String vazia `""` |
+| Acesso ao DOM | Após layout pronto | Antes do layout estar pronto |
+
+**Por que quebrava?**
+
+```
+┌─ dashboard.html chama carregarLayout()
+│
+├─ carregarLayout() começa a buscar layout.html via fetch()
+│
+├─ ENQUANTO ISSO, onRender() é chamado (em paralelo ou antes)
+│  │
+│  └─ Controller tenta acessar #layout-conteudo
+│     │
+│     └─ ❌ ERRO: elemento não existe ainda!
+│
+└─ layout.html finalmente é carregado (tarde demais)
+```
+
+**Solução:** Reescrever `dashboard.html` para usar o mesmo padrão do docente:
+
+```javascript
+// ANTES (ERRADO)
+carregarLayout([{
+    content: "",  // ← vazio!
+    onRender: renderDashboardDiscenteOfertante  // ← tenta carregar HTML
+}]);
 
 // DEPOIS (CORRETO)
-fetch("./dashboard_view.html")
-// Isso acessa: pages/discenteOfertante/dashboard_view.html (CORRETO)
-```
-
-Arquivos corrigidos:
-- `dashboard.js`
-- `oportunidades.js`
-- `solicitacoes.js`
-- `projetos.js`
-- `certificacoes.js`
-
----
-
-### 4. [CORRIGIDO] Caminhos em `home.html`
-
-**Problema:** O arquivo `home.html` é carregado via `fetch()` pelo `index.html`, então seus caminhos relativos são resolvidos a partir da **raiz** (onde está `index.html`).
-
-```html
-<!-- ANTES (ERRO) -->
-<img src="../../assets/img/logo.png">
-<!-- Resolve para: ../assets/img/logo.png (não existe) -->
-
-<!-- DEPOIS (CORRETO) -->
-<img src="./assets/img/logo.png">
-<!-- Resolve para: assets/img/logo.png (correto) -->
+const htmlDashboard = await carregarDashboardDiscenteOfertante();  // ← carrega ANTES
+carregarLayout([{
+    content: htmlDashboard,  // ← HTML já carregado
+    onRender: () => ativarDashboardDiscenteOfertante()  // ← só inicializa JS
+}]);
 ```
 
 ---
 
-## Por que Docente/Coordenador Funcionam?
+### 5. Funções Não Definidas em `projetos.js`
 
-As páginas de docente e coordenador **não importam CSS específicos** das suas pastas. Eles usam apenas:
-- `../../assets/css/common/layout.css`
-- `../../assets/css/global/*.css`
+**Problema:** Chamadas a funções inexistentes:
+```javascript
+inicializarSelecaoAtividadeGerenciar?.();  // não existe
+inicializarGerenciarSubmenu?.();           // não existe
+popularSelectGerenciar?.();                // não existe
+```
 
-Já o `discenteOfertante` importa CSS específicos:
-- `../../assets/css/ui/discenteOfertante/dashboard.css`
-- `../../assets/css/ui/discenteOfertante/oportunidades.css`
-- etc.
-
-Por isso o problema de case-sensitivity **só afetava** o discenteOfertante.
+**Solução:** Remover as chamadas (código legado/incompleto).
 
 ---
 
-## Resumo das Arquiteturas
+## Resumo por Perfil
 
-### Padrão 1: Docente/Coordenador (SEM CSS específico)
-```
-pages/docente/dashboard.html
-├── CSS: ../../assets/css/global/*.css  (FUNCIONA)
-└── JS: carrega HTML via fetch() antes de inicializar layout
-```
-
-### Padrão 2: DiscenteOfertante (COM CSS específico)
-```
-pages/discenteOfertante/dashboard.html
-├── CSS: ../../assets/css/ui/discenteOfertante/*.css  (PRECISA CASE CORRETO)
-└── JS: carrega HTML via fetch("./view.html") (RELATIVO À PÁGINA)
-```
+| Perfil | Status | Observação |
+|--------|--------|------------|
+| Docente | ✅ OK | Arquitetura correta desde o início |
+| Coordenador | ✅ OK | Arquitetura correta desde o início |
+| Discente | ✅ OK | Usa CSS global apenas |
+| DiscenteOfertante | ✅ **Corrigido** | Arquitetura reescrita |
+| Administrador | ⚠️ Verificar | Pode ter mesmo problema |
 
 ---
 
 ## Verificação
 
 ```bash
-# Testar localmente
 npx serve
-
-# Verificar no console (F12) que não há erros 404
+# Acessar http://localhost:3000
+# Testar login e navegação em todas as abas
 ```
-
-Testar no GitHub Pages:
-1. `git add .`
-2. `git commit -m "fix: case sensitivity e caminhos"`
-3. `git push`
-4. Acessar: `https://usuario.github.io/extensao_prototipo/`
 
 ---
 
-## Nota sobre `file://`
+## Lições Aprendidas
 
-O projeto **não funciona** ao abrir `index.html` diretamente (`file://`) por limitações de segurança do navegador (CORS). Para desenvolvimento local, usar um servidor HTTP:
-
-```bash
-# Python 3
-python -m http.server 8000
-
-# Node.js
-npx serve
-```
+1. **Consistência de arquitetura** - Todos os perfis devem usar o mesmo padrão
+2. **Case-sensitivity** - Sempre usar `git mv` para renomear no Windows
+3. **Caminhos de fetch()** - São relativos à URL da página, não ao arquivo JS
+4. **Carregar antes de renderizar** - HTML deve estar pronto antes de chamar layout

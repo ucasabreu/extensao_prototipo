@@ -299,8 +299,4 @@ export function ativarProjetosDiscenteOfertante() {
     inicializarFormOportunidade();
     renderizarProjetosDiscente();
     renderizarInformacoesDiscente();
-
-    inicializarSelecaoAtividadeGerenciar?.();
-    inicializarGerenciarSubmenu?.();
-    popularSelectGerenciar?.();
 }

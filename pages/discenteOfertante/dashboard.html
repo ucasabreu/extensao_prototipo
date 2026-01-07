@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="../../assets/css/ui/discenteOfertante/solicitacoes.css">
     <link rel="stylesheet" href="../../assets/css/ui/discenteOfertante/certificacoes.css">
     <link rel="stylesheet" href="../../assets/css/ui/discenteOfertante/projetos.css">
-    
 
     <link rel="stylesheet" href="../../assets/css/global/button.css">
     <link rel="stylesheet" href="../../assets/css/global/tables.css">
@@ -31,61 +30,86 @@
     <script type="module">
         import { carregarLayout } from "../../assets/js/common/layout.js";
 
+        // Imports das funções de carregamento de HTML
         import {
-            renderDashboardDiscenteOfertante,
-            renderOportunidadesDiscenteOfertante,
-            renderSolicitacoesDiscenteOfertante,
-            renderProjetosDiscenteOfertante,
-            renderCertificacoesDiscenteOfertante
-        } from "../../assets/js/discenteOfertante/discenteOfertante.controller.js";
+            carregarDashboardDiscenteOfertante,
+            ativarDashboardDiscenteOfertante
+        } from "../../assets/js/discenteOfertante/dashboard.js";
 
+        import {
+            carregarOportunidadesDiscenteOfertante,
+            ativarOportunidadesDiscenteOfertante
+        } from "../../assets/js/discenteOfertante/oportunidades.js";
 
-        // Discente
-        localStorage.setItem("perfil", "discenteOfertante");
-        
-        carregarLayout([
-            {
-                label: "Visão Geral",
-                title: "Visão Geral",
-                description: "Resumo das suas atividades",
-                content: "",
-                onRender: renderDashboardDiscenteOfertante
-            },
-            {
-                label: "Oportunidades",
-                title: "Oportunidades",
-                description: "Oportunidades disponíveis para você",
-                content: "",
-                onRender: renderOportunidadesDiscenteOfertante
-            },
-            {
-                label: "Solicitações",
-                title: "Solicitações",
-                description: "Solicitações pendentes, aprovadas e rejeitadas",
-                content: "",
-                onRender: renderSolicitacoesDiscenteOfertante
-            },
-            {
-                label: "Meus Projetos",
-                title: "Meus Projetos",
-                description: "Projetos em que você participa",
-                content: "",
-                onRender: renderProjetosDiscenteOfertante
-            },
-            {
-                label: "Certificações",
-                title: "Certificações",
-                description: "Certificações obtidas e histórico",
-                content: "",
-                onRender: renderCertificacoesDiscenteOfertante
-            }
-        ]);
+        import {
+            carregarSolicitacoesDiscenteOfertante,
+            ativarSolicitacoesDiscenteOfertante
+        } from "../../assets/js/discenteOfertante/solicitacoes.js";
+
+        import {
+            carregarProjetosDiscenteOfertante,
+            ativarProjetosDiscenteOfertante
+        } from "../../assets/js/discenteOfertante/projetos.js";
+
+        import {
+            carregarCertificacoesDiscenteOfertante,
+            ativarCertificacoesDiscenteOfertante
+        } from "../../assets/js/discenteOfertante/certificacoes.js";
+
+        async function init() {
+            // Define o perfil
+            localStorage.setItem("perfil", "discenteOfertante");
+
+            // 1. CARREGA O HTML DE TODAS AS VIEWS ANTES DE INICIAR O LAYOUT
+            // (mesmo padrão usado pelo docente e coordenador)
+            const htmlDashboard = await carregarDashboardDiscenteOfertante();
+            const htmlOportunidades = await carregarOportunidadesDiscenteOfertante();
+            const htmlSolicitacoes = await carregarSolicitacoesDiscenteOfertante();
+            const htmlProjetos = await carregarProjetosDiscenteOfertante();
+            const htmlCertificacoes = await carregarCertificacoesDiscenteOfertante();
+
+            // 2. CONFIGURA O LAYOUT COM O HTML JÁ CARREGADO
+            carregarLayout([
+                {
+                    label: "Visão Geral",
+                    title: "Visão Geral",
+                    description: "Resumo das suas atividades",
+                    content: htmlDashboard,
+                    onRender: () => ativarDashboardDiscenteOfertante()
+                },
+                {
+                    label: "Oportunidades",
+                    title: "Oportunidades",
+                    description: "Oportunidades disponíveis para você",
+                    content: htmlOportunidades,
+                    onRender: () => ativarOportunidadesDiscenteOfertante()
+                },
+                {
+                    label: "Solicitações",
+                    title: "Solicitações",
+                    description: "Solicitações pendentes, aprovadas e rejeitadas",
+                    content: htmlSolicitacoes,
+                    onRender: () => ativarSolicitacoesDiscenteOfertante()
+                },
+                {
+                    label: "Meus Projetos",
+                    title: "Meus Projetos",
+                    description: "Projetos em que você participa",
+                    content: htmlProjetos,
+                    onRender: () => ativarProjetosDiscenteOfertante()
+                },
+                {
+                    label: "Certificações",
+                    title: "Certificações",
+                    description: "Certificações obtidas e histórico",
+                    content: htmlCertificacoes,
+                    onRender: () => ativarCertificacoesDiscenteOfertante()
+                }
+            ]);
+        }
+
+        init();
     </script>
 </body>
 
 </html>
-
-
-
-
-
