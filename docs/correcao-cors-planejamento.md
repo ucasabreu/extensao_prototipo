@@ -126,10 +126,20 @@ popularSelectGerenciar?.();                // não existe
 ## Verificação
 
 ```bash
+# 1. Parar servidor anterior (Ctrl+C)
+
+# 2. Reiniciar servidor
 npx serve
-# Acessar http://localhost:3000
-# Testar login e navegação em todas as abas
+
+# 3. No navegador, fazer HARD REFRESH para limpar cache:
+#    - Windows/Linux: Ctrl + Shift + R
+#    - Mac: Cmd + Shift + R
+#    
+#    Ou abrir DevTools (F12) > Network > marcar "Disable cache"
 ```
+
+> [!IMPORTANT]
+> Se ainda aparecer erro `inicializarSelecaoAtividadeGerenciar is not defined`, o navegador está usando **cache do arquivo JavaScript antigo**. Use Ctrl+Shift+R para forçar recarga.
 
 ---
 
