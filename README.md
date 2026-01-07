@@ -36,9 +36,6 @@ python -m http.server 8000
 
 # 3. Acesse no navegador:
 # http://localhost:3000 (serve) ou http://localhost:8000 (python)
-
-# 4. No navegador abra o projeto pelo link:
-  https://ucasabreu.github.io/extensao_prototipo/
 ```
 
 ---
