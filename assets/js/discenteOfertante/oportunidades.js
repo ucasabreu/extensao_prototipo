@@ -8,15 +8,15 @@ let oportunidadesData = [];
 /* =====================================================
    CARREGA VIEW
 ===================================================== */
-export async function carregarOportunidadesDiscenteOfertante () {
-    const response = await fetch("../../pages/discenteOfertante/oportunidades.html");
+export async function carregarOportunidadesDiscenteOfertante() {
+    const response = await fetch("./oportunidades.html");
     return await response.text();
 }
 
 /* =====================================================
    ATIVAÇÃO
 ===================================================== */
-export async function ativarOportunidadesDiscenteOfertante () {
+export async function ativarOportunidadesDiscenteOfertante() {
     await carregarDados();
     bindFiltros();
     aplicarFiltros();
@@ -76,7 +76,7 @@ function renderizarOportunidades(lista) {
         else if (op.status === "Encerrada") badgeClass = "badge-danger";
 
         // Botão de inscrição só aparece se estiver Aberta
-        const botaoInscricao = (op.status === "Aberta") 
+        const botaoInscricao = (op.status === "Aberta")
             ? `<button class="btn ${op.inscrito ? "btn-danger" : "btn-primary"} btn-small"
                     data-action="toggle"
                     data-id="${op.id}">

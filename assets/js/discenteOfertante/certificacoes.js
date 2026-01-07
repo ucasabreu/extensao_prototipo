@@ -3,23 +3,23 @@ import { getCertificacoes } from "../services/discente.service.js";
 /* ===============================
    CARREGA VIEW
 ================================ */
-export async function carregarCertificacoesDiscenteOfertante () {
-    const res = await fetch("../../pages/discenteOfertante/certificacoes.html");
+export async function carregarCertificacoesDiscenteOfertante() {
+    const res = await fetch("./certificacoes.html");
     return await res.text();
 }
 
 /* ===============================
    ATIVAÇÃO
 ================================ */
-export async function ativarCertificacoesDiscenteOfertante () {
+export async function ativarCertificacoesDiscenteOfertante() {
     const certificacoes = await getCertificacoes();
-    renderizarCertificacoesOfertante (certificacoes);
+    renderizarCertificacoesOfertante(certificacoes);
 }
 
 /* ===============================
    RENDERIZA
 ================================ */
-function renderizarCertificacoesOfertante (certificacoes) {
+function renderizarCertificacoesOfertante(certificacoes) {
     const container = document.getElementById("certificacoes");
     if (!container) return;
 
@@ -106,6 +106,6 @@ export function ativarCertificacoesDiscente() {
 
 // Função para carregar HTML da aba (certificacoes.html)
 export async function carregarCertificacoesDiscente() {
-    const response = await fetch("../../pages/discenteOfertante/certificacoes.html");
+    const response = await fetch("./certificacoes.html");
     return await response.text();
 }*/

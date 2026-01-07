@@ -7,15 +7,15 @@ import {
 /* =====================================================
    CARREGA VIEW
 ===================================================== */
-export async function carregarDashboardDiscenteOfertante () {
-    const response = await fetch("../../pages/discenteOfertante/dashboard_view.html");
+export async function carregarDashboardDiscenteOfertante() {
+    const response = await fetch("./dashboard_view.html");
     return await response.text();
 }
 
 /* =====================================================
    ATIVAÇÃO
 ===================================================== */
-export async function ativarDashboardDiscenteOfertante () {
+export async function ativarDashboardDiscenteOfertante() {
     const oportunidades = await getOportunidades();
     const solicitacoes = await getSolicitacoes();
     const noticias = await getNoticias();
@@ -168,7 +168,7 @@ const noticiasMock = [
 ================================ 
 
 export async function carregarDashboardDiscente() {
-    const response = await fetch("../../pages/discenteOfertante/dashboard_view.html");
+    const response = await fetch("./dashboard_view.html");
 
    
     return await response.text();

@@ -4,7 +4,7 @@ import { getOportunidades, getSolicitacoes } from "../services/discente.service.
    CARREGA VIEW
 ===================================================== */
 export async function carregarSolicitacoesDiscenteOfertante() {
-    const res = await fetch("../../pages/discenteOfertante/solicitacoes.html");
+    const res = await fetch("./solicitacoes.html");
     return await res.text();
 }
 
@@ -205,7 +205,7 @@ export async function ativarSolicitacoesDiscenteOfertante() {
 
 
 export async function carregarSolicitacoesDiscente() {
-    return await fetch("../../pages/discenteOfertante/solicitacoes.html").then(r => r.text());
+    return await fetch("./solicitacoes.html").then(r => r.text());
 }
 
 export function ativarSolicitacoesDiscente() {

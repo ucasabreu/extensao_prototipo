@@ -32,7 +32,7 @@ const atividadesCriadas = [
     {
         id: 1,
         titulo: "Projeto Robótica Educacional",
-        inscritos: ["Ana Souza","Carlos Lima","Fernanda Alves"],
+        inscritos: ["Ana Souza", "Carlos Lima", "Fernanda Alves"],
         parecer: {
             status: "Em análise",
             comentario: "Projeto interessante, preciso avaliar melhor a carga horária."
@@ -41,7 +41,7 @@ const atividadesCriadas = [
     {
         id: 2,
         titulo: "Curso de Introdução ao Python",
-        inscritos: ["Lucas Rocha","Mariana Costa","João Pedro","Paula Mendes"],
+        inscritos: ["Lucas Rocha", "Mariana Costa", "João Pedro", "Paula Mendes"],
         parecer: {
             status: "Aprovado",
             comentario: "Curso aprovado. Estrutura e proposta muito bem definidas."
@@ -164,7 +164,7 @@ function renderizarInformacoesDiscente() {
    FUNÇÕES DOS BOTÕES FUNCIONAIS
 ==================================================== */
 
-window.verParecer = function(id) {
+window.verParecer = function (id) {
     const atividade = atividadesCriadas.find(a => a.id === id);
     if (!atividade) return;
 
@@ -175,7 +175,7 @@ window.verParecer = function(id) {
     );
 };
 
-window.verInscritos = function(id) {
+window.verInscritos = function (id) {
     const atividade = atividadesCriadas.find(a => a.id === id);
     if (!atividade) return;
 
@@ -183,7 +183,7 @@ window.verInscritos = function(id) {
     abrirModal(`Discentes Inscritos - ${atividade.titulo}`, `<ul>${lista}</ul>`);
 };
 
-window.verCronograma = function(id) {
+window.verCronograma = function (id) {
     const projeto = projetosDiscenteDB.find(p => p.id === id);
     if (!projeto) return;
 
@@ -195,7 +195,7 @@ window.verCronograma = function(id) {
     );
 };
 
-window.convidarDiscente = function(id) {
+window.convidarDiscente = function (id) {
     const atividade = atividadesCriadas.find(a => a.id === id);
     if (!atividade) return;
 
@@ -289,7 +289,7 @@ function inicializarSubmenu() {
 ==================================================== */
 
 export async function carregarProjetosDiscenteOfertante() {
-    const response = await fetch("../../pages/discenteOfertante/projetos.html");
+    const response = await fetch("./projetos.html");
     return await response.text();
 }
 
