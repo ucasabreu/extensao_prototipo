@@ -10,74 +10,130 @@
 
 ---
 
-## Correções Aplicadas
+## Problemas e Soluções
 
 ### 1. [CORRIGIDO] Caminhos em `loginscreen.js`
 
-O arquivo usava caminhos absolutos `/pages/...` que quebravam no GitHub Pages.
+**Problema:** Caminhos absolutos `/pages/...` quebravam no GitHub Pages.
 
-**Alteração:**
+**Solução:**
 ```javascript
 // ANTES (ERRO)
-const rotas = {
-    discente: "/pages/discente/dashboard.html",
-    // ...
-};
+discente: "/pages/discente/dashboard.html"
 
 // DEPOIS (CORRIGIDO)
-const rotas = {
-    discente: "../discente/dashboard.html",
-    // ...
-};
+discente: "../discente/dashboard.html"
 ```
-
-### 2. [CORRIGIDO] HTML inválido em `resetpassscreen.html`
-
-Removida tag `<body>` duplicada.
-
-### 3. [JÁ ESTAVA OK] Arquivos HTML
-
-Todos os arquivos HTML já usavam caminhos relativos `../../assets/...`:
-- `pages/home/home.html` ✅
-- `pages/login/loginscreen.html` ✅
-- `pages/login/registerscreen.html` ✅
-- `pages/login/activatescreen.html` ✅
-- `pages/login/passrecoverscreen.html` ✅
-- `pages/login/resetpassscreen.html` ✅
-
-### 4. [JÁ ESTAVA OK] `routerPerfil.js`
-
-Já usava caminhos relativos `../discente/dashboard.html`.
 
 ---
 
-## Arquitetura de Navegação
+### 2. [CORRIGIDO] Case-Sensitivity no Git
+
+**Problema:** No Windows, renomear uma pasta de `DiscenteOfertante` para `discenteOfertante` não é detectado pelo Git porque Windows é **case-insensitive**. 
+
+Quando o código é publicado no GitHub Pages (Linux, **case-sensitive**), a pasta mantém o nome original `DiscenteOfertante`, mas o HTML referencia `discenteOfertante` (d minúsculo), causando **404**.
 
 ```
-index.html (raiz)
-│
-├── Botão "Entrar" → pages/login/loginscreen.html
-│   └── Login OK → ../discente/dashboard.html (relativo à pasta login)
-│
-└── Botão "Admin" → pages/common/routerPerfil.html
-    └── Seleciona perfil → ../discente/dashboard.html (relativo à pasta common)
+📁 Git rastreia:     DiscenteOfertante/dashboard.css
+📄 HTML referencia:  discenteOfertante/dashboard.css
+❌ Resultado:        404 Not Found
+```
+
+**Solução:** Usar `git mv` para renomear em duas etapas:
+
+```bash
+git mv "assets/css/ui/DiscenteOfertante" "assets/css/ui/temp"
+git mv "assets/css/ui/temp" "assets/css/ui/discenteOfertante"
+```
+
+---
+
+### 3. [CORRIGIDO] Caminhos de fetch() em JavaScript
+
+**Problema:** Os arquivos JS usavam caminhos que eram relativos ao arquivo JS, mas o `fetch()` resolve caminhos relativos ao **contexto da página HTML**.
+
+```javascript
+// ANTES (ERRO) - em assets/js/discenteOfertante/dashboard.js
+fetch("../../pages/discenteOfertante/dashboard_view.html")
+// Isso tenta acessar: assets/pages/discenteOfertante/... (NÃO EXISTE)
+
+// DEPOIS (CORRETO)
+fetch("./dashboard_view.html")
+// Isso acessa: pages/discenteOfertante/dashboard_view.html (CORRETO)
+```
+
+Arquivos corrigidos:
+- `dashboard.js`
+- `oportunidades.js`
+- `solicitacoes.js`
+- `projetos.js`
+- `certificacoes.js`
+
+---
+
+### 4. [CORRIGIDO] Caminhos em `home.html`
+
+**Problema:** O arquivo `home.html` é carregado via `fetch()` pelo `index.html`, então seus caminhos relativos são resolvidos a partir da **raiz** (onde está `index.html`).
+
+```html
+<!-- ANTES (ERRO) -->
+<img src="../../assets/img/logo.png">
+<!-- Resolve para: ../assets/img/logo.png (não existe) -->
+
+<!-- DEPOIS (CORRETO) -->
+<img src="./assets/img/logo.png">
+<!-- Resolve para: assets/img/logo.png (correto) -->
+```
+
+---
+
+## Por que Docente/Coordenador Funcionam?
+
+As páginas de docente e coordenador **não importam CSS específicos** das suas pastas. Eles usam apenas:
+- `../../assets/css/common/layout.css`
+- `../../assets/css/global/*.css`
+
+Já o `discenteOfertante` importa CSS específicos:
+- `../../assets/css/ui/discenteOfertante/dashboard.css`
+- `../../assets/css/ui/discenteOfertante/oportunidades.css`
+- etc.
+
+Por isso o problema de case-sensitivity **só afetava** o discenteOfertante.
+
+---
+
+## Resumo das Arquiteturas
+
+### Padrão 1: Docente/Coordenador (SEM CSS específico)
+```
+pages/docente/dashboard.html
+├── CSS: ../../assets/css/global/*.css  (FUNCIONA)
+└── JS: carrega HTML via fetch() antes de inicializar layout
+```
+
+### Padrão 2: DiscenteOfertante (COM CSS específico)
+```
+pages/discenteOfertante/dashboard.html
+├── CSS: ../../assets/css/ui/discenteOfertante/*.css  (PRECISA CASE CORRETO)
+└── JS: carrega HTML via fetch("./view.html") (RELATIVO À PÁGINA)
 ```
 
 ---
 
 ## Verificação
 
-Para testar no GitHub Pages:
+```bash
+# Testar localmente
+npx serve
 
-1. Push para repositório
-2. Settings → Pages → Branch: main
-3. Acessar `https://usuario.github.io/extensao_prototipo/`
-4. Testar:
-   - [ ] Home carrega corretamente
-   - [ ] Login funciona (email: `discente@teste.com`, senha: `123456`)
-   - [ ] Redirecionamento após login funciona
-   - [ ] Acesso Admin funciona (senha: `PPC@dev`)
-   - [ ] Navegação entre abas funciona
+# Verificar no console (F12) que não há erros 404
+```
+
+Testar no GitHub Pages:
+1. `git add .`
+2. `git commit -m "fix: case sensitivity e caminhos"`
+3. `git push`
+4. Acessar: `https://usuario.github.io/extensao_prototipo/`
 
 ---
 
