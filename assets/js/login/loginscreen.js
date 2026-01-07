@@ -73,11 +73,11 @@ document.getElementById("loginButtom").addEventListener("click", (e) => {
   // REDIRECIONAMENTO
   // =========================
   const rotas = {
-    discente: "/pages/discente/dashboard.html",
-    discenteOfertante: "/pages/discenteOfertante/dashboard.html",
-    docente: "/pages/docente/dashboard.html",
-    coordenador_curso: "/pages/coordenador_curso/dashboard.html",
-    administrador: "/pages/administrador/dashboard.html"
+    discente: "../discente/dashboard.html",
+    discenteOfertante: "../discenteOfertante/dashboard.html",
+    docente: "../docente/dashboard.html",
+    coordenador_curso: "../coordenador_curso/dashboard.html",
+    administrador: "../administrador/dashboard.html"
   };
 
   window.location.href = rotas[usuario.perfil];
