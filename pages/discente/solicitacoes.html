@@ -1,26 +1,138 @@
-<section class="discente-solicitacoes">
-    <div class="solicitacoes-container">
+<!-- =====================================================
+     DISCENTE - SOLICITAÇÕES
+     Layout com KPIs, tabs visuais e timeline de status
+     ===================================================== -->
 
-        <div class="box-externa">
-            <div class="box-interna">
-                <div class="box-titulo">Aceitas</div>
-                <div class="solicitacoes-cards" id="aceitas"></div>
-            </div>
-        </div>
+<!-- KPIs - Resumo das Solicitações -->
+<div class="kpi-grid" style="margin-bottom: 25px;">
 
-        <div class="box-externa">
-            <div class="box-interna">
-                <div class="box-titulo">Recusadas</div>
-                <div class="solicitacoes-cards" id="recusadas"></div>
-            </div>
-        </div>
-
-        <div class="box-externa">
-            <div class="box-interna">
-                <div class="box-titulo">Em andamento</div>
-                <div class="solicitacoes-cards" id="andamento"></div>
-            </div>
-        </div>
-
+    <div class="kpi-card" style="border-left-color: #d4a017;">
+        <div class="kpi-title">Pendentes</div>
+        <div class="kpi-value" id="kpi-pendentes">0</div>
+        <div class="kpi-sub">Aguardando análise</div>
     </div>
-</section>
+
+    <div class="kpi-card" style="border-left-color: #2e8b57;">
+        <div class="kpi-title">Aprovadas</div>
+        <div class="kpi-value" id="kpi-aprovadas">0</div>
+        <div class="kpi-sub">Inscrição confirmada</div>
+    </div>
+
+    <div class="kpi-card" style="border-left-color: #b01313;">
+        <div class="kpi-title">Recusadas</div>
+        <div class="kpi-value" id="kpi-recusadas">0</div>
+        <div class="kpi-sub">Não aprovadas</div>
+    </div>
+
+    <div class="kpi-card" style="border-left-color: #555;">
+        <div class="kpi-title">Total</div>
+        <div class="kpi-value" id="kpi-total">0</div>
+        <div class="kpi-sub">Todas as solicitações</div>
+    </div>
+
+</div>
+
+<!-- Tabs de Navegação -->
+<div class="tabs-container">
+    <button class="tab-btn active" data-tab="todas">
+        📋 Todas
+    </button>
+    <button class="tab-btn" data-tab="pendentes">
+        ⏳ Pendentes
+    </button>
+    <button class="tab-btn" data-tab="aprovadas">
+        ✅ Aprovadas
+    </button>
+    <button class="tab-btn" data-tab="recusadas">
+        ❌ Recusadas
+    </button>
+</div>
+
+<!-- Lista de Solicitações -->
+<div class="section-card" style="margin-top: 20px;">
+    <div class="section-header">
+        <h3 class="section-title">Minhas Solicitações</h3>
+        <span class="badge badge-info" id="total-solicitacoes">0 resultados</span>
+    </div>
+
+    <div class="solicitacoes-lista" id="lista-solicitacoes">
+        <!-- Cards renderizados via JS -->
+    </div>
+</div>
+
+<!-- Modal de Detalhes da Solicitação -->
+<div id="modalDetalhesSolicitacao" class="modal-overlay">
+    <div class="modal" style="width: 600px;">
+        <div class="modal-header">
+            <h2 id="modal-sol-titulo">Detalhes da Solicitação</h2>
+            <span class="modal-close" onclick="fecharModalSolicitacao()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <!-- Timeline de Status -->
+            <div class="timeline-status" id="modal-timeline">
+                <!-- Renderizado via JS -->
+            </div>
+
+            <div class="detalhes-grid" style="margin-top: 20px;">
+                <div class="detalhe-item">
+                    <span class="detalhe-label">Atividade</span>
+                    <span class="detalhe-valor" id="modal-sol-atividade"></span>
+                </div>
+                <div class="detalhe-item">
+                    <span class="detalhe-label">Status</span>
+                    <span class="detalhe-valor" id="modal-sol-status"></span>
+                </div>
+                <div class="detalhe-item">
+                    <span class="detalhe-label">Data da Solicitação</span>
+                    <span class="detalhe-valor" id="modal-sol-data"></span>
+                </div>
+                <div class="detalhe-item">
+                    <span class="detalhe-label">Carga Horária</span>
+                    <span class="detalhe-valor" id="modal-sol-carga"></span>
+                </div>
+            </div>
+
+            <!-- Parecer (se houver) -->
+            <div class="parecer-box" id="modal-parecer-box" style="display: none;">
+                <span class="detalhe-label">Parecer do Responsável</span>
+                <div class="parecer-content" id="modal-sol-parecer"></div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="fecharModalSolicitacao()">Fechar</button>
+            <button class="btn btn-danger" id="modal-btn-cancelar" onclick="cancelarSolicitacao()"
+                style="display: none;">Cancelar Solicitação</button>
+            <button class="btn btn-primary" id="modal-btn-tentar" onclick="abrirModalJustificativa()"
+                style="display: none;">Tentar Novamente</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Justificativa (Tentar Novamente) -->
+<div id="modalJustificativa" class="modal-overlay">
+    <div class="modal" style="width: 500px;">
+        <div class="modal-header">
+            <h2>Nova Solicitação</h2>
+            <span class="modal-close" onclick="fecharModalJustificativa()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="alert alert-info"
+                style="background: #e3f2fd; border: 1px solid #90caf9; padding: 12px; border-radius: 8px; margin-bottom: 16px;">
+                <strong>💡 Dica:</strong> Explique por que deseja participar desta atividade e o que mudou desde a
+                última solicitação.
+            </div>
+            <div class="form-group">
+                <label class="form-label"
+                    style="font-weight: 600; color: #5d0b0b; margin-bottom: 8px; display: block;">Justificativa
+                    *</label>
+                <textarea id="input-justificativa" class="textarea" rows="4"
+                    placeholder="Descreva sua motivação para participar desta atividade..."
+                    style="width: 100%; padding: 12px; border: 1px solid #d8c8b4; border-radius: 8px; font-size: 14px; resize: vertical;"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="fecharModalJustificativa()">Cancelar</button>
+            <button class="btn btn-primary" onclick="enviarNovaJustificativa()">Enviar Solicitação</button>
+        </div>
+    </div>
+</div>

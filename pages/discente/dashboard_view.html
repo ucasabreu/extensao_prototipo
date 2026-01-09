@@ -1,31 +1,101 @@
-<section class="discente-dashboard">
+<!-- =====================================================
+     DISCENTE - VISÃO GERAL (DASHBOARD)
+     Layout alinhado com padrão Docente/Coordenador
+     ===================================================== -->
 
-    <div class="box-externa oportunidades-box">
-        <div class="box-interna">
-            <div class="box-titulo">Atividades Ativas</div>
-            <div class="box-scroll oportunidades-lista"></div>
+<!-- KPIs - Métricas principais -->
+<div class="kpi-grid" style="margin-bottom: 30px;">
+
+    <div class="kpi-card">
+        <div class="kpi-title">Em Andamento</div>
+        <div class="kpi-value" id="kpi-andamento">0</div>
+        <div class="kpi-sub kpi-positive">Atividades ativas</div>
+    </div>
+
+    <div class="kpi-card" style="border-left-color: #2e8b57;">
+        <div class="kpi-title">Concluídas</div>
+        <div class="kpi-value" id="kpi-concluidas">0</div>
+        <div class="kpi-sub">Este semestre</div>
+    </div>
+
+    <div class="kpi-card" style="border-left-color: #2c75b9;">
+        <div class="kpi-title">Horas Acumuladas</div>
+        <div class="kpi-value" id="kpi-horas">0h</div>
+        <div class="kpi-sub">Total de extensão</div>
+    </div>
+
+    <div class="kpi-card" style="border-left-color: #d4a017;">
+        <div class="kpi-title">Pendências</div>
+        <div class="kpi-value" id="kpi-pendencias">0</div>
+        <div class="kpi-sub">Solicitações aguardando</div>
+    </div>
+
+</div>
+
+<!-- Grid Principal: Atividades + Progresso -->
+<div class="dashboard-grid">
+
+    <!-- Coluna Principal: Atividades Ativas -->
+    <div class="dashboard-main">
+        <div class="section-card">
+            <div class="section-header">
+                <h3 class="section-title">Minhas Atividades Ativas</h3>
+                <button class="btn-small btn-small-info" onclick="irParaOportunidades()">Ver Todas</button>
+            </div>
+            <div class="atividades-grid oportunidades-lista">
+                <!-- Renderizado via JS -->
+            </div>
+        </div>
+
+        <!-- Notificações -->
+        <div class="section-card" style="margin-top: 20px;">
+            <div class="section-header">
+                <h3 class="section-title">🔔 Notificações Recentes</h3>
+            </div>
+            <div id="notificacoes-container" class="notificacoes-lista">
+                <!-- Renderizado via JS -->
+            </div>
         </div>
     </div>
 
-    <div class="box-externa progresso-box">
-        <div class="box-interna">
-            <div class="box-titulo">Progresso</div>
-            <div class="box-scroll" id="progress-container"></div>
+    <!-- Coluna Lateral: Progresso + Acesso Rápido -->
+    <div class="dashboard-sidebar">
+
+        <!-- Progresso das Atividades -->
+        <div class="section-card">
+            <h3 class="section-title">📊 Meu Progresso</h3>
+            <div id="progress-container" class="progress-lista">
+                <!-- Renderizado via JS -->
+            </div>
         </div>
+
+        <!-- Acesso Rápido -->
+        <div class="section-card" style="margin-top: 20px;">
+            <h3 class="section-title">Acesso Rápido</h3>
+
+            <button class="btn btn-secondary" onclick="irParaOportunidades()"
+                style="width: 100%; margin-bottom: 10px; text-align: left;">
+                🔍 Buscar Oportunidades
+            </button>
+
+            <button class="btn btn-secondary" onclick="irParaSolicitacoes()"
+                style="width: 100%; margin-bottom: 10px; text-align: left;">
+                📋 Minhas Solicitações
+            </button>
+
+            <button class="btn btn-secondary" onclick="irParaCertificacoes()" style="width: 100%; text-align: left;">
+                🏆 Certificações
+            </button>
+        </div>
+
+        <!-- Notícias -->
+        <div class="section-card" style="margin-top: 20px;">
+            <h3 class="section-title">📰 Notícias</h3>
+            <div id="noticias-container" class="noticias-lista">
+                <!-- Renderizado via JS -->
+            </div>
+        </div>
+
     </div>
 
-    <div class="box-externa notificacoes-box">
-        <div class="box-interna">
-            <div class="box-titulo">Notificações</div>
-            <div class="box-scroll" id="notificacoes-container"></div>
-        </div>
-    </div>
-
-    <div class="box-externa noticias-box">
-        <div class="box-interna">
-            <div class="box-titulo">Notícias</div>
-            <div class="box-scroll" id="noticias-container"></div>
-        </div>
-    </div>
-
-</section>
+</div>

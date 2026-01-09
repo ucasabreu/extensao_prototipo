@@ -1,8 +1,10 @@
 import {
     getOportunidades,
     getSolicitacoes,
-    getNoticias
+    getCertificacoes
 } from "../services/discente.service.js";
+
+import { getProjetosDiscenteOfertante } from "./projetos.js";
 
 /* =====================================================
    CARREGA VIEW
@@ -13,46 +15,126 @@ export async function carregarDashboardDiscenteOfertante() {
 }
 
 /* =====================================================
-   ATIVAÇÃO
+   ATIVACAO
 ===================================================== */
 export async function ativarDashboardDiscenteOfertante() {
-    const oportunidades = await getOportunidades();
-    const solicitacoes = await getSolicitacoes();
-    const noticias = await getNoticias();
+    const [oportunidades, solicitacoes, certificacoes, projetos] = await Promise.all([
+        getOportunidades(),
+        getSolicitacoes(),
+        getCertificacoes(),
+        getProjetosDiscenteOfertante()
+    ]);
 
+    renderizarKPIs(oportunidades, solicitacoes, certificacoes, projetos);
+    renderizarProjetos(projetos);
     renderizarAtividadesAtivas(oportunidades);
     renderizarProgresso(oportunidades);
     renderizarNotificacoes(oportunidades, solicitacoes);
-    renderizarNoticias(noticias);
+}
+
+/* ===============================
+   KPIS
+================================ */
+function renderizarKPIs(oportunidades, solicitacoes, certificacoes, projetos) {
+    const projetosAtivos = projetos.filter(p => p.status !== "Encerrado").length;
+    const atividadesAtivas = oportunidades.filter(o => o.status === "Em andamento").length;
+    const inscricoesPendentes = solicitacoes.filter(s => s.status === "Pendente" || s.status === "Em andamento").length;
+    const horasConcluidas = certificacoes
+        .filter(c => c.status === "Aprovada")
+        .reduce((acc, c) => acc + (c.carga || 0), 0);
+
+    document.getElementById("kpi-projetos")?.textContent && (document.getElementById("kpi-projetos").textContent = projetosAtivos);
+    document.getElementById("kpi-atividades")?.textContent && (document.getElementById("kpi-atividades").textContent = atividadesAtivas);
+    document.getElementById("kpi-inscricoes")?.textContent && (document.getElementById("kpi-inscricoes").textContent = inscricoesPendentes);
+    document.getElementById("kpi-horas")?.textContent && (document.getElementById("kpi-horas").textContent = `${horasConcluidas}h`);
+}
+
+/* ===============================
+   MEUS PROJETOS
+================================ */
+function renderizarProjetos(projetos) {
+    const container = document.getElementById("projetos-container");
+    if (!container) return;
+
+    container.classList.add("atividades-grid");
+
+    if (!projetos.length) {
+        container.innerHTML = `<p class="dashboard-vazio">Nenhum projeto cadastrado.</p>`;
+        return;
+    }
+
+    const ordenados = [...projetos].sort((a, b) => {
+        const aEncerrado = a.status === "Encerrado";
+        const bEncerrado = b.status === "Encerrado";
+        return Number(aEncerrado) - Number(bEncerrado);
+    });
+
+    container.innerHTML = ordenados.slice(0, 3).map(p => `
+        <div class="atividade-card">
+            <span class="titulo">${p.titulo}</span>
+            <div class="meta">
+                <span class="badge ${badgePorStatusProjeto(p.status)}">${p.status}</span>
+                <span>${p.tipo}</span>
+                <span>${formatarPeriodo(p.inicio, p.fim)}</span>
+            </div>
+            <div class="acoes">
+                <button class="btn btn-secondary btn-small" onclick="irParaProjetos()">Ver detalhes</button>
+            </div>
+        </div>
+    `).join("");
+}
+
+function badgePorStatusProjeto(status) {
+    if (status === "Em Execucao" || status === "Em Execução") return "badge-success";
+    if (status === "Aprovado") return "badge-info";
+    if (status === "Encerrado") return "badge-neutral";
+    return "badge-danger";
+}
+
+function formatarPeriodo(inicio, fim) {
+    return `${formatarData(inicio)} a ${formatarData(fim)}`;
+}
+
+function formatarData(data) {
+    if (!data) return "N/A";
+    const [a, m, d] = data.split("-");
+    return `${d}/${m}/${a}`;
 }
 
 /* ===============================
    ATIVIDADES ATIVAS
 ================================ */
 function renderizarAtividadesAtivas(oportunidades) {
-    const container = document.querySelector(".oportunidades-lista");
+    const container = document.getElementById("atividades-container");
     if (!container) return;
 
     const ativas = oportunidades.filter(o => o.inscrito);
 
     if (!ativas.length) {
         container.innerHTML =
-            `<p class="dashboard-vazio">Nenhuma atividade ativa.</p>`;
+            `<p class="dashboard-vazio">Nenhuma atividade ativa. <a href="#" onclick="irParaOportunidades()">Buscar oportunidades</a></p>`;
         return;
     }
 
     container.innerHTML = ativas.map(o => `
-        <div class="kpi-card">
-            <span class="kpi-title">${o.titulo}</span>
-            <span class="badge badge-info">${o.status}</span>
-            <span class="kpi-sub">Carga horária: ${o.carga}h</span>
-
-            <button class="btn btn-secondary btn-small"
-                onclick="irParaSolicitacoes()">
-                Ver detalhes
-            </button>
+        <div class="atividade-card">
+            <span class="titulo">${o.titulo}</span>
+            <div class="meta">
+                <span class="badge ${badgePorStatusAtividade(o.status)}">${o.status}</span>
+                <span>${o.carga}h</span>
+            </div>
+            <div class="acoes">
+                <button class="btn btn-secondary btn-small" onclick="irParaSolicitacoes()">Ver detalhes</button>
+            </div>
         </div>
     `).join("");
+}
+
+function badgePorStatusAtividade(status) {
+    if (status === "Aberta") return "badge-success";
+    if (status === "Em andamento") return "badge-warning";
+    if (status === "Encerrada" || status === "Concluído") return "badge-neutral";
+    return "badge-info";
 }
 
 /* ===============================
@@ -62,31 +144,35 @@ function renderizarProgresso(oportunidades) {
     const container = document.getElementById("progress-container");
     if (!container) return;
 
+    container.classList.add("progress-lista");
+
     const ativas = oportunidades.filter(o => o.inscrito);
+
+    if (!ativas.length) {
+        container.innerHTML = `<p class="dashboard-vazio">Nenhum progresso registrado.</p>`;
+        return;
+    }
 
     container.innerHTML = ativas.map(o => `
         <div class="progress-card">
             <strong>${o.titulo}</strong>
             <div class="progress-bar">
-                <div class="progress-fill"
-                     style="width:${o.progresso || 0}%">
-                </div>
+                <div class="progress-fill" style="width:${o.progresso || 0}%"></div>
             </div>
-            <span class="kpi-sub">${o.progresso || 0}% concluído</span>
+            <span class="kpi-sub">${o.progresso || 0}% concluido</span>
         </div>
     `).join("");
 }
 
 /* ===============================
-   NOTIFICAÇÕES
+   NOTIFICACOES
 ================================ */
 function renderizarNotificacoes(oportunidades, solicitacoes) {
     const container = document.getElementById("notificacoes-container");
     if (!container) return;
 
     if (!solicitacoes.length) {
-        container.innerHTML =
-            `<p class="dashboard-vazio">Nenhuma notificação.</p>`;
+        container.innerHTML = `<p class="dashboard-vazio">Nenhuma notificacao.</p>`;
         return;
     }
 
@@ -95,7 +181,7 @@ function renderizarNotificacoes(oportunidades, solicitacoes) {
 
         return `
             <div class="notificacao-card">
-                <strong>Solicitação ${s.status}</strong>
+                <strong>Solicitacao ${s.status}</strong>
                 <p>${atividade?.titulo || "Atividade desconhecida"}</p>
             </div>
         `;
@@ -103,182 +189,33 @@ function renderizarNotificacoes(oportunidades, solicitacoes) {
 }
 
 /* ===============================
-   NOTÍCIAS
-================================ */
-function renderizarNoticias(noticias) {
-    const container = document.getElementById("noticias-container");
-    if (!container) return;
-
-    if (!noticias.length) {
-        container.innerHTML =
-            `<p class="dashboard-vazio">Nenhuma notícia.</p>`;
-        return;
-    }
-
-    container.innerHTML = noticias.map(n => `
-        <div class="noticia-card">
-            <strong>${n.titulo}</strong>
-            <p>${n.descricao}</p>
-        </div>
-    `).join("");
-}
-
-/* ===============================
-   NAVEGAÇÃO
+   NAVEGACAO
 ================================ */
 window.irParaSolicitacoes = function () {
-    document.querySelectorAll(".menu-item")
-        .forEach(m => m.classList.remove("active"));
-
-    document.querySelector(".menu-item:nth-child(3)")?.click();
+    acionarAba("Solicitacoes");
 };
 
+window.irParaOportunidades = function () {
+    acionarAba("Oportunidades");
+};
 
+window.irParaCertificacoes = function () {
+    acionarAba("Certificacoes");
+};
 
-/* 
-const oportunidadesMock = [
-    { id: 1, titulo: "Projeto de Robótica Educacional", carga: "40h", status: "Em andamento" },
-    { id: 2, titulo: "Extensão Comunitária – Quilombo", carga: "60h", status: "Concluído" },
-    { id: 3, titulo: "Pesquisa Institucional – PIBEX", carga: "20h", status: "Pendente" },
-    { id: 2, titulo: "Monitoria Voluntaria - Estrutura de dados 2", carga: "30h", status: "Em andamento" }
-];
+window.irParaProjetos = function () {
+    acionarAba("Meus Projetos");
+};
 
-const progressoMock = [
-    { titulo: "Robótica Educacional", percentual: 70 },
-    { titulo: "Extensão – Quilombo", percentual: 100 },
-    { titulo: "Monitoria Volutaria - Estrutura de dados 2", percentual: 30 },
-];
-
-const notificacoesMock = [
-    { titulo: "Inscrição aprovada", descricao: "Projeto de Robótica Educacional" },
-    { titulo: "Inscrição aprovada", descricao: "onitoria Voluntaria - Estrutura de dados 2" },
-    { titulo: "Inscrição aprovada", descricao: "Extensão Comunitária – Quilombo" },
-    { titulo: "Incrição sendo avaliada", descricao: "Pesquisa Institucional – PIBEX" },
-];
-
-const noticiasMock = [
-    { titulo: "Novo edital de extensão", descricao: "Inscrições abertas até 30/09" },
-    { titulo: "Novo PPC 2025 a caminho", descricao: " se preparem!" },
-    { titulo: "Estágio Disponível", descricao: "Inscrições abertas até 16/12" },
-    { titulo: "Recesso de Natal", descricao: " Começa 20/12/2025 até 04/01/2026 " }
-];
-
-/* ===============================
-   CARREGA VIEW (HTML PURO)
-================================ 
-
-export async function carregarDashboardDiscente() {
-    const response = await fetch("./dashboard_view.html");
-
-   
-    return await response.text();
-}
-
-
-/* ===============================
-   ATIVAÇÃO DA VIEW
-   (chamada SEMPRE ao clicar na aba)
-================================ 
-
-export function ativarDashboardDiscente() {
-    renderizarOportunidades();
-    renderizarProgresso();
-    renderizarNotificacoes();
-    renderizarNoticias();
-}
-
-/* ===============================
-   RENDERIZAÇÕES
-================================
-
-/* OPORTUNIDADES INSCRITAS 
-function renderizarOportunidades() {
-    const container = document.querySelector(".oportunidades-lista");
-    if (!container) return;
-
-    container.innerHTML = ""; // limpa antes de renderizar
-
-    if (!oportunidadesMock.length) {
-        container.innerHTML = `<p class="vazio">Nenhuma oportunidade inscrita.</p>`;
-        return;
+function acionarAba(nomeAba) {
+    const abas = document.querySelectorAll(".menu-item");
+    const alvo = normalizarTexto(nomeAba);
+    const abaAlvo = Array.from(abas).find(aba => normalizarTexto(aba.textContent).includes(alvo));
+    if (abaAlvo) {
+        abaAlvo.click();
     }
-
-    oportunidadesMock.forEach(op => {
-        container.innerHTML += `
-            <div class="card-op">
-                <strong>${op.titulo}</strong>
-                <p><strong>Carga horária:</strong> ${op.carga}</p>
-                <p><strong>Status:</strong> ${op.status}</p>
-            </div>
-        `;
-    });
 }
 
-/* PROGRESSO 
-function renderizarProgresso() {
-    const container = document.getElementById("progress-container");
-    if (!container) return;
-
-    container.innerHTML = ""; // limpa antes
-
-    if (!progressoMock.length) {
-        container.innerHTML = `<p class="vazio">Sem progresso registrado.</p>`;
-        return;
-    }
-
-    progressoMock.forEach(item => {
-        container.innerHTML += `
-            <div class="progress-card">
-                <strong>${item.titulo}</strong>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: ${item.percentual}%"></div>
-                </div>
-            </div>
-        `;
-    });
+function normalizarTexto(texto) {
+    return (texto || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 }
-
-/* NOTIFICAÇÕES 
-function renderizarNotificacoes() {
-    const container = document.querySelector(".notificacoes-box .box-scroll");
-    if (!container) return;
-
-    container.innerHTML = "";
-
-    if (!notificacoesMock.length) {
-        container.innerHTML = `<p class="vazio">Nenhuma notificação.</p>`;
-        return;
-    }
-
-    notificacoesMock.forEach(n => {
-        container.innerHTML += `
-            <div class="notificacao-card">
-                <strong>${n.titulo}</strong>
-                <p>${n.descricao}</p>
-            </div>
-        `;
-    });
-}
-
-/* NOTÍCIAS 
-function renderizarNoticias() {
-    const container = document.querySelector(".noticias-box .box-scroll");
-    if (!container) return;
-
-    container.innerHTML = "";
-
-    if (!noticiasMock.length) {
-        container.innerHTML = `<p class="vazio">Sem notícias no momento.</p>`;
-        return;
-    }
-
-    noticiasMock.forEach(n => {
-        container.innerHTML += `
-            <div class="noticia-card">
-                <strong>${n.titulo}</strong>
-                <p>${n.descricao}</p>
-            </div>
-        `;
-    });
-}
-*/

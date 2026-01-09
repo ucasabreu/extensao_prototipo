@@ -9,7 +9,7 @@ let oportunidadesData = [];
    CARREGA VIEW
 ===================================================== */
 export async function carregarOportunidadesDiscente() {
-    const response = await fetch("../../pages/discente/oportunidades.html");
+    const response = await fetch("./oportunidades.html");
     return await response.text();
 }
 
@@ -18,6 +18,7 @@ export async function carregarOportunidadesDiscente() {
 ===================================================== */
 export async function ativarOportunidadesDiscente() {
     await carregarDados();
+    renderizarKPIs();
     bindFiltros();
     aplicarFiltros();
 }
@@ -27,6 +28,26 @@ export async function ativarOportunidadesDiscente() {
 ===================================================== */
 async function carregarDados() {
     oportunidadesData = await getOportunidades();
+}
+
+/* =====================================================
+   KPIs
+===================================================== */
+function renderizarKPIs() {
+    const disponiveis = oportunidadesData.filter(o => o.status === "Aberta").length;
+    const inscrito = oportunidadesData.filter(o => o.inscrito).length;
+    const andamento = oportunidadesData.filter(o => o.status === "Em andamento").length;
+    const encerradas = oportunidadesData.filter(o => o.status === "Encerrada" || o.status === "Concluído").length;
+
+    const elDisponiveis = document.getElementById("kpi-disponiveis");
+    const elInscrito = document.getElementById("kpi-inscrito");
+    const elAndamento = document.getElementById("kpi-andamento");
+    const elEncerradas = document.getElementById("kpi-encerradas");
+
+    if (elDisponiveis) elDisponiveis.textContent = disponiveis;
+    if (elInscrito) elInscrito.textContent = inscrito;
+    if (elAndamento) elAndamento.textContent = andamento;
+    if (elEncerradas) elEncerradas.textContent = encerradas;
 }
 
 /* =====================================================
@@ -61,42 +82,58 @@ function aplicarFiltros() {
 ===================================================== */
 function renderizarOportunidades(lista) {
     const container = document.querySelector(".oportunidades-disponiveis");
+    const totalEl = document.getElementById("total-oportunidades");
+
     if (!container) return;
 
+    // Atualiza contador
+    if (totalEl) {
+        totalEl.textContent = `${lista.length} resultado${lista.length !== 1 ? 's' : ''}`;
+    }
+
     if (!lista.length) {
-        container.innerHTML = `<p class="oportunidades-vazio">Nenhuma oportunidade encontrada.</p>`;
+        container.innerHTML = `
+            <div class="oportunidades-vazio">
+                <p>Nenhuma oportunidade encontrada.</p>
+                <p style="font-size: 12px; margin-top: 8px;">Tente ajustar os filtros ou aguarde novas publicações.</p>
+            </div>
+        `;
         return;
     }
 
     container.innerHTML = lista.map(op => {
-        // Define classe da badge de acordo com status
-        let badgeClass = '';
+        // Define classe da badge
+        let badgeClass = 'badge-info';
         if (op.status === "Aberta") badgeClass = "badge-success";
         else if (op.status === "Em andamento") badgeClass = "badge-warning";
-        else if (op.status === "Encerrada") badgeClass = "badge-danger";
+        else if (op.status === "Encerrada" || op.status === "Concluído") badgeClass = "badge-neutral";
 
-        // Botão de inscrição só aparece se estiver Aberta
-        const botaoInscricao = (op.status === "Aberta") 
-            ? `<button class="btn ${op.inscrito ? "btn-danger" : "btn-primary"} btn-small"
-                    data-action="toggle"
-                    data-id="${op.id}">
-                    ${op.inscrito ? "Cancelar inscrição" : "Inscrever-se"}
-               </button>`
-            : "";
+        // Botão de inscrição
+        let botaoInscricao = "";
+        if (op.status === "Aberta") {
+            botaoInscricao = `
+                <button class="btn-small ${op.inscrito ? "btn-small-danger" : "btn-small-primary"}"
+                    data-action="toggle" data-id="${op.id}">
+                    ${op.inscrito ? "Cancelar" : "Inscrever-se"}
+                </button>
+            `;
+        }
 
         return `
-            <div class="kpi-card">
-                <span class="kpi-title">${op.titulo}</span>
-                <span class="badge ${badgeClass}">${op.status}</span>
-                <span class="kpi-sub">Carga horária: ${op.carga}h</span>
-
-                <button class="btn btn-secondary btn-small"
-                    data-action="detalhes"
-                    data-id="${op.id}">
-                    Ver detalhes
-                </button>
-
-                ${botaoInscricao}
+            <div class="oportunidade-card">
+                <span class="titulo">${op.titulo}</span>
+                <div class="meta">
+                    <span class="badge ${badgeClass}">${op.status}</span>
+                    <span>⏱ ${op.carga}h</span>
+                    <span>📅 ${op.semestre}º/${op.ano}</span>
+                </div>
+                <p class="descricao">${op.descricao || 'Sem descrição disponível.'}</p>
+                <div class="acoes">
+                    <button class="btn-small btn-small-secondary" data-action="detalhes" data-id="${op.id}">
+                        Ver detalhes
+                    </button>
+                    ${botaoInscricao}
+                </div>
             </div>
         `;
     }).join("");
@@ -123,27 +160,91 @@ function toggleInscricao(id) {
     if (!op) return;
 
     op.inscrito = !op.inscrito;
-    op.status = op.inscrito ? "Em andamento" : "Aberta";
+
+    if (op.inscrito) {
+        op.status = "Em andamento";
+    } else {
+        op.status = "Aberta";
+    }
 
     mostrarToast(
         op.inscrito ? "success" : "info",
-        op.inscrito ? "Inscrição realizada!" : "Inscrição cancelada."
+        op.inscrito ? "Inscrição realizada com sucesso!" : "Inscrição cancelada."
     );
 
+    renderizarKPIs();
     aplicarFiltros();
 }
+
+/* =====================================================
+   MODAL DE DETALHES
+===================================================== */
+let oportunidadeSelecionada = null;
 
 function verDetalhes(id) {
     const op = oportunidadesData.find(o => o.id === id);
     if (!op) return;
 
-    alert(`${op.titulo}\n\nDescrição: ${op.descricao}\nCarga horária: ${op.carga}h\nModalidade: ${op.modalidade}\nSemestre: ${op.semestre}\nAno: ${op.ano}`);
+    oportunidadeSelecionada = op;
+
+    // Preenche os campos do modal
+    document.getElementById("modal-titulo").textContent = op.titulo;
+    document.getElementById("modal-status").innerHTML = `<span class="badge ${getBadgeClass(op.status)}">${op.status}</span>`;
+    document.getElementById("modal-carga").textContent = `${op.carga} horas`;
+    document.getElementById("modal-modalidade").textContent = op.modalidade || "Presencial";
+    document.getElementById("modal-periodo").textContent = `${op.semestre}º Semestre / ${op.ano}`;
+    document.getElementById("modal-vagas").textContent = op.vagas || "Ilimitadas";
+    document.getElementById("modal-responsavel").textContent = op.responsavel || "A definir";
+    document.getElementById("modal-descricao").textContent = op.descricao || "Sem descrição disponível.";
+
+    // Atualiza botão de inscrição
+    const btnInscricao = document.getElementById("modal-btn-inscricao");
+    if (btnInscricao) {
+        if (op.status === "Aberta") {
+            btnInscricao.style.display = "block";
+            btnInscricao.textContent = op.inscrito ? "Cancelar Inscrição" : "Inscrever-se";
+            btnInscricao.className = op.inscrito ? "btn btn-danger" : "btn btn-primary";
+        } else {
+            btnInscricao.style.display = "none";
+        }
+    }
+
+    // Abre o modal
+    document.getElementById("modalDetalhesOportunidade").style.display = "flex";
+}
+
+function getBadgeClass(status) {
+    if (status === "Aberta") return "badge-success";
+    if (status === "Em andamento") return "badge-warning";
+    if (status === "Encerrada" || status === "Concluído") return "badge-neutral";
+    return "badge-info";
+}
+
+window.fecharModalDetalhes = function () {
+    document.getElementById("modalDetalhesOportunidade").style.display = "none";
+    oportunidadeSelecionada = null;
+};
+
+window.inscreverDoModal = function () {
+    if (!oportunidadeSelecionada) return;
+    toggleInscricao(oportunidadeSelecionada.id);
+    fecharModalDetalhes();
+};
+
+function mostrarToast(tipo, mensagem) {
+    if (window.showToast) {
+        window.showToast(tipo, mensagem);
+    } else {
+        console.log(`[${tipo.toUpperCase()}] ${mensagem}`);
+    }
 }
 
 /* =====================================================
    NAVEGAÇÃO
 ===================================================== */
 window.irParaSolicitacoes = function () {
-    document.querySelectorAll(".menu-item").forEach(m => m.classList.remove("active"));
-    document.querySelector(".menu-item:nth-child(3)")?.click();
+    const abas = document.querySelectorAll(".menu-item");
+    const abaAlvo = Array.from(abas).find(aba => aba.textContent.includes("Solicitações"));
+    if (abaAlvo) abaAlvo.click();
 };
+

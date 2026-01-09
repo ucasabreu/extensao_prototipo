@@ -8,7 +8,7 @@ import {
    CARREGA VIEW
 ===================================================== */
 export async function carregarDashboardDiscente() {
-    const response = await fetch("../../pages/discente/dashboard_view.html");
+    const response = await fetch("./dashboard_view.html");
     return await response.text();
 }
 
@@ -20,10 +20,35 @@ export async function ativarDashboardDiscente() {
     const solicitacoes = await getSolicitacoes();
     const noticias = await getNoticias();
 
+    renderizarKPIs(oportunidades, solicitacoes);
     renderizarAtividadesAtivas(oportunidades);
     renderizarProgresso(oportunidades);
     renderizarNotificacoes(oportunidades, solicitacoes);
     renderizarNoticias(noticias);
+}
+
+/* ===============================
+   KPIs (NOVO)
+================================ */
+function renderizarKPIs(oportunidades, solicitacoes) {
+    const ativas = oportunidades.filter(o => o.inscrito);
+    const concluidas = oportunidades.filter(o =>
+        o.status === "Concluído" || o.status === "Concluída" || o.status === "Encerrada"
+    );
+    const horasTotais = oportunidades
+        .filter(o => o.inscrito || o.status === "Concluído" || o.status === "Encerrada")
+        .reduce((acc, o) => acc + (o.carga || 0), 0);
+    const pendencias = solicitacoes.filter(s => s.status === "Pendente").length;
+
+    const elAndamento = document.getElementById("kpi-andamento");
+    const elConcluidas = document.getElementById("kpi-concluidas");
+    const elHoras = document.getElementById("kpi-horas");
+    const elPendencias = document.getElementById("kpi-pendencias");
+
+    if (elAndamento) elAndamento.textContent = ativas.length;
+    if (elConcluidas) elConcluidas.textContent = concluidas.length;
+    if (elHoras) elHoras.textContent = `${horasTotais}h`;
+    if (elPendencias) elPendencias.textContent = pendencias;
 }
 
 /* ===============================
@@ -37,22 +62,30 @@ function renderizarAtividadesAtivas(oportunidades) {
 
     if (!ativas.length) {
         container.innerHTML =
-            `<p class="dashboard-vazio">Nenhuma atividade ativa.</p>`;
+            `<p class="dashboard-vazio" style="grid-column: span 2; text-align: center; color: #888;">Nenhuma atividade ativa. <a href="#" onclick="irParaOportunidades()">Buscar oportunidades</a></p>`;
         return;
     }
 
-    container.innerHTML = ativas.map(o => `
-        <div class="kpi-card">
-            <span class="kpi-title">${o.titulo}</span>
-            <span class="badge badge-info">${o.status}</span>
-            <span class="kpi-sub">Carga horária: ${o.carga}h</span>
+    container.innerHTML = ativas.map(o => {
+        let badgeClass = "badge-info";
+        if (o.status === "Em andamento") badgeClass = "badge-success";
+        if (o.status === "Pendente") badgeClass = "badge-warning";
+        if (o.status === "Encerrada" || o.status === "Concluído") badgeClass = "badge-neutral";
 
-            <button class="btn btn-secondary btn-small"
-                onclick="irParaSolicitacoes()">
-                Ver detalhes
-            </button>
+        return `
+        <div class="atividade-card">
+            <span class="titulo">${o.titulo}</span>
+            <div class="meta">
+                <span class="badge ${badgeClass}">${o.status}</span>
+                <span>⏱ ${o.carga}h</span>
+            </div>
+            <div class="acoes">
+                <button class="btn-small btn-small-secondary" onclick="irParaSolicitacoes()">
+                    Ver detalhes
+                </button>
+            </div>
         </div>
-    `).join("");
+    `}).join("");
 }
 
 /* ===============================
@@ -64,13 +97,16 @@ function renderizarProgresso(oportunidades) {
 
     const ativas = oportunidades.filter(o => o.inscrito);
 
+    if (!ativas.length) {
+        container.innerHTML = `<p style="color: #888; font-size: 13px;">Nenhuma atividade em progresso.</p>`;
+        return;
+    }
+
     container.innerHTML = ativas.map(o => `
         <div class="progress-card">
             <strong>${o.titulo}</strong>
             <div class="progress-bar">
-                <div class="progress-fill"
-                     style="width:${o.progresso || 0}%">
-                </div>
+                <div class="progress-fill" style="width:${o.progresso || 0}%"></div>
             </div>
             <span class="kpi-sub">${o.progresso || 0}% concluído</span>
         </div>
@@ -86,7 +122,7 @@ function renderizarNotificacoes(oportunidades, solicitacoes) {
 
     if (!solicitacoes.length) {
         container.innerHTML =
-            `<p class="dashboard-vazio">Nenhuma notificação.</p>`;
+            `<p style="color: #888; font-size: 13px;">Nenhuma notificação.</p>`;
         return;
     }
 
@@ -111,14 +147,14 @@ function renderizarNoticias(noticias) {
 
     if (!noticias.length) {
         container.innerHTML =
-            `<p class="dashboard-vazio">Nenhuma notícia.</p>`;
+            `<p style="color: #888; font-size: 13px;">Nenhuma notícia.</p>`;
         return;
     }
 
     container.innerHTML = noticias.map(n => `
         <div class="noticia-card">
             <strong>${n.titulo}</strong>
-            <p>${n.descricao}</p>
+            <p>${n.resumo}</p>
         </div>
     `).join("");
 }
@@ -127,8 +163,21 @@ function renderizarNoticias(noticias) {
    NAVEGAÇÃO
 ================================ */
 window.irParaSolicitacoes = function () {
-    document.querySelectorAll(".menu-item")
-        .forEach(m => m.classList.remove("active"));
-
-    document.querySelector(".menu-item:nth-child(3)")?.click();
+    acionarAba("Solicitações");
 };
+
+window.irParaOportunidades = function () {
+    acionarAba("Oportunidades");
+};
+
+window.irParaCertificacoes = function () {
+    acionarAba("Certificações");
+};
+
+function acionarAba(nomeAba) {
+    const abas = document.querySelectorAll(".menu-item");
+    const abaAlvo = Array.from(abas).find(aba => aba.textContent.includes(nomeAba));
+    if (abaAlvo) {
+        abaAlvo.click();
+    }
+}

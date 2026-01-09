@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="../../assets/css/ui/discente/dashboard.css">
     <link rel="stylesheet" href="../../assets/css/ui/discente/oportunidades.css">
     <link rel="stylesheet" href="../../assets/css/ui/discente/solicitacoes.css">
-    <link rel="stylesheet" href="../../assets/css/ui/discente/solicitacoes.css">
     <link rel="stylesheet" href="../../assets/css/ui/discente/certificacoes.css">
 
     <link rel="stylesheet" href="../../assets/css/global/button.css">
@@ -28,49 +27,77 @@
     <div id="layout-area"></div>
 
     <script type="module">
+        // IMPORTANTE: Define o perfil IMEDIATAMENTE antes de qualquer import
+        // Isso garante que o layout.js leia o perfil correto
+        localStorage.setItem("perfil", "discente");
+        localStorage.setItem("nome", "Discente Teste");
+        localStorage.setItem("email", "discente@teste.com");
+
         import { carregarLayout } from "../../assets/js/common/layout.js";
 
+        // Imports das funções de carregamento de HTML e ativação
         import {
-            renderDashboardDiscente,
-            renderOportunidadesDiscente,
-            renderSolicitacoesDiscente,
-            renderCertificacoesDiscente
-        } from "../../assets/js/discente/discente.controller.js";
+            carregarDashboardDiscente,
+            ativarDashboardDiscente
+        } from "../../assets/js/discente/dashboard.js";
 
+        import {
+            carregarOportunidadesDiscente,
+            ativarOportunidadesDiscente
+        } from "../../assets/js/discente/oportunidades.js";
 
-        // Discente
-        localStorage.setItem("perfil", "discente");
-        
-        carregarLayout([
-            {
-                label: "Visão Geral",
-                title: "Visão Geral",
-                description: "Resumo das suas atividades",
-                content: "",
-                onRender: renderDashboardDiscente
-            },
-            {
-                label: "Oportunidades",
-                title: "Oportunidades",
-                description: "Oportunidades disponíveis para você",
-                content: "",
-                onRender: renderOportunidadesDiscente
-            },
-            {
-                label: "Solicitações",
-                title: "Solicitações",
-                description: "Solicitações pendentes, aprovadas e rejeitadas",
-                content: "",
-                onRender: renderSolicitacoesDiscente
-            },
-            {
-                label: "Certificações",
-                title: "Certificações",
-                description: "Certificações obtidas e histórico",
-                content: "",
-                onRender: renderCertificacoesDiscente
-            }
-        ]);
+        import {
+            carregarSolicitacoesDiscente,
+            ativarSolicitacoesDiscente
+        } from "../../assets/js/discente/solicitacoes.js";
+
+        import {
+            carregarCertificacoesDiscente,
+            ativarCertificacoesDiscente
+        } from "../../assets/js/discente/certificacoes.js";
+
+        async function init() {
+
+            // 1. CARREGA O HTML DE TODAS AS VIEWS ANTES DE INICIAR O LAYOUT
+            const htmlDashboard = await carregarDashboardDiscente();
+            const htmlOportunidades = await carregarOportunidadesDiscente();
+            const htmlSolicitacoes = await carregarSolicitacoesDiscente();
+            const htmlCertificacoes = await carregarCertificacoesDiscente();
+
+            // 2. CONFIGURA O LAYOUT COM O HTML JÁ CARREGADO
+            carregarLayout([
+                {
+                    label: "Visão Geral",
+                    title: "Visão Geral",
+                    description: "Resumo das suas atividades",
+                    content: htmlDashboard,
+                    onRender: () => ativarDashboardDiscente()
+                },
+                {
+                    label: "Oportunidades",
+                    title: "Oportunidades",
+                    description: "Oportunidades disponíveis para você",
+                    content: htmlOportunidades,
+                    onRender: () => ativarOportunidadesDiscente()
+                },
+                {
+                    label: "Solicitações",
+                    title: "Solicitações",
+                    description: "Solicitações pendentes, aprovadas e rejeitadas",
+                    content: htmlSolicitacoes,
+                    onRender: () => ativarSolicitacoesDiscente()
+                },
+                {
+                    label: "Certificações",
+                    title: "Certificações",
+                    description: "Certificações obtidas e histórico",
+                    content: htmlCertificacoes,
+                    onRender: () => ativarCertificacoesDiscente()
+                }
+            ]);
+        }
+
+        init();
     </script>
 </body>
 

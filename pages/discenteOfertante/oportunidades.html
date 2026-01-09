@@ -1,46 +1,125 @@
-<section class="discenteOfertante-oportunidades">
+<!-- =====================================================
+     DISCENTE - OPORTUNIDADES
+     Layout alinhado com padrão Docente/Coordenador
+     ===================================================== -->
 
-    <div class="box-externa">
-        <div class="box-interna">
+<!-- KPIs - Métricas principais -->
+<div class="kpi-grid" style="margin-bottom: 25px;">
 
-            <div class="box-titulo">Oportunidades Disponíveis</div>
-
-            <!-- Filtros -->
-            <div class="filtros">
-                <input 
-                    type="text" 
-                    id="pesquisa-oportunidade" 
-                    placeholder="Pesquisar oportunidade..."
-                >
-                <select id="filtro-status">
-                    <option value="">Todos os status</option>
-                    <option value="Aberta">Aberta</option>
-                    <option value="Encerrada">Encerrada</option>
-                </select>
-                <select id="filtro-semestre">
-                    <option value="">Todos os semestres</option>
-                    <option value="1">1º Semestre</option>
-                    <option value="2">2º Semestre</option>
-                </select>
-                <select id="filtro-ano">
-                    <option value="">Todos os anos</option>
-                    <option value="2025">2025</option>
-                    <option value="2026">2026</option>
-                </select>
-                <select id="filtro-curso">
-                    <option value="">Todos os cursos</option>
-                    <option value="CC">Ciência da Computação</option>
-                    <option value="EC">Engenharia Civil</option>
-                    <option value="AD">Administração</option>
-                </select>
-            </div>
-
-            <!-- Lista -->
-            <div class="box-scroll oportunidades-disponiveis">
-                <!-- cards via JS -->
-            </div>
-
-        </div>
+    <div class="kpi-card" style="border-left-color: #2e8b57;">
+        <div class="kpi-title">Disponíveis</div>
+        <div class="kpi-value" id="kpi-disponiveis">0</div>
+        <div class="kpi-sub">Oportunidades abertas</div>
     </div>
 
-</section>
+    <div class="kpi-card" style="border-left-color: #2c75b9;">
+        <div class="kpi-title">Minha Inscrição</div>
+        <div class="kpi-value" id="kpi-inscrito">0</div>
+        <div class="kpi-sub">Atividades que participo</div>
+    </div>
+
+    <div class="kpi-card" style="border-left-color: #d4a017;">
+        <div class="kpi-title">Em Andamento</div>
+        <div class="kpi-value" id="kpi-andamento">0</div>
+        <div class="kpi-sub">Atividades ativas</div>
+    </div>
+
+    <div class="kpi-card" style="border-left-color: #555;">
+        <div class="kpi-title">Encerradas</div>
+        <div class="kpi-value" id="kpi-encerradas">0</div>
+        <div class="kpi-sub">Este semestre</div>
+    </div>
+
+</div>
+
+<!-- Toolbar: Busca + Filtros -->
+<div class="toolbar">
+    <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="pesquisa-oportunidade" placeholder="Buscar oportunidade...">
+    </div>
+
+    <select id="filtro-status" class="select">
+        <option value="">Todos os status</option>
+        <option value="Aberta">Aberta</option>
+        <option value="Em andamento">Em andamento</option>
+        <option value="Encerrada">Encerrada</option>
+    </select>
+
+    <select id="filtro-semestre" class="select">
+        <option value="">Semestre</option>
+        <option value="1">1º Semestre</option>
+        <option value="2">2º Semestre</option>
+    </select>
+
+    <select id="filtro-ano" class="select">
+        <option value="">Ano</option>
+        <option value="2025">2025</option>
+        <option value="2026">2026</option>
+    </select>
+
+    <select id="filtro-curso" class="select">
+        <option value="">Curso</option>
+        <option value="CC">Ciência da Computação</option>
+        <option value="EC">Engenharia Civil</option>
+        <option value="AD">Administração</option>
+    </select>
+</div>
+
+<!-- Grid de Oportunidades -->
+<div class="section-card" style="margin-top: 20px;">
+    <div class="section-header">
+        <h3 class="section-title">Oportunidades Disponíveis</h3>
+        <span class="badge badge-info" id="total-oportunidades">0 resultados</span>
+    </div>
+
+    <div class="oportunidades-grid oportunidades-disponiveis">
+        <!-- Cards renderizados via JS -->
+    </div>
+</div>
+
+<!-- Modal de Detalhes da Oportunidade -->
+<div id="modalDetalhesOportunidade" class="modal-overlay">
+    <div class="modal" style="width: 600px;">
+        <div class="modal-header">
+            <h2 id="modal-titulo">Detalhes da Oportunidade</h2>
+            <span class="modal-close" onclick="fecharModalDetalhes()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="detalhes-grid">
+                <div class="detalhe-item">
+                    <span class="detalhe-label">Status</span>
+                    <span class="detalhe-valor" id="modal-status"></span>
+                </div>
+                <div class="detalhe-item">
+                    <span class="detalhe-label">Carga Horária</span>
+                    <span class="detalhe-valor" id="modal-carga"></span>
+                </div>
+                <div class="detalhe-item">
+                    <span class="detalhe-label">Modalidade</span>
+                    <span class="detalhe-valor" id="modal-modalidade"></span>
+                </div>
+                <div class="detalhe-item">
+                    <span class="detalhe-label">Período</span>
+                    <span class="detalhe-valor" id="modal-periodo"></span>
+                </div>
+                <div class="detalhe-item">
+                    <span class="detalhe-label">Vagas</span>
+                    <span class="detalhe-valor" id="modal-vagas"></span>
+                </div>
+                <div class="detalhe-item">
+                    <span class="detalhe-label">Responsável</span>
+                    <span class="detalhe-valor" id="modal-responsavel"></span>
+                </div>
+            </div>
+            <div class="detalhe-descricao">
+                <span class="detalhe-label">Descrição</span>
+                <p id="modal-descricao"></p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="fecharModalDetalhes()">Fechar</button>
+            <button class="btn btn-primary" id="modal-btn-inscricao" onclick="inscreverDoModal()">Inscrever-se</button>
+        </div>
+    </div>
+</div>

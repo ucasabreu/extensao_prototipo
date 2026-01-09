@@ -4,7 +4,7 @@
 const projetosDiscenteDB = [
     {
         id: 1,
-        titulo: "Projeto Robótica Educacional",
+        titulo: "Projeto Robotica Educacional",
         tipo: "Projeto",
         inicio: "2025-02-01",
         fim: "2025-06-30",
@@ -16,7 +16,7 @@ const projetosDiscenteDB = [
     },
     {
         id: 2,
-        titulo: "Curso de Introdução ao Python",
+        titulo: "Curso de Introducao ao Python",
         tipo: "Curso",
         inicio: "2024-10-01",
         fim: "2024-11-30",
@@ -25,32 +25,73 @@ const projetosDiscenteDB = [
         ano: 2024,
         semestre: 2,
         professorLider: "Carlos Henrique Lima"
+    },
+    {
+        id: 3,
+        titulo: "Programa de Inclusao Digital",
+        tipo: "Projeto",
+        inicio: "2025-03-15",
+        fim: "2025-08-30",
+        ch: 60,
+        status: "Aprovado",
+        ano: 2025,
+        semestre: 1,
+        professorLider: "Mariana Brito"
+    },
+    {
+        id: 4,
+        titulo: "Feira de Inovacao e Tecnologia",
+        tipo: "Evento",
+        inicio: "2024-08-10",
+        fim: "2024-09-05",
+        ch: 30,
+        status: "Encerrado",
+        ano: 2024,
+        semestre: 2,
+        professorLider: "Elisa Martins"
     }
 ];
 
 const atividadesCriadas = [
     {
         id: 1,
-        titulo: "Projeto Robótica Educacional",
-        inscritos: ["Ana Souza", "Carlos Lima", "Fernanda Alves"],
+        titulo: "Projeto Robotica Educacional",
+        inscritos: ["Ana Souza", "Carlos Lima", "Fernanda Alves", "Joao Pedro"],
         parecer: {
-            status: "Em análise",
-            comentario: "Projeto interessante, preciso avaliar melhor a carga horária."
+            status: "Em analise",
+            comentario: "Projeto com bom potencial. Ajustar cronograma de oficinas."
         }
     },
     {
-        id: 2,
-        titulo: "Curso de Introdução ao Python",
-        inscritos: ["Lucas Rocha", "Mariana Costa", "João Pedro", "Paula Mendes"],
+        id: 3,
+        titulo: "Programa de Inclusao Digital",
+        inscritos: ["Lucas Rocha", "Mariana Costa", "Paula Mendes"],
         parecer: {
             status: "Aprovado",
-            comentario: "Curso aprovado. Estrutura e proposta muito bem definidas."
+            comentario: "Projeto aprovado. Estrutura e metas bem definidas."
+        }
+    },
+    {
+        id: 4,
+        titulo: "Feira de Inovacao e Tecnologia",
+        inscritos: ["Rita Ferreira", "Bruno Alves", "Camila Santos", "Igor Melo"],
+        parecer: {
+            status: "Ajustes",
+            comentario: "Necessario detalhar a logistica e a divulgacao."
         }
     }
 ];
 
+export function getProjetosDiscenteOfertante() {
+    return structuredClone(projetosDiscenteDB);
+}
+
+export function getAtividadesCriadas() {
+    return structuredClone(atividadesCriadas);
+}
+
 /* ====================================================
-   UTILITÁRIOS / HELPERS
+   UTILITARIOS / HELPERS
 ==================================================== */
 function formatarData(data) {
     if (!data) return "N/A";
@@ -59,7 +100,7 @@ function formatarData(data) {
 }
 
 function badgePorStatus(status) {
-    if (status === "Em Execução") return "badge-success";
+    if (status === "Em Execucao" || status === "Em Execução") return "badge-success";
     if (status === "Aprovado") return "badge-info";
     if (status === "Encerrado") return "badge-neutral";
     return "badge-danger";
@@ -67,7 +108,7 @@ function badgePorStatus(status) {
 
 function statusParecerClass(status) {
     if (status === "Aprovado") return "status-aprovado";
-    if (status === "Em análise") return "status-analise";
+    if (status === "Em analise" || status === "Em análise") return "status-analise";
     return "status-ajustes";
 }
 
@@ -133,7 +174,7 @@ function renderizarInformacoesDiscente() {
     if (!container) return;
 
     if (atividadesCriadas.length === 0) {
-        container.innerHTML = `<p class="tab-placeholder">Você ainda não criou nenhuma atividade.</p>`;
+        container.innerHTML = `<p class="tab-placeholder">Voce ainda nao criou nenhuma atividade.</p>`;
         return;
     }
 
@@ -143,12 +184,12 @@ function renderizarInformacoesDiscente() {
         return `
         <div class="info-card linha">
             <div class="info-card-body">
-                <p><strong>Título:</strong> ${a.titulo}</p>
+                <p><strong>Titulo:</strong> ${a.titulo}</p>
                 <p><strong>Status:</strong> <span class="status ${statusParecerClass(a.parecer.status)}">${a.parecer.status}</span></p>
-                <p><strong>Professor Líder:</strong> ${projeto?.professorLider || "N/A"}</p>
+                <p><strong>Professor Lider:</strong> ${projeto?.professorLider || "N/A"}</p>
                 <p><strong>Inscritos:</strong> ${a.inscritos.length}</p>
-                <p><strong>Período:</strong> ${formatarData(projeto?.inicio)} a ${formatarData(projeto?.fim)}</p>
-                <p><strong>Carga Horária:</strong> ${projeto?.ch}h</p>
+                <p><strong>Periodo:</strong> ${formatarData(projeto?.inicio)} a ${formatarData(projeto?.fim)}</p>
+                <p><strong>Carga Horaria:</strong> ${projeto?.ch}h</p>
             </div>
             <div class="info-card-actions">
                 <button class="info-btn" onclick="verInscritos(${a.id})">Ver inscritos</button>
@@ -161,7 +202,7 @@ function renderizarInformacoesDiscente() {
 }
 
 /* ====================================================
-   FUNÇÕES DOS BOTÕES FUNCIONAIS
+   FUNCOES DOS BOTOES FUNCIONAIS
 ==================================================== */
 
 window.verParecer = function (id) {
@@ -189,8 +230,8 @@ window.verCronograma = function (id) {
 
     abrirModal(
         `Cronograma - ${projeto.titulo}`,
-        `<p><strong>Início:</strong> ${formatarData(projeto.inicio)}</p>
-         <p><strong>Término:</strong> ${formatarData(projeto.fim)}</p>
+        `<p><strong>Inicio:</strong> ${formatarData(projeto.inicio)}</p>
+         <p><strong>Termino:</strong> ${formatarData(projeto.fim)}</p>
          <p>Mais detalhes do cronograma podem ser adicionados aqui.</p>`
     );
 };
