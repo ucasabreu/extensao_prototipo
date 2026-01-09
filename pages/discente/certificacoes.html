@@ -1,27 +1,117 @@
-<section class="discente-certificacoes">
+<!-- =====================================================
+     DISCENTE - CERTIFICAÇÕES
+     Layout com KPIs, cards visuais e painel de conquistas
+     ===================================================== -->
 
-    <div class="box-externa">
-        <div class="box-interna">
-            <div class="box-titulo">Certificações</div>
+<!-- KPIs - Resumo de Horas e Certificações -->
+<div class="kpi-grid" style="margin-bottom: 25px;">
 
-            <div class="certificacoes-header">
-                <div>Nome</div>
-                <div>Provedor</div>
-                <div>Documento</div>
-                <div>Carga Horária</div>
-                <div>Situação</div>
+    <div class="kpi-card" style="border-left-color: #2e8b57;">
+        <div class="kpi-title">Horas Concluídas</div>
+        <div class="kpi-value" id="kpi-horas-concluidas">0h</div>
+        <div class="kpi-sub">Extensão validada</div>
+    </div>
+
+    <div class="kpi-card" style="border-left-color: #2c75b9;">
+        <div class="kpi-title">Certificados</div>
+        <div class="kpi-value" id="kpi-certificados">0</div>
+        <div class="kpi-sub">Disponíveis para download</div>
+    </div>
+
+    <div class="kpi-card" style="border-left-color: #d4a017;">
+        <div class="kpi-title">Em Análise</div>
+        <div class="kpi-value" id="kpi-em-analise">0</div>
+        <div class="kpi-sub">Aguardando validação</div>
+    </div>
+
+    <div class="kpi-card" style="border-left-color: #7a1010;">
+        <div class="kpi-title">Meta Curricular</div>
+        <div class="kpi-value" id="kpi-meta">0%</div>
+        <div class="kpi-sub kpi-positive" id="kpi-meta-texto">Progresso</div>
+    </div>
+
+</div>
+
+<!-- Barra de Progresso da Meta -->
+<div class="progress-meta-card">
+    <div class="progress-meta-header">
+        <span class="progress-meta-title">Progresso da Meta de Extensão Curricular</span>
+        <span class="progress-meta-valor" id="progresso-valor">0 / 360 horas</span>
+    </div>
+    <div class="progress-meta-bar">
+        <div class="progress-meta-fill" id="progresso-fill" style="width: 0%"></div>
+    </div>
+    <p class="progress-meta-dica">Você precisa completar 360 horas de atividades de extensão para cumprir a carga
+        curricular.</p>
+</div>
+
+<!-- Toolbar: Filtros e Ações -->
+<div class="toolbar" style="margin-top: 20px;">
+    <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="pesquisa-certificacao" placeholder="Buscar certificação...">
+    </div>
+
+    <select id="filtro-status-cert" class="select">
+        <option value="">Todos os status</option>
+        <option value="Aprovada">Aprovadas</option>
+        <option value="Em análise">Em análise</option>
+    </select>
+
+    <button class="btn btn-primary" onclick="gerarHistorico()">
+        Gerar Histórico Completo
+    </button>
+</div>
+
+<!-- Lista de Certificações -->
+<div class="section-card" style="margin-top: 20px;">
+    <div class="section-header">
+        <h3 class="section-title">Minhas Certificações</h3>
+        <span class="badge badge-info" id="total-certificacoes">0 certificados</span>
+    </div>
+
+    <div class="certificacoes-grid" id="lista-certificacoes">
+        <!-- Cards renderizados via JS -->
+    </div>
+</div>
+
+<!-- Modal de Detalhes da Certificação -->
+<div id="modalDetalhesCertificacao" class="modal-overlay">
+    <div class="modal" style="width: 550px;">
+        <div class="modal-header">
+            <h2 id="modal-cert-titulo">Detalhes da Certificação</h2>
+            <span class="modal-close" onclick="fecharModalCertificacao()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="certificacao-preview" id="modal-cert-preview">
+                <div class="certificacao-icon-grande" id="modal-cert-icon">🏆</div>
+                <div class="certificacao-status-badge" id="modal-cert-status-badge"></div>
             </div>
 
-            <div class="certificacoes-lista" id="certificacoes">
-                <!-- cards via JS -->
+            <div class="detalhes-grid" style="margin-top: 20px;">
+                <div class="detalhe-item">
+                    <span class="detalhe-label">Atividade</span>
+                    <span class="detalhe-valor" id="modal-cert-atividade"></span>
+                </div>
+                <div class="detalhe-item">
+                    <span class="detalhe-label">Provedor</span>
+                    <span class="detalhe-valor" id="modal-cert-provedor"></span>
+                </div>
+                <div class="detalhe-item">
+                    <span class="detalhe-label">Carga Horária</span>
+                    <span class="detalhe-valor" id="modal-cert-carga"></span>
+                </div>
+                <div class="detalhe-item">
+                    <span class="detalhe-label">Status</span>
+                    <span class="detalhe-valor" id="modal-cert-status"></span>
+                </div>
             </div>
         </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="fecharModalCertificacao()">Fechar</button>
+            <button class="btn btn-primary" id="modal-btn-download" onclick="baixarCertificado()">
+                Baixar Certificado
+            </button>
+        </div>
     </div>
-
-    <div class="certificacoes-footer">
-        <button class="btn btn-primary">
-            Gerar Histórico
-        </button>
-    </div>
-
-</section>
+</div>

@@ -1,144 +1,247 @@
-/* =============================== OPORTUNIDADES – DISCENTE ================================ */
-.discente-oportunidades {
-    margin-top: 24px;
-}
+/* ===============================
+   OPORTUNIDADES – DISCENTE
+   Layout alinhado com Docente/Coordenador
+================================ */
 
-/* =============================== FILTROS ================================ */
-.filtros {
-    display: grid;
-    grid-template-columns: 2fr repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 18px;
-}
+/* ===============================
+   TOOLBAR (padrão docente)
+================================ */
 
-.filtros input,
-.filtros select {
-    padding: 10px 12px;
-    font-size: 13px;
-    border-radius: 10px;
-    border: 1px solid #d8c8b4;
+.toolbar {
     background: #ffffff;
+    padding: 15px 20px;
+    border-radius: 8px;
+    border: 1px solid #e3d8c7;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.search-box {
+    flex: 1;
+    min-width: 250px;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-box .search-icon {
+    position: absolute;
+    left: 12px;
+    font-size: 14px;
+    color: #888;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 10px 12px 10px 36px;
+    font-size: 13px;
+    border-radius: 8px;
+    border: 1px solid #d8c8b4;
+    background: #fafafa;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.filtros input:focus,
-.filtros select:focus {
+.search-box input:focus {
     outline: none;
-    border-color: #8b1d1d;
-    box-shadow: 0 0 0 2px rgba(139, 29, 29, 0.15);
+    border-color: #7a1010;
+    box-shadow: 0 0 0 2px rgba(122, 16, 16, 0.1);
+    background: #fff;
 }
 
-/* =============================== LISTA DE CARDS ================================ */
-.oportunidades-disponiveis {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;       /* permite quebrar linha se não couber */
-    gap: 20px;             /* espaço entre cards */
-    justify-content: flex-start;
+.toolbar .select {
+    padding: 10px 12px;
+    font-size: 13px;
+    border-radius: 8px;
+    border: 1px solid #d8c8b4;
+    background: #fff;
+    min-width: 140px;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
 }
 
-/* =============================== CARD DE OPORTUNIDADE ================================ */
-.kpi-card {
+.toolbar .select:focus {
+    outline: none;
+    border-color: #7a1010;
+}
+
+/* ===============================
+   GRID DE OPORTUNIDADES
+================================ */
+
+.oportunidades-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 15px;
+}
+
+/* ===============================
+   CARD DE OPORTUNIDADE
+================================ */
+
+.oportunidade-card {
     background: #ffffff;
     border: 1px solid #e6dbc9;
-    border-radius: 8px;  /* mais retangular */
-    padding: 12px 14px;
-
+    border-left: 4px solid #7a1010;
+    border-radius: 10px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* botão sempre embaixo */
-    gap: 8px;
-
+    gap: 10px;
     transition: transform 0.15s ease, box-shadow 0.2s ease;
-
-    width: 250px;        /* tamanho fixo */
-    min-height: 150px;   /* altura uniforme */
 }
 
-.kpi-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 12px rgba(0,0,0,0.08);
+.oportunidade-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(122, 16, 16, 0.12);
 }
 
-/* =============================== BADGES ================================ */
-.kpi-card .badge {
-    align-self: flex-start;
-    font-size: 11px;
-    font-weight: 800;
-    padding: 4px 10px;
-    border-radius: 6px;
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-}
-
-.badge-success { background: #d9f3e3; color: #216b3c; }   /* Aberta */
-.badge-warning { background: #fff1c7; color: #8a6d00; }   /* Em andamento */
-.badge-danger  { background: #fde2e2; color: #8a1c1c; }   /* Encerrada */
-
-
-/* =============================== TÍTULO ================================ */
-.kpi-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: #5d0b0b;
+.oportunidade-card .titulo {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
     line-height: 1.3;
 }
 
-/* =============================== DESCRIÇÃO ================================ */
-.oportunidade-descricao {
-    font-size: 13px;
-    color: #444;
-    line-height: 1.4;
+.oportunidade-card .meta {
+    font-size: 12px;
+    color: #666;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
 }
 
-/* =============================== AÇÕES (BOTÕES) ================================ */
-.oportunidade-acoes {
+.oportunidade-card .meta span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.oportunidade-card .descricao {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.4;
+    max-height: 40px;
+    overflow: hidden;
+}
+
+.oportunidade-card .acoes {
+    margin-top: auto;
+    padding-top: 10px;
     display: flex;
     gap: 8px;
-    flex-wrap: wrap;    /* permite quebra se não couber */
-    margin-top: 6px;
+    flex-wrap: wrap;
 }
 
-.oportunidade-acoes .btn {
-    flex: 1;                        /* distribui igualmente */
-    max-width: calc(50% - 4px);     /* dois botões por linha respeitando gap */
-    padding: 8px 12px;
-    font-size: 12px;
-    cursor: pointer;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    background: #f0f0f0;
-    transition: background 0.2s;
+.oportunidade-card .acoes .btn-small {
+    flex: 1;
+    text-align: center;
 }
 
-.oportunidade-acoes .btn:hover {
-    background: #e0e0e0;
-}
+/* ===============================
+   LISTA VAZIA
+================================ */
 
-/* =============================== LISTA VAZIA ================================ */
 .oportunidades-vazio {
+    grid-column: 1 / -1;
     font-size: 14px;
     font-style: italic;
-    color: #777;
+    color: #888;
     text-align: center;
-    padding: 16px;
+    padding: 40px 20px;
     border: 1px dashed #d8c8b4;
     border-radius: 12px;
     background: #faf7f4;
 }
 
-/* =============================== RESPONSIVO ================================ */
-@media (max-width: 900px) {
-    .oportunidades-disponiveis {
+/* ===============================
+   RESPONSIVO
+================================ */
+
+@media (max-width: 768px) {
+    .toolbar {
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
     }
 
-    .kpi-card {
+    .search-box {
+        min-width: 100%;
+    }
+
+    .toolbar .select {
         width: 100%;
     }
 
-    .oportunidade-acoes .btn {
-        max-width: 100%;
+    .oportunidades-grid {
+        grid-template-columns: 1fr;
     }
+}
+
+/* ===============================
+   MODAL DE DETALHES
+================================ */
+
+.detalhes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.detalhe-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.detalhe-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.detalhe-valor {
+    font-size: 15px;
+    color: #333;
+    font-weight: 500;
+}
+
+.detalhe-descricao {
+    border-top: 1px solid #e6dbc9;
+    padding-top: 16px;
+}
+
+.detalhe-descricao p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+    margin-top: 8px;
+}
+
+/* ===============================
+   MELHORIAS VISUAIS
+================================ */
+
+.oportunidade-card.inscrito {
+    border-left-color: #2e8b57;
+    background: #f8fff8;
+}
+
+.oportunidade-card .badge {
+    font-size: 11px;
+    padding: 3px 8px;
+}
+
+.oportunidade-card .titulo {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }

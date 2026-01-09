@@ -1,196 +1,286 @@
 import { getOportunidades, getSolicitacoes } from "../services/discente.service.js";
 
 /* =====================================================
+   ESTADO LOCAL
+===================================================== */
+let oportunidadesData = [];
+let solicitacoesData = [];
+let filtroAtual = "todas";
+let solicitacaoSelecionada = null;
+
+/* =====================================================
    CARREGA VIEW
 ===================================================== */
 export async function carregarSolicitacoesDiscente() {
-    const res = await fetch("../../pages/discente/solicitacoes.html");
+    const res = await fetch("./solicitacoes.html");
     return await res.text();
-}
-
-/* =====================================================
-   RENDER DE COLUNA COM CARDS
-===================================================== */
-function renderizarColuna(colunaId, status, oportunidades, solicitacoes) {
-    const container = document.getElementById(colunaId);
-    if (!container) return;
-
-    const filtradas = solicitacoes.filter(s => s.status === status);
-    if (!filtradas.length) {
-        container.innerHTML = `<p class="solicitacoes-vazio">Nenhuma solicitação.</p>`;
-        return;
-    }
-
-    container.innerHTML = filtradas.map(s => {
-        const atividade = oportunidades.find(o => o.id === s.atividadeId);
-
-        const btnCancelar = s.status === "Aceita"
-            ? `<button class="btn btn-danger btn-small" data-action="toggle" data-id="${s.id}">Cancelar inscrição</button>`
-            : "";
-
-        const btnTentar = s.status === "Recusada"
-            ? `<button class="btn btn-primary btn-small" data-action="tentar" data-id="${s.id}">Tentar novamente</button>`
-            : "";
-
-        // badge de status usando classes globais
-        let badgeClass = "badge-info";
-        if (s.status === "Aceita") badgeClass = "badge-success";
-        else if (s.status === "Recusada") badgeClass = "badge-danger";
-        else if (s.status === "Em andamento") badgeClass = "badge-warning";
-
-        return `
-            <div class="kpi-card">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span class="kpi-title">${atividade?.titulo || "Atividade desconhecida"}</span>
-                    <span class="badge ${badgeClass}">${s.status}</span>
-                </div>
-                <div class="kpi-sub">${atividade?.descricao || ""}</div>
-                <div class="actions">
-                    <button class="btn btn-secondary btn-small" data-action="detalhes" data-id="${s.id}">Ver detalhes</button>
-                    ${btnCancelar}${btnTentar}
-                </div>
-            </div>
-        `;
-    }).join("");
-
-    bindAcoes(container, oportunidades, solicitacoes);
-}
-
-
-/* =====================================================
-   AÇÕES DOS BOTÕES
-===================================================== */
-function bindAcoes(container, oportunidades, solicitacoes) {
-    container.querySelectorAll("[data-action]").forEach(btn => {
-        btn.addEventListener("click", () => {
-            const id = Number(btn.dataset.id);
-            const action = btn.dataset.action;
-            const solicitacao = solicitacoes.find(s => s.id === id);
-            if (!solicitacao) return;
-
-            if (action === "detalhes") verDetalhes(solicitacao, oportunidades);
-            if (action === "toggle") toggleInscricao(solicitacao, oportunidades, container);
-            if (action === "tentar") abrirModalTentarNovamente(solicitacao, oportunidades, solicitacoes, container);
-        });
-    });
-}
-
-/* =====================================================
-   MODAL TENTAR NOVAMENTE
-===================================================== */
-function abrirModalTentarNovamente(solicitacao, oportunidades, solicitacoes, container) {
-    const atividade = oportunidades.find(o => o.id === solicitacao.atividadeId);
-    if (!atividade) return;
-
-    const modal = document.createElement("div");
-    modal.classList.add("modal-overlay");
-    modal.innerHTML = `
-        <div class="modal">
-            <div class="modal-header">
-                <h2>Tentar novamente: ${atividade.titulo}</h2>
-                <span class="modal-close">&times;</span>
-            </div>
-            <div class="modal-body">
-                <textarea id="novo-motivo" placeholder="Escreva seu motivo aqui..." class="textarea"></textarea>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" id="enviar-tentativa">Enviar</button>
-                <button class="btn btn-secondary modal-close">Cancelar</button>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(modal);
-    modal.style.display = "flex";
-
-    modal.querySelectorAll(".modal-close").forEach(el => el.addEventListener("click", () => modal.remove()));
-
-    modal.querySelector("#enviar-tentativa").addEventListener("click", () => {
-        const motivo = modal.querySelector("#novo-motivo").value.trim();
-        if (!motivo) { alert("Digite o motivo"); return; }
-
-        solicitacao.status = "Em andamento";
-        mostrarToast("success", "Solicitação enviada novamente!");
-        modal.remove();
-
-        renderizarColuna(container.id, "Recusada", oportunidades, solicitacoes);
-        renderizarColuna(container.id, "Em andamento", oportunidades, solicitacoes);
-    });
-}
-
-/* =====================================================
-   DETALHES
-===================================================== */
-function verDetalhes(solicitacao, oportunidades) {
-    const atividade = oportunidades.find(o => o.id === solicitacao.atividadeId);
-    if (!atividade) return;
-
-    const modal = document.createElement("div");
-    modal.classList.add("modal-overlay");
-    modal.innerHTML = `
-        <div class="modal">
-            <div class="modal-header">
-                <h2>${atividade.titulo}</h2>
-                <span class="modal-close">&times;</span>
-            </div>
-            <div class="modal-body">
-                <p><strong>Descrição:</strong> ${atividade.descricao}</p>
-                <p><strong>Carga horária:</strong> ${atividade.carga}h</p>
-                <p><strong>Modalidade:</strong> ${atividade.modalidade}</p>
-                <p><strong>Semestre:</strong> ${atividade.semestre}</p>
-                <p><strong>Ano:</strong> ${atividade.ano}</p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary modal-close">Fechar</button>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(modal);
-    modal.style.display = "flex";
-    modal.querySelectorAll(".modal-close").forEach(el => el.addEventListener("click", () => modal.remove()));
-}
-
-/* =====================================================
-   TOGGLE INSCRIÇÃO
-===================================================== */
-function toggleInscricao(solicitacao, oportunidades, container) {
-    if (solicitacao.status !== "Aceita") return;
-    solicitacao.status = "Aberta";
-    mostrarToast("info", "Inscrição cancelada.");
-
-    renderizarColuna(container.id, "Aceita", oportunidades, solicitacoes);
-    renderizarColuna(container.id, "Em andamento", oportunidades, solicitacoes);
-}
-
-/* =====================================================
-   TOASTS
-===================================================== */
-function mostrarToast(tipo, mensagem) {
-    let container = document.getElementById("toast-container");
-    if (!container) {
-        container = document.createElement("div");
-        container.id = "toast-container";
-        document.body.appendChild(container);
-    }
-
-    const toast = document.createElement("div");
-    toast.className = `toast toast-${tipo}`;
-    toast.textContent = mensagem;
-    container.appendChild(toast);
-
-    setTimeout(() => {
-        toast.style.animation = "toastHide 0.3s forwards";
-        toast.addEventListener("animationend", () => toast.remove());
-    }, 2000);
 }
 
 /* =====================================================
    ATIVAÇÃO
 ===================================================== */
 export async function ativarSolicitacoesDiscente() {
-    const oportunidades = await getOportunidades();
-    const solicitacoes = await getSolicitacoes();
+    oportunidadesData = await getOportunidades();
+    solicitacoesData = await getSolicitacoes();
 
-    renderizarColuna("aceitas", "Aceita", oportunidades, solicitacoes);
-    renderizarColuna("recusadas", "Recusada", oportunidades, solicitacoes);
-    renderizarColuna("andamento", "Em andamento", oportunidades, solicitacoes);
+    renderizarKPIs();
+    bindTabs();
+    aplicarFiltro("todas");
+}
+
+/* =====================================================
+   KPIs
+===================================================== */
+function renderizarKPIs() {
+    const pendentes = solicitacoesData.filter(s => s.status === "Pendente").length;
+    const aprovadas = solicitacoesData.filter(s => s.status === "Aceita" || s.status === "Aprovada").length;
+    const recusadas = solicitacoesData.filter(s => s.status === "Recusada").length;
+    const total = solicitacoesData.length;
+
+    document.getElementById("kpi-pendentes")?.textContent && (document.getElementById("kpi-pendentes").textContent = pendentes);
+    document.getElementById("kpi-aprovadas")?.textContent && (document.getElementById("kpi-aprovadas").textContent = aprovadas);
+    document.getElementById("kpi-recusadas")?.textContent && (document.getElementById("kpi-recusadas").textContent = recusadas);
+    document.getElementById("kpi-total")?.textContent && (document.getElementById("kpi-total").textContent = total);
+}
+
+/* =====================================================
+   TABS
+===================================================== */
+function bindTabs() {
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            aplicarFiltro(btn.dataset.tab);
+        });
+    });
+}
+
+function aplicarFiltro(tab) {
+    filtroAtual = tab;
+    let filtradas = solicitacoesData;
+
+    if (tab === "pendentes") {
+        filtradas = solicitacoesData.filter(s => s.status === "Pendente" || s.status === "Em andamento");
+    } else if (tab === "aprovadas") {
+        filtradas = solicitacoesData.filter(s => s.status === "Aceita" || s.status === "Aprovada");
+    } else if (tab === "recusadas") {
+        filtradas = solicitacoesData.filter(s => s.status === "Recusada");
+    }
+
+    renderizarSolicitacoes(filtradas);
+}
+
+/* =====================================================
+   RENDERIZAÇÃO
+===================================================== */
+function renderizarSolicitacoes(lista) {
+    const container = document.getElementById("lista-solicitacoes");
+    const totalEl = document.getElementById("total-solicitacoes");
+
+    if (!container) return;
+
+    if (totalEl) {
+        totalEl.textContent = `${lista.length} resultado${lista.length !== 1 ? 's' : ''}`;
+    }
+
+    if (!lista.length) {
+        container.innerHTML = `
+            <div class="solicitacoes-vazio">
+                <div class="icon">📋</div>
+                <p>Nenhuma solicitação encontrada.</p>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = lista.map(s => {
+        const atividade = oportunidadesData.find(o => o.id === s.atividadeId);
+        const statusClass = getStatusClass(s.status);
+        const iconClass = getIconClass(s.status);
+        const icon = getStatusIcon(s.status);
+
+        return `
+            <div class="solicitacao-card ${statusClass}" onclick="abrirModalSolicitacao(${s.id})">
+                <div class="solicitacao-icon ${iconClass}">${icon}</div>
+                <div class="solicitacao-content">
+                    <div class="solicitacao-titulo">${atividade?.titulo || "Atividade desconhecida"}</div>
+                    <div class="solicitacao-meta">
+                        <span>⏱ ${atividade?.carga || 0}h</span>
+                        <span>📅 ${s.dataSolicitacao || "Sem data"}</span>
+                    </div>
+                </div>
+                <div class="solicitacao-status">
+                    <span class="badge ${getBadgeClass(s.status)}">${s.status}</span>
+                    <span class="solicitacao-data">${s.dataAtualizacao || ""}</span>
+                </div>
+            </div>
+        `;
+    }).join("");
+}
+
+/* =====================================================
+   HELPERS DE STATUS
+===================================================== */
+function getStatusClass(status) {
+    if (status === "Pendente" || status === "Em andamento") return "status-pendente";
+    if (status === "Aceita" || status === "Aprovada") return "status-aprovada";
+    if (status === "Recusada") return "status-recusada";
+    return "";
+}
+
+function getIconClass(status) {
+    if (status === "Pendente" || status === "Em andamento") return "pendente";
+    if (status === "Aceita" || status === "Aprovada") return "aprovada";
+    if (status === "Recusada") return "recusada";
+    return "";
+}
+
+function getStatusIcon(status) {
+    if (status === "Pendente" || status === "Em andamento") return "⏳";
+    if (status === "Aceita" || status === "Aprovada") return "✅";
+    if (status === "Recusada") return "❌";
+    return "📋";
+}
+
+function getBadgeClass(status) {
+    if (status === "Pendente" || status === "Em andamento") return "badge-warning";
+    if (status === "Aceita" || status === "Aprovada") return "badge-success";
+    if (status === "Recusada") return "badge-danger";
+    return "badge-info";
+}
+
+/* =====================================================
+   MODAL DE DETALHES
+===================================================== */
+window.abrirModalSolicitacao = function (id) {
+    const s = solicitacoesData.find(sol => sol.id === id);
+    if (!s) return;
+
+    solicitacaoSelecionada = s;
+    const atividade = oportunidadesData.find(o => o.id === s.atividadeId);
+
+    // Preenche informações
+    document.getElementById("modal-sol-titulo").textContent = atividade?.titulo || "Solicitação";
+    document.getElementById("modal-sol-atividade").textContent = atividade?.titulo || "-";
+    document.getElementById("modal-sol-status").innerHTML = `<span class="badge ${getBadgeClass(s.status)}">${s.status}</span>`;
+    document.getElementById("modal-sol-data").textContent = s.dataSolicitacao || "-";
+    document.getElementById("modal-sol-carga").textContent = `${atividade?.carga || 0} horas`;
+
+    // Timeline
+    renderizarTimeline(s.status);
+
+    // Parecer
+    const parecerBox = document.getElementById("modal-parecer-box");
+    if (s.parecer && s.status === "Recusada") {
+        parecerBox.style.display = "block";
+        document.getElementById("modal-sol-parecer").textContent = s.parecer;
+    } else {
+        parecerBox.style.display = "none";
+    }
+
+    // Botões contextuais
+    const btnCancelar = document.getElementById("modal-btn-cancelar");
+    const btnTentar = document.getElementById("modal-btn-tentar");
+
+    btnCancelar.style.display = (s.status === "Pendente" || s.status === "Em andamento") ? "block" : "none";
+    btnTentar.style.display = s.status === "Recusada" ? "block" : "none";
+
+    // Abre modal
+    document.getElementById("modalDetalhesSolicitacao").style.display = "flex";
+};
+
+function renderizarTimeline(status) {
+    const timeline = document.getElementById("modal-timeline");
+    if (!timeline) return;
+
+    const steps = [
+        { label: "Solicitação", icon: "📝" },
+        { label: "Análise", icon: "🔍" },
+        { label: "Resultado", icon: "📋" }
+    ];
+
+    let stepStatus = ["completed", "current", ""];
+    if (status === "Aceita" || status === "Aprovada") {
+        stepStatus = ["completed", "completed", "completed"];
+    } else if (status === "Recusada") {
+        stepStatus = ["completed", "completed", "rejected"];
+    }
+
+    timeline.innerHTML = steps.map((step, i) => `
+        <div class="timeline-step">
+            <div class="timeline-dot ${stepStatus[i]}">${step.icon}</div>
+            <span class="timeline-label">${step.label}</span>
+        </div>
+    `).join("");
+}
+
+window.fecharModalSolicitacao = function () {
+    document.getElementById("modalDetalhesSolicitacao").style.display = "none";
+    solicitacaoSelecionada = null;
+};
+
+window.cancelarSolicitacao = function () {
+    if (!solicitacaoSelecionada) return;
+    solicitacaoSelecionada.status = "Cancelada";
+    mostrarToast("info", "Solicitação cancelada.");
+    fecharModalSolicitacao();
+    renderizarKPIs();
+    aplicarFiltro(filtroAtual);
+};
+
+/* =====================================================
+   MODAL DE JUSTIFICATIVA (TENTAR NOVAMENTE)
+===================================================== */
+window.abrirModalJustificativa = function () {
+    if (!solicitacaoSelecionada) return;
+
+    // Limpa o campo
+    const textarea = document.getElementById("input-justificativa");
+    if (textarea) textarea.value = "";
+
+    // Abre o modal de justificativa
+    document.getElementById("modalJustificativa").style.display = "flex";
+};
+
+window.fecharModalJustificativa = function () {
+    document.getElementById("modalJustificativa").style.display = "none";
+};
+
+window.enviarNovaJustificativa = function () {
+    const textarea = document.getElementById("input-justificativa");
+    const justificativa = textarea?.value?.trim();
+
+    if (!justificativa) {
+        mostrarToast("warning", "Por favor, preencha a justificativa.");
+        return;
+    }
+
+    if (!solicitacaoSelecionada) return;
+
+    // Atualiza a solicitação
+    solicitacaoSelecionada.status = "Pendente";
+    solicitacaoSelecionada.justificativa = justificativa;
+    solicitacaoSelecionada.dataSolicitacao = new Date().toLocaleDateString("pt-BR");
+
+    mostrarToast("success", "Nova solicitação enviada com sucesso!");
+
+    // Fecha os modais
+    fecharModalJustificativa();
+    fecharModalSolicitacao();
+
+    // Atualiza a tela
+    renderizarKPIs();
+    aplicarFiltro(filtroAtual);
+};
+
+/* =====================================================
+   TOAST
+===================================================== */
+function mostrarToast(tipo, mensagem) {
+    if (window.showToast) {
+        window.showToast(tipo, mensagem);
+    } else {
+        console.log(`[${tipo.toUpperCase()}] ${mensagem}`);
+    }
 }
