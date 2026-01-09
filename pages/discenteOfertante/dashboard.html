@@ -28,6 +28,11 @@
     <div id="layout-area"></div>
 
     <script type="module">
+        // IMPORTANTE: Define o perfil IMEDIATAMENTE antes de qualquer import
+        localStorage.setItem("perfil", "discenteOfertante");
+        localStorage.setItem("nome", "Discente Ofertante Teste");
+        localStorage.setItem("email", "ofertante@teste.com");
+
         import { carregarLayout } from "../../assets/js/common/layout.js";
 
         // Imports das funções de carregamento de HTML
@@ -57,8 +62,6 @@
         } from "../../assets/js/discenteOfertante/certificacoes.js";
 
         async function init() {
-            // Define o perfil
-            localStorage.setItem("perfil", "discenteOfertante");
 
             // 1. CARREGA O HTML DE TODAS AS VIEWS ANTES DE INICIAR O LAYOUT
             // (mesmo padrão usado pelo docente e coordenador)

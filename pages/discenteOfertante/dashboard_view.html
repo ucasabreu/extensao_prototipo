@@ -1,31 +1,100 @@
-<section class="discenteOfertante-dashboard">
+<!-- =====================================================
+     DISCENTE OFERTANTE - VISÃO GERAL (Dashboard)
+     Layout alinhado com padrão Docente/Coordenador
+     ===================================================== -->
 
-    <div class="box-externa oportunidades-box">
-        <div class="box-interna">
-            <div class="box-titulo">Atividades Ativas</div>
-            <div class="box-scroll oportunidades-lista"></div>
-        </div>
+<!-- KPIs - Métricas principais -->
+<div class="kpi-grid">
+    <div class="kpi-card" style="border-left-color: #2c75b9;">
+        <div class="kpi-title">Projetos Ativos</div>
+        <div class="kpi-value" id="kpi-projetos">0</div>
+        <div class="kpi-sub">Como ofertante</div>
     </div>
 
-    <div class="box-externa progresso-box">
-        <div class="box-interna">
-            <div class="box-titulo">Progresso</div>
-            <div class="box-scroll" id="progress-container"></div>
-        </div>
+    <div class="kpi-card" style="border-left-color: #2e8b57;">
+        <div class="kpi-title">Atividades</div>
+        <div class="kpi-value" id="kpi-atividades">0</div>
+        <div class="kpi-sub">Em andamento</div>
     </div>
 
-    <div class="box-externa notificacoes-box">
-        <div class="box-interna">
-            <div class="box-titulo">Notificações</div>
-            <div class="box-scroll" id="notificacoes-container"></div>
-        </div>
+    <div class="kpi-card" style="border-left-color: #d4a017;">
+        <div class="kpi-title">Inscrições</div>
+        <div class="kpi-value" id="kpi-inscricoes">0</div>
+        <div class="kpi-sub">Pendentes de análise</div>
     </div>
 
-    <div class="box-externa noticias-box">
-        <div class="box-interna">
-            <div class="box-titulo">Notícias</div>
-            <div class="box-scroll" id="noticias-container"></div>
+    <div class="kpi-card" style="border-left-color: #7a1010;">
+        <div class="kpi-title">Horas Acumuladas</div>
+        <div class="kpi-value" id="kpi-horas">0h</div>
+        <div class="kpi-sub">Extensão validada</div>
+    </div>
+</div>
+
+<!-- Grid Principal -->
+<div class="dashboard-grid">
+
+    <!-- Coluna Esquerda -->
+    <div class="dashboard-main">
+
+        <!-- Meus Projetos -->
+        <div class="section-card">
+            <div class="section-header">
+                <h3 class="section-title">Meus Projetos</h3>
+                <button class="btn-small btn-small-primary" onclick="irParaProjetos()">Ver todos</button>
+            </div>
+            <div class="projetos-lista" id="projetos-container">
+                <!-- Renderizado via JS -->
+            </div>
         </div>
+
+        <!-- Atividades Ativas -->
+        <div class="section-card">
+            <div class="section-header">
+                <h3 class="section-title">Minhas Atividades Ativas</h3>
+            </div>
+            <div class="atividades-grid" id="atividades-container">
+                <!-- Renderizado via JS -->
+            </div>
+        </div>
+
     </div>
 
-</section>
+    <!-- Coluna Direita (Sidebar) -->
+    <div class="dashboard-sidebar">
+
+        <!-- Progresso -->
+        <div class="section-card">
+            <div class="section-header">
+                <h3 class="section-title">Progresso</h3>
+            </div>
+            <div class="progresso-lista" id="progress-container">
+                <!-- Renderizado via JS -->
+            </div>
+        </div>
+
+        <!-- Acesso Rápido -->
+        <div class="section-card">
+            <div class="section-header">
+                <h3 class="section-title">Acesso Rápido</h3>
+            </div>
+            <div class="acesso-rapido-grid">
+                <button class="btn btn-secondary" onclick="irParaProjetos()">Meus Projetos</button>
+                <button class="btn btn-secondary" onclick="irParaOportunidades()">Oportunidades</button>
+                <button class="btn btn-secondary" onclick="irParaSolicitacoes()">Solicitações</button>
+                <button class="btn btn-secondary" onclick="irParaCertificacoes()">Certificações</button>
+            </div>
+        </div>
+
+        <!-- Notificações -->
+        <div class="section-card">
+            <div class="section-header">
+                <h3 class="section-title">Notificações Recentes</h3>
+            </div>
+            <div class="notificacoes-lista" id="notificacoes-container">
+                <!-- Renderizado via JS -->
+            </div>
+        </div>
+
+    </div>
+
+</div>

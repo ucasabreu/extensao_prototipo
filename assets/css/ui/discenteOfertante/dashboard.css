@@ -1,257 +1,268 @@
 /* ===============================
    DASHBOARD – DISCENTE
+   Layout alinhado com Docente/Coordenador
 ================================ */
 
-.discenteOfertante-dashboard {
+/* ===============================
+   GRID PRINCIPAL
+================================ */
+
+.dashboard-grid {
     display: grid;
-    grid-template-columns: repeat(12, 1fr);
+    grid-template-columns: 2fr 1fr;
     gap: 20px;
-    margin-top: 24px;
 }
 
-/* ===============================
-   GRID / HIERARQUIA
-================================ */
-
-/* Linha superior (destaque) */
-.oportunidades-box {
-    grid-column: span 8;
-    height: 380px; /* maior que antes */
-}
-
-.progresso-box {
-    grid-column: span 4;
-    height: 380px;
-}
-
-/* Linha inferior (menores / secundárias) */
-.notificacoes-box {
-    grid-column: span 6;
-    height: 140px; /* menor */
-}
-
-.noticias-box {
-    grid-column: span 6;
-    height: 140px; /* menor */
-}
-
-/* ===============================
-   BOX GLOBAL
-================================ */
-
-.box-externa {
-    background: linear-gradient(135deg, #8b1d1d, #6f1414);
-    border-radius: 16px;
-    padding: 12px;
-    height: 100%;
-}
-
-.box-interna {
-    background: #fbf6ea;
-    border-radius: 14px;
-    padding: 14px;
-    height: 100%;
-
+.dashboard-main {
     display: flex;
     flex-direction: column;
-    gap: 10px;
 }
 
-/* Destaque só na principal */
-.oportunidades-box .box-interna {
-    box-shadow: 0 10px 24px rgba(122, 16, 16, 0.18);
+.dashboard-sidebar {
+    display: flex;
+    flex-direction: column;
 }
-/* Linha superior */
-.oportunidades-box {
-    grid-column: span 8;
-    height: 420px; /* aumentei de 360px para 420px */
-}
-
-.progresso-box {
-    grid-column: span 4;
-    height: 420px; /* aumentei de 360px para 420px */
-}
-/* ===============================
-   DIMINUIR DESTAQUE DAS CAIXAS SECUNDÁRIAS
-================================ */
-
-/* Notícias: largura de progresso, altura de notificações */
-.noticias-box {
-    grid-column: span 4; /* mesma largura de progresso */
-    height: 220px;       /* altura de notificações */
-}
-
-.noticias-box .box-externa,
-.noticias-box .box-interna {
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05); /* menos destaque */
-}
-
-/* Notificações: largura de atividades ativas, altura de notícias */
-.notificacoes-box {
-    grid-column: span 8; /* mesma largura de atividades ativas */
-    height: 220px;       /* altura de notícias */
-}
-
-.notificacoes-box .box-externa,
-.notificacoes-box .box-interna {
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05); /* menos destaque */
-}
-
 
 /* ===============================
-   TÍTULOS
+   SECTION CARD (padrão global)
 ================================ */
 
-.box-titulo {
-    font-size: 13px;
-    font-weight: 800;
+.section-card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #e3d8c7;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.section-title {
+    font-size: 16px;
     color: #5d0b0b;
-    text-transform: uppercase;
+    margin: 0 0 15px 0;
+    font-weight: 600;
+}
+
+.section-header .section-title {
+    margin: 0;
 }
 
 /* ===============================
-   SCROLL (TODAS)
+   ATIVIDADES (Cards)
 ================================ */
 
-.box-scroll {
-    flex: 1;
-    overflow-y: auto;
-
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-
-    padding-right: 4px;
-}
-
-.box-scroll::-webkit-scrollbar {
-    width: 5px;
-}
-
-.box-scroll::-webkit-scrollbar-thumb {
-    background: #c9b8a5;
-    border-radius: 10px;
-}
-
-/* ===============================
-   ATIVIDADES ATIVAS
-================================ */
-
-.oportunidades-lista {
+.atividades-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
-
-    /* limita o crescimento dos cards */
-    overflow-y: auto;
 }
 
-.oportunidade-card {
+.atividade-card {
     background: #ffffff;
     border: 1px solid #e6dbc9;
-    border-radius: 10px;
-    padding: 12px;
-
+    border-left: 4px solid #7a1010;
+    border-radius: 8px;
+    padding: 14px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
+    transition: box-shadow 0.2s ease;
 }
 
-.oportunidade-card strong {
-    font-size: 13px;
-    color: #5d0b0b;
+.atividade-card:hover {
+    box-shadow: 0 4px 12px rgba(122, 16, 16, 0.12);
 }
 
-.oportunidade-card span {
+.atividade-card .titulo {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.atividade-card .meta {
     font-size: 12px;
-    color: #555;
+    color: #666;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.atividade-card .acoes {
+    margin-top: auto;
+    padding-top: 8px;
 }
 
 /* ===============================
-   PROGRESSO
+   PROGRESSO (mantido e melhorado)
 ================================ */
+
+.progress-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 300px;
+    overflow-y: auto;
+}
 
 .progress-card {
     background: #ffffff;
     border: 1px solid #e6dbc9;
-    border-radius: 10px;
-    padding: 10px;
-
+    border-radius: 8px;
+    padding: 12px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
 }
 
 .progress-card strong {
-    font-size: 12px;
+    font-size: 13px;
     color: #5d0b0b;
 }
 
 .progress-bar {
-    height: 8px;
+    height: 10px;
     background: #f0e7dc;
     border-radius: 10px;
     overflow: hidden;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, #5fa15f, #ff944d);
+    background: linear-gradient(90deg, #5fa15f, #8bc34a);
+    border-radius: 10px;
+    transition: width 0.4s ease;
+}
+
+.progress-card .kpi-sub {
+    font-size: 12px;
+    color: #666;
 }
 
 /* ===============================
-   NOTIFICAÇÕES (COMPACTAS)
+   NOTIFICAÇÕES
 ================================ */
+
+.notificacoes-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+}
 
 .notificacao-card {
     background: #ffffff;
     border-left: 3px solid #7a1010;
     border-radius: 6px;
-    padding: 4px 6px;
-
+    padding: 10px 12px;
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    font-size: 11px;
+    gap: 4px;
 }
 
 .notificacao-card strong {
+    font-size: 13px;
     color: #7a1010;
 }
 
-.notificacao-card span {
-    color: #444;
+.notificacao-card p {
+    font-size: 12px;
+    color: #555;
+    margin: 0;
 }
 
 /* ===============================
-   NOTÍCIAS (COMPACTAS)
+   NOTÍCIAS
 ================================ */
 
-.noticia-card {
-    background: #ffffff;
-    border-left: 3px solid #a11a1a;
-    border-radius: 6px;
-    padding: 4px 6px;
-
+.noticias-lista {
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    font-size: 11px;
+    gap: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.noticia-card {
+    border-bottom: 1px solid #eee;
+    padding: 8px 0;
+}
+
+.noticia-card:last-child {
+    border-bottom: none;
 }
 
 .noticia-card strong {
+    font-size: 13px;
     color: #5d0b0b;
+    display: block;
+    margin-bottom: 4px;
 }
 
-.noticia-card span {
-    color: #555;
+.noticia-card p {
+    font-size: 12px;
+    color: #666;
+    margin: 0;
 }
-
 
 /* ===============================
-   cards internos (kpi-cards)
+   SCROLLBAR CUSTOMIZADA
 ================================ */
-/* KPI Card */
+
+.progress-lista::-webkit-scrollbar,
+.notificacoes-lista::-webkit-scrollbar,
+.noticias-lista::-webkit-scrollbar {
+    width: 5px;
+}
+
+.progress-lista::-webkit-scrollbar-thumb,
+.notificacoes-lista::-webkit-scrollbar-thumb,
+.noticias-lista::-webkit-scrollbar-thumb {
+    background: #c9b8a5;
+    border-radius: 10px;
+}
+
+/* ===============================
+   RESPONSIVO
+================================ */
+
+@media (max-width: 900px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .atividades-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .kpi-grid {
+        flex-direction: column;
+    }
+
+    .kpi-card {
+        width: 100%;
+    }
+}
+
+/* ===============================
+   LEGADO (mantido para compatibilidade)
+   Remover após migração completa
+================================ */
+
+.discente-dashboard {
+    display: none;
+    /* Ocultar layout antigo */
+}
+
+/* Removido: .oportunidades-lista era redundante */
+
 .kpi-card {
     background: #ffffff;
     border-radius: 10px;
@@ -259,28 +270,5 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
-
-    /* REMOVE height: 100% se tiver */
-    max-height: 200px;  /* ajusta para não crescer com a box-interna */
-}
-/* ===============================
-   RESPONSIVO
-================================ */
-
-@media (max-width: 900px) {
-    .discenteOfertante-dashboard {
-        grid-template-columns: 1fr;
-    }
-
-    .oportunidades-box,
-    .progresso-box,
-    .notificacoes-box,
-    .noticias-box {
-        grid-column: span 12;
-        height: auto;
-    }
-
-    .oportunidades-lista {
-        grid-template-columns: 1fr;
-    }
+    max-height: 200px;
 }
