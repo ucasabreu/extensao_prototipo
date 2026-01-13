@@ -126,7 +126,7 @@ function renderizarCertificacoes(lista) {
 
     container.innerHTML = lista.map(c => {
         const statusClass = c.status === "Aprovada" ? "aprovada" : "analise";
-        const icon = c.status === "Aprovada" ? "✓" : "○";
+        const icon = c.status === "Aprovada" ? "OK" : "A";
 
         return `
             <div class="certificacao-card ${statusClass}" onclick="abrirModalCertificacao(${c.id})">
@@ -168,7 +168,7 @@ window.abrirModalCertificacao = function (id) {
         `<span class="badge ${c.status === "Aprovada" ? "badge-success" : "badge-warning"}">${c.status}</span>`;
 
     // Preview
-    const icon = c.status === "Aprovada" ? "✓" : "○";
+    const icon = c.status === "Aprovada" ? "OK" : "A";
     document.getElementById("modal-cert-icon").textContent = icon;
 
     const statusBadge = document.getElementById("modal-cert-status-badge");

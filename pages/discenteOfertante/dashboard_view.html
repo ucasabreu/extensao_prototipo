@@ -40,7 +40,7 @@
         <div class="section-card">
             <div class="section-header">
                 <h3 class="section-title">Meus Projetos</h3>
-                <button class="btn-small btn-small-primary" onclick="irParaProjetos()">Ver todos</button>
+                <button class="btn-small btn-small-info" onclick="irParaOportunidades()">Ver Todas</button>
             </div>
             <div class="projetos-lista" id="projetos-container">
                 <!-- Renderizado via JS -->
@@ -53,6 +53,16 @@
                 <h3 class="section-title">Minhas Atividades Ativas</h3>
             </div>
             <div class="atividades-grid" id="atividades-container">
+                <!-- Renderizado via JS -->
+            </div>
+        </div>
+
+        <!-- Notificações -->
+        <div class="section-card" style="margin-top: 20px;">
+            <div class="section-header">
+                <h3 class="section-title">Notificações Recentes</h3>
+            </div>
+            <div class="notificacoes-lista" id="notificacoes-container">
                 <!-- Renderizado via JS -->
             </div>
         </div>
@@ -73,24 +83,30 @@
         </div>
 
         <!-- Acesso Rápido -->
-        <div class="section-card">
-            <div class="section-header">
-                <h3 class="section-title">Acesso Rápido</h3>
-            </div>
-            <div class="acesso-rapido-grid">
-                <button class="btn btn-secondary" onclick="irParaProjetos()">Meus Projetos</button>
-                <button class="btn btn-secondary" onclick="irParaOportunidades()">Oportunidades</button>
-                <button class="btn btn-secondary" onclick="irParaSolicitacoes()">Solicitações</button>
-                <button class="btn btn-secondary" onclick="irParaCertificacoes()">Certificações</button>
-            </div>
+        <div class="section-card" style="margin-top: 20px;">
+            <h3 class="section-title">Acesso Rápido</h3>
+
+            <button class="btn btn-secondary" onclick="irParaOportunidades()"
+                style="width: 100%; margin-bottom: 10px; text-align: left;">
+                🔍 Buscar Oportunidades
+            </button>
+
+            <button class="btn btn-secondary" onclick="irParaSolicitacoes()"
+                style="width: 100%; margin-bottom: 10px; text-align: left;">
+                📋 Minhas Solicitações
+            </button>
+
+            <button class="btn btn-secondary" onclick="irParaCertificacoes()" style="width: 100%; text-align: left;">
+                🏆 Certificações
+            </button>
         </div>
 
-        <!-- Notificações -->
-        <div class="section-card">
-            <div class="section-header">
-                <h3 class="section-title">Notificações Recentes</h3>
-            </div>
-            <div class="notificacoes-lista" id="notificacoes-container">
+
+
+        <!-- Notícias -->
+        <div class="section-card" style="margin-top: 20px;">
+            <h3 class="section-title">📰 Notícias</h3>
+            <div id="noticias-container" class="noticias-lista">
                 <!-- Renderizado via JS -->
             </div>
         </div>

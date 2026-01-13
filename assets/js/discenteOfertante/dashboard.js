@@ -1,7 +1,8 @@
 import {
     getOportunidades,
     getSolicitacoes,
-    getCertificacoes
+    getCertificacoes,
+    getNoticias
 } from "../services/discente.service.js";
 
 import { getProjetosDiscenteOfertante } from "./projetos.js";
@@ -18,11 +19,12 @@ export async function carregarDashboardDiscenteOfertante() {
    ATIVACAO
 ===================================================== */
 export async function ativarDashboardDiscenteOfertante() {
-    const [oportunidades, solicitacoes, certificacoes, projetos] = await Promise.all([
+    const [oportunidades, solicitacoes, certificacoes, projetos, noticias] = await Promise.all([
         getOportunidades(),
         getSolicitacoes(),
         getCertificacoes(),
-        getProjetosDiscenteOfertante()
+        getProjetosDiscenteOfertante(),
+        getNoticias()
     ]);
 
     renderizarKPIs(oportunidades, solicitacoes, certificacoes, projetos);
@@ -30,6 +32,7 @@ export async function ativarDashboardDiscenteOfertante() {
     renderizarAtividadesAtivas(oportunidades);
     renderizarProgresso(oportunidades);
     renderizarNotificacoes(oportunidades, solicitacoes);
+    renderizarNoticias(noticias);
 }
 
 /* ===============================
@@ -186,6 +189,27 @@ function renderizarNotificacoes(oportunidades, solicitacoes) {
             </div>
         `;
     }).join("");
+}
+
+/* ===============================
+   NOTÍCIAS
+================================ */
+function renderizarNoticias(noticias) {
+    const container = document.getElementById("noticias-container");
+    if (!container) return;
+
+    if (!noticias.length) {
+        container.innerHTML =
+            `<p style="color: #888; font-size: 13px;">Nenhuma notícia.</p>`;
+        return;
+    }
+
+    container.innerHTML = noticias.map(n => `
+        <div class="noticia-card">
+            <strong>${n.titulo}</strong>
+            <p>${n.resumo}</p>
+        </div>
+    `).join("");
 }
 
 /* ===============================

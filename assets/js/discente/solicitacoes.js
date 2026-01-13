@@ -137,10 +137,10 @@ function getIconClass(status) {
 }
 
 function getStatusIcon(status) {
-    if (status === "Pendente" || status === "Em andamento") return "⏳";
-    if (status === "Aceita" || status === "Aprovada") return "✅";
-    if (status === "Recusada") return "❌";
-    return "📋";
+    if (status === "Pendente" || status === "Em andamento") return "P";
+    if (status === "Aceita" || status === "Aprovada") return "OK";
+    if (status === "Recusada") return "X";
+    return "!";
 }
 
 function getBadgeClass(status) {
@@ -195,9 +195,9 @@ function renderizarTimeline(status) {
     if (!timeline) return;
 
     const steps = [
-        { label: "Solicitação", icon: "📝" },
-        { label: "Análise", icon: "🔍" },
-        { label: "Resultado", icon: "📋" }
+        { label: "Solicitacao", icon: "1" },
+        { label: "Analise", icon: "2" },
+        { label: "Resultado", icon: "3" }
     ];
 
     let stepStatus = ["completed", "current", ""];
